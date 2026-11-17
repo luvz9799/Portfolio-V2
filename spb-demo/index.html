@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="demo/mock.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akshardham Associates — Smart Buyer Network</title>
+  <meta name="description" content="Tell us your requirement — we find the right plot for you. Verified rural & semi-urban plots, transparent pricing, direct owner deals.">
+  <link rel="icon" type="image/png" href="static/favicon.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Hind:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,500&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">
+  <link href="static/vendor/fa/css/all.min.css" rel="stylesheet">
+  <link href="static/vendor/leaflet/leaflet.css" rel="stylesheet">
+  <script src="static/vendor/leaflet/leaflet.js"></script>
+  <link href="static/style.css" rel="stylesheet">
+  <style>.view-toggle{transition:.15s}.view-on{background:#E86B1C;color:#fff !important}
+    .hero-serif{font-family:'Playfair Display',Georgia,serif}
+    html[lang="hi"] .hero-serif{font-family:'Noto Serif Devanagari','Playfair Display',serif}</style>
+  <style>
+    /* ===== mobile bottom nav (phones only) ===== */
+    #bottom-nav{display:none}
+    @media (max-width:767px){
+      #bottom-nav{display:flex}
+      body{padding-bottom:4.75rem}
+    }
+    #bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:58;align-items:stretch;
+      background:rgba(255,255,255,.96);backdrop-filter:blur(10px);
+      border-top:1px solid #FBD1A6;box-shadow:0 -4px 20px rgba(140,61,11,.08);
+      padding-bottom:env(safe-area-inset-bottom)}
+    .bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:3px;font-size:11px;font-weight:600;color:#78716c;padding:9px 0 7px;
+      background:none;border:0;transition:color .15s;position:relative}
+    .bn-item i{font-size:19px;line-height:1}
+    .bn-item.bn-active{color:#D95F12}
+    .bn-badge{position:absolute;top:3px;right:50%;margin-right:-22px;background:#ef4444;color:#fff;
+      font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:999px;
+      display:grid;place-items:center;padding:0 4px}
+    .bn-fab{flex:1;display:flex;justify-content:center}
+    .bn-fab-btn{width:56px;height:56px;margin-top:-20px;border-radius:9999px;
+      background:linear-gradient(135deg,#F7B32B,#F09A0A);color:#221507;
+      display:grid;place-items:center;font-size:23px;border:4px solid #fff;
+      box-shadow:0 6px 16px rgba(240,154,10,.5);transition:transform .15s}
+    .bn-fab-btn:active{transform:scale(.92)}
+    .bn-fab-btn.open{transform:rotate(45deg)}
+    .bn-backdrop{position:fixed;inset:0;z-index:55;background:rgba(0,0,0,.28);display:none}
+    .bn-backdrop.open{display:block}
+    .bn-sheet{position:fixed;left:50%;bottom:5.5rem;transform:translateX(-50%) translateY(10px);
+      z-index:62;width:270px;max-width:90vw;background:#fff;border-radius:18px;padding:8px;
+      box-shadow:0 14px 44px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:.18s}
+    .bn-sheet.open{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+    .bn-sheet button{display:flex;align-items:center;gap:13px;width:100%;padding:13px 14px;
+      border-radius:13px;font-weight:600;color:#44403c;background:none;border:0;text-align:left}
+    .bn-sheet button:active{background:#FDE8D4}
+    .bn-sheet .ic{width:38px;height:38px;flex:none;border-radius:11px;display:grid;place-items:center;color:#fff;font-size:16px}
+    /* ===== mobile compactness: desktop spacing is too big on phones ===== */
+    /* ponytail: !important needed to beat Tailwind CDN utilities (injected after this block) */
+    @media (max-width:767px){
+      .py-20{padding-top:2.5rem !important;padding-bottom:2.5rem !important}
+      .py-16{padding-top:2rem !important;padding-bottom:2rem !important}
+      #hero-section{height:auto !important;min-height:88vh !important;padding-top:6rem !important;padding-bottom:2.5rem !important;align-items:flex-start !important}
+      #hero-section h1{font-size:1.65rem !important;line-height:1.18 !important}
+      #hero-section p{font-size:1rem !important;margin-top:.9rem !important}
+      #hero-section .mt-8{margin-top:1.25rem !important}
+      #hero-section button{font-size:1rem !important;padding:.8rem 1.1rem !important}
+      section h2{font-size:1.45rem !important;line-height:1.25 !important}
+      .filter-input{padding:.5rem .7rem !important;font-size:.85rem !important}
+      .listing-img-wrap{height:150px}
+      .listing-card .p-5{padding:.85rem}
+      .listing-card h3{font-size:.95rem}
+      /* stats block — tighter cells */
+      .stat-cell{padding:1.1rem .5rem}
+      .stat-num{font-size:1.9rem}
+      .stat-label{font-size:.7rem}
+      /* "how it works" step cards — shorter, less empty space */
+      .step-card{padding:1.2rem}
+      .step-card .step-num{font-size:2.4rem;top:.8rem;right:1rem}
+      .step-card .w-14{width:2.75rem;height:2.75rem;margin-bottom:.6rem;font-size:1.1rem}
+      .step-card h3{font-size:1.05rem}
+      .step-card p{font-size:.9rem;margin-top:.35rem}
+      #how-grid{margin-top:1.5rem !important;gap:.9rem !important}
+    }
+    /* ===== map details drawer (opens on pin click) ===== */
+    .map-panel{position:fixed;top:0;right:0;bottom:0;width:360px;max-width:90%;background:#fff;z-index:1150;
+      box-shadow:-8px 0 30px rgba(0,0,0,.2);transform:translateX(105%);transition:transform .25s ease;overflow:auto}
+    .map-panel.open{transform:none}
+    .mp-close{position:absolute;top:10px;right:10px;z-index:2;width:32px;height:32px;border-radius:50%;border:none;
+      background:rgba(255,255,255,.96);box-shadow:0 2px 8px rgba(0,0,0,.15);font-size:18px;cursor:pointer;line-height:1}
+    .mp-body{padding:16px;display:flex;flex-direction:column;gap:10px}
+    .mp-gallery{display:flex;flex-direction:column;gap:8px}
+    @media (max-width:767px){
+      .map-panel{top:auto;left:0;right:0;bottom:0;width:100%;max-width:100%;height:82vh;transform:translateY(105%);border-radius:18px 18px 0 0}
+      .map-panel.open{transform:none}
+    }
+  </style>
+  <link rel="stylesheet" href="static/vendor/tw.css">
+</head>
+<body class="font-body bg-[#FBF7F0] text-stone-800 antialiased">
+
+  <!-- ============ NAV (glassmorphism) ============ -->
+  <nav id="main-nav" class="glass-nav fixed top-0 inset-x-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+      <a href="#" class="flex items-center gap-3">
+        <img src="static/logo-icon.png" alt="Akshardham Associates logo" class="h-9 w-auto">
+        <span class="leading-tight">
+          <span class="block font-head font-extrabold text-[15px] text-brand-900">Akshardham Associates</span>
+          <span class="block text-[10px] tracking-[0.18em] uppercase text-brand-500 font-semibold">Smart Buyer Network</span>
+        </span>
+      </a>
+      <div class="hidden md:flex items-center gap-6 text-sm font-medium text-stone-600">
+        <a href="#browse-section" class="hover:text-brand-600 transition" data-hi="लिस्टिंग">Listings</a>
+        <a href="#trust-section" class="hover:text-brand-600 transition" data-hi="हमें क्यों चुनें">Why Us</a>
+        <a href="#about-section" class="hover:text-brand-600 transition" data-hi="हमारे बारे में">About Us</a>
+        <a href="#testimonials" class="hover:text-brand-600 transition" data-hi="ग्राहक अनुभव">Testimonials</a>
+        <a href="login.html" class="hover:text-brand-600 transition"><i class="fas fa-user-shield mr-1"></i><span data-hi="टीम लॉगिन">Team Login</span></a>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="lang-toggle" onclick="toggleLang()" class="btn-depth inline-flex items-center gap-1.5 bg-white text-brand-700 border border-brand-200 text-sm font-bold px-3 py-2 rounded-xl" title="Language / भाषा"><i class="fas fa-language"></i><span id="lang-label">हिं</span></button>
+        <button onclick="openModal('buy')" class="btn-depth hidden sm:inline-flex items-center gap-1.5 bg-white text-brand-700 border border-brand-200 text-sm font-semibold px-4 py-2 rounded-xl">
+          <i class="fas fa-search"></i> <span data-hi="मुझे खरीदना है">I Want to Buy</span>
+        </button>
+        <button onclick="location.href='sell.html'" class="btn-depth hidden md:inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-500 to-brand-600 text-white text-sm font-bold px-4 py-2 rounded-xl shadow-lg shadow-brand-500/30">
+          <i class="fas fa-tags"></i> <span data-hi="मुझे बेचना है">I Want to Sell</span>
+        </button>
+        <button id="menu-toggle" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" class="md:hidden btn-depth inline-flex items-center justify-center w-10 h-10 bg-white text-brand-700 border border-brand-200 rounded-xl">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ MOBILE MENU DRAWER ============ -->
+  <div id="menu-overlay" onclick="toggleMenu()" class="md:hidden fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"></div>
+  <aside id="menu-drawer" class="md:hidden fixed top-0 right-0 z-[70] h-full w-[82%] max-w-[340px] bg-white shadow-2xl translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="flex items-center justify-between px-5 h-16 border-b border-stone-100">
+      <span class="leading-tight">
+        <span class="block font-head font-extrabold text-[15px] text-brand-900">Akshardham Associates</span>
+        <span class="block text-[9px] tracking-[0.18em] uppercase text-brand-500 font-semibold">Smart Buyer Network</span>
+      </span>
+      <button onclick="toggleMenu()" aria-label="Close menu" class="w-9 h-9 inline-flex items-center justify-center rounded-lg text-stone-500 hover:bg-stone-100"><i class="fas fa-times text-lg"></i></button>
+    </div>
+    <nav class="flex-1 overflow-y-auto px-3 py-4">
+      <a href="#browse-section" onclick="toggleMenu()" class="flex items-center gap-3 px-3 py-3 rounded-xl text-stone-700 font-medium hover:bg-brand-50"><i class="fas fa-th-large w-5 text-brand-500"></i><span data-hi="लिस्टिंग">Listings</span></a>
+      <a href="#trust-section" onclick="toggleMenu()" class="flex items-center gap-3 px-3 py-3 rounded-xl text-stone-700 font-medium hover:bg-brand-50"><i class="fas fa-shield-halved w-5 text-brand-500"></i><span data-hi="हमें क्यों चुनें">Why Us</span></a>
+      <a href="#about-section" onclick="toggleMenu()" class="flex items-center gap-3 px-3 py-3 rounded-xl text-stone-700 font-medium hover:bg-brand-50"><i class="fas fa-circle-info w-5 text-brand-500"></i><span data-hi="हमारे बारे में">About Us</span></a>
+      <a href="#testimonials" onclick="toggleMenu()" class="flex items-center gap-3 px-3 py-3 rounded-xl text-stone-700 font-medium hover:bg-brand-50"><i class="fas fa-star w-5 text-brand-500"></i><span data-hi="ग्राहक अनुभव">Testimonials</span></a>
+      <a href="#news-section" onclick="toggleMenu()" class="flex items-center gap-3 px-3 py-3 rounded-xl text-stone-700 font-medium hover:bg-brand-50"><i class="fas fa-newspaper w-5 text-brand-500"></i><span data-hi="प्रॉपर्टी समाचार">News</span></a>
+      <a href="login.html" onclick="toggleMenu()" class="flex items-center gap-3 px-3 py-3 rounded-xl text-stone-700 font-medium hover:bg-brand-50"><i class="fas fa-user-shield w-5 text-brand-500"></i><span data-hi="टीम लॉगिन">Team Login</span></a>
+    </nav>
+    <div class="px-4 py-4 border-t border-stone-100 space-y-2.5">
+      <button onclick="toggleMenu();openModal('buy')" class="w-full btn-depth inline-flex items-center justify-center gap-2 bg-white text-brand-700 border border-brand-200 text-sm font-bold px-4 py-3 rounded-xl"><i class="fas fa-search"></i> <span data-hi="मुझे खरीदना है">I Want to Buy</span></button>
+      <button onclick="location.href='sell.html'" class="w-full btn-depth inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-500 to-brand-600 text-white text-sm font-bold px-4 py-3 rounded-xl shadow-lg shadow-brand-500/30"><i class="fas fa-tags"></i> <span data-hi="मुझे बेचना है">I Want to Sell</span></button>
+    </div>
+  </aside>
+
+  <!-- ============ HERO ============ -->
+  <header id="hero-section" class="relative h-[600px] flex items-center overflow-hidden pt-16">
+    <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline preload="auto" poster="static/img/hero-landscape.png">
+      <source src="https://videos.pexels.com/video-files/5488126/5488126-hd_1920_1080_25fps.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/55"></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full">
+      <div class="max-w-3xl text-white">
+        <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur border border-white/25 rounded-full px-4 py-1.5 text-xs sm:text-sm font-semibold mb-6">
+          <span class="w-2 h-2 rounded-full bg-gold-400 animate-pulse"></span>
+          <span data-hi="ग्रामीण संपत्ति विशेषज्ञ · स्थापना 2004">Rural Property Experts · Est. 2004</span>
+        </div>
+        <h1 class="hero-serif font-bold text-4xl sm:text-5xl md:text-6xl leading-tight" data-hi="अक्षरधाम एसोसिएट्स –<br><span class='text-gold-400'>राजस्थान में अपनी आदर्श ग्रामीण संपत्ति खोजें</span>">
+          Akshardham Associates –<br>
+          <span class="text-gold-400">Find Your Perfect Rural Property in Rajasthan</span>
+        </h1>
+        <p class="mt-6 text-lg md:text-xl text-white/90 max-w-2xl leading-relaxed" data-hi="ग्रामीण राजस्थान में कृषि भूमि, विरासत संपत्तियाँ और निवेश के अवसर — साफ़ कागज़ात के साथ।">
+          Agricultural lands, heritage properties, and investment opportunities across rural Rajasthan — with clean paperwork.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+          <button onclick="document.getElementById('browse-section').scrollIntoView({behavior:'smooth'})" class="btn-depth inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-600 to-brand-500 text-white font-bold text-lg px-8 py-4 rounded-xl shadow-xl shadow-black/30">
+            <span data-hi="प्रॉपर्टी देखें">View Properties</span><i class="fas fa-arrow-right"></i>
+          </button>
+          <button onclick="openModal('buy')" class="btn-depth inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 text-white font-bold text-lg px-8 py-4 rounded-xl border border-white/40 backdrop-blur">
+            <i class="fas fa-magnifying-glass-location"></i><span data-hi="अपनी ज़रूरत बताएं">Tell Us Your Need</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <a href="#features-section" class="absolute bottom-5 left-1/2 -translate-x-1/2 text-white/80 animate-bounce" aria-label="scroll down"><i class="fas fa-chevron-down text-xl"></i></a>
+  </header>
+
+  <!-- ============ FEATURE CARDS ============ -->
+  <section id="features-section" class="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl border border-brand-100 shadow-sm p-7 text-center">
+        <div class="w-16 h-16 mx-auto rounded-full bg-brand-50 grid place-items-center text-brand-500 text-2xl mb-4"><i class="fas fa-map-location-dot"></i></div>
+        <h3 class="hero-serif font-bold text-xl text-brand-900" data-hi="प्राइम लोकेशन">Prime Locations</h3>
+        <p class="text-stone-500 mt-2 text-sm leading-relaxed" data-hi="आने वाले ग्रामीण कॉरिडोर और हेरिटेज ज़ोन की ख़ास लिस्टिंग तक पहुँच।">Access to exclusive listings in upcoming rural corridors and heritage zones.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-brand-100 shadow-sm p-7 text-center">
+        <div class="w-16 h-16 mx-auto rounded-full bg-brand-50 grid place-items-center text-brand-500 text-2xl mb-4"><i class="fas fa-building-shield"></i></div>
+        <h3 class="hero-serif font-bold text-xl text-brand-900" data-hi="वेरिफाइड लिस्टिंग">Verified Listings</h3>
+        <p class="text-stone-500 mt-2 text-sm leading-relaxed" data-hi="हर प्रॉपर्टी हमारी ग्राउंड टीम द्वारा कानूनी रूप से verify की जाती है।">Every property is physically verified by our ground team for legal clarity.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-brand-100 shadow-sm p-7 text-center">
+        <div class="w-16 h-16 mx-auto rounded-full bg-brand-50 grid place-items-center text-brand-500 text-2xl mb-4"><i class="fas fa-arrow-trend-up"></i></div>
+        <h3 class="hero-serif font-bold text-xl text-brand-900" data-hi="उच्च विकास संभावना">High Growth Potential</h3>
+        <p class="text-stone-500 mt-2 text-sm leading-relaxed" data-hi="तेज़ी से विकसित हो रहे ग्रामीण इलाक़ों में रणनीतिक निवेश।">Strategic investments in rapidly developing rural infrastructure areas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS (animated counters) ============ -->
+  <section id="stats-section" class="relative -mt-10 z-20 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto glass-panel rounded-3xl shadow-2xl shadow-brand-900/10 grid grid-cols-2 md:grid-cols-4 divide-x divide-brand-100/60 overflow-hidden">
+      <div class="stat-cell"><div class="stat-num" data-count id="stat-plots">0</div><div class="stat-label" data-hi="लिस्टेड प्लॉट / प्रॉपर्टी">Plots / Properties Listed</div></div>
+      <div class="stat-cell"><div class="stat-num" data-count id="stat-buyers">0</div><div class="stat-label" data-hi="नेटवर्क में खरीदार">Buyers in Network</div></div>
+      <div class="stat-cell"><div class="stat-num" data-count id="stat-matches">0</div><div class="stat-label" data-hi="सफल मैच">Successful Matches</div></div>
+      <div class="stat-cell"><div class="stat-num" data-count id="stat-locs">0</div><div class="stat-label" data-hi="कवर किए क्षेत्र">Areas Covered</div></div>
+    </div>
+  </section>
+
+  <!-- ============ NEWS FEED (city-wise) ============ -->
+  <section id="news-section" class="py-16 bg-gradient-to-b from-[#FBF3E6] to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <span class="section-tag" data-hi="प्रॉपर्टी समाचार व जानकारी">Property News &amp; Insights</span>
+        <h2 class="hero-serif font-bold text-3xl sm:text-5xl text-brand-900 mt-3 leading-tight"><span id="news-city-title">Kota</span> <span data-hi="रियल-एस्टेट पल्स">Real-Estate Pulse</span></h2>
+        <p class="text-stone-500 mt-3" data-hi="अपना शहर चुनें — वहाँ की ख़बरें, रेट ट्रेंड और हमारे एक्सपर्ट की राय एक ही जगह।">Local news, rate trends &amp; our expert's take — all in one place. Pick your city.</p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
+        <div id="city-selector" class="inline-flex bg-white border border-brand-200 rounded-full p-1 gap-1 shadow-sm"></div>
+        <a id="wa-group-link" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-5 py-2.5 hover:bg-emerald-100 transition">
+          <i class="fab fa-whatsapp text-base"></i><span data-hi="WhatsApp ग्रुप जॉइन करें">Join <span id="wa-group-city">Kota</span> WhatsApp group</span>
+        </a>
+      </div>
+
+      <!-- curated expert insights (shown only when admin has added news) -->
+      <div id="news-curated-wrap" class="hidden mb-12">
+        <div class="flex items-center gap-2.5 mb-5">
+          <span class="w-1.5 h-6 bg-brand-500 rounded-full"></span>
+          <h3 class="font-head font-bold text-xl text-brand-900" data-hi="अक्षरधाम एक्सपर्ट इनसाइट्स">Akshardham Expert Insights</h3>
+        </div>
+        <div id="news-feed" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </div>
+
+      <!-- auto live news -->
+      <div id="news-auto-wrap" class="hidden">
+        <div class="flex items-center gap-2.5 mb-5">
+          <span class="w-1.5 h-6 bg-gold-500 rounded-full"></span>
+          <h3 class="font-head font-bold text-xl text-brand-900" data-hi="ताज़ा रियल-एस्टेट ख़बरें">Latest Real-Estate News</h3>
+          <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 rounded-full px-2 py-0.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>LIVE</span>
+        </div>
+        <div id="news-auto" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+      </div>
+
+      <div id="news-empty" class="hidden text-center py-14 text-stone-400">
+        <i class="fas fa-newspaper text-4xl text-brand-200"></i>
+        <p class="mt-3" data-hi="इस शहर की ख़बरें जल्द आएँगी। तब तक नीचे लिस्टिंग देखें 👇">News for this city coming soon. Meanwhile, browse the listings 👇</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+    <div class="text-center max-w-2xl mx-auto">
+      <span class="section-tag" data-hi="सिस्टम कैसे काम करता है">How the System Works</span>
+      <h2 class="font-head text-3xl sm:text-4xl font-bold text-brand-900 mt-3" data-hi="3 आसान कदम — <span class='text-brand-500'>कोई झंझट नहीं</span>">3 Simple Steps — <span class="text-brand-500">Zero Hassle</span></h2>
+    </div>
+    <div id="how-grid" class="grid md:grid-cols-3 gap-6 mt-12">
+      <div class="tilt-card step-card" data-tilt>
+        <div class="step-num">1</div>
+        <div class="w-14 h-14 rounded-2xl bg-brand-50 grid place-items-center text-brand-500 text-2xl mb-4"><i class="fas fa-clipboard-list"></i></div>
+        <h3 class="font-head font-bold text-lg text-brand-900" data-hi="अपनी ज़रूरत बताएं">Share Your Requirement</h3>
+        <p class="text-stone-500 mt-2 text-[15px] leading-relaxed" data-hi="बायर फॉर्म में अपनी लोकेशन, बजट और प्लॉट साइज़ भरें — बस 2 मिनट का काम। या हमें कॉल करें, हमारी टीम नोट कर लेगी।">Fill the buyer form with your location, budget and plot size — a 2-minute job. Or simply call us, our team will note it down.</p>
+      </div>
+      <div class="tilt-card step-card" data-tilt>
+        <div class="step-num">2</div>
+        <div class="w-14 h-14 rounded-2xl bg-brand-50 grid place-items-center text-brand-500 text-2xl mb-4"><i class="fas fa-link"></i></div>
+        <h3 class="font-head font-bold text-lg text-brand-900" data-hi="हम आपके लिए मैच करते हैं">We Match It For You</h3>
+        <p class="text-stone-500 mt-2 text-[15px] leading-relaxed" data-hi="हम आपकी ज़रूरत को वेरिफाइड स्टॉक और अपने रियल्टर व एजेंट नेटवर्क से मिलाते हैं — आपको सिर्फ़ काम की ऑप्शन दिखती हैं।">We match your requirement against verified stock plus our realtor &amp; agent network — you only see relevant options.</p>
+      </div>
+      <div class="tilt-card step-card" data-tilt>
+        <div class="step-num">3</div>
+        <div class="w-14 h-14 rounded-2xl bg-brand-50 grid place-items-center text-brand-500 text-2xl mb-4"><i class="fas fa-key"></i></div>
+        <h3 class="font-head font-bold text-lg text-brand-900" data-hi="विज़िट, कानूनी, रजिस्ट्री">Visit, Legal, Registry</h3>
+        <p class="text-stone-500 mt-2 text-[15px] leading-relaxed" data-hi="साइट विज़िट से रजिस्ट्री तक — हमारी टीम लोन और कानूनी सेवाएं भी संभालती है। डील पक्की, सब खुश।">From site visit to registry — our team handles loan and legal services too. Deal closed, everyone happy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BROWSE LISTINGS ============ -->
+  <section id="browse-section" class="py-16 bg-gradient-to-b from-white to-[#FBF3E6]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <span class="section-tag" data-hi="लाइव लिस्टिंग">Live Listings</span>
+          <h2 class="font-head text-3xl sm:text-4xl font-bold text-brand-900 mt-3" data-hi="देखें <span class='text-brand-500'>वेरिफाइड स्टॉक</span>">Browse <span class="text-brand-500">Verified Stock</span></h2>
+          <p class="text-stone-500 mt-2" data-hi="हमारी टीम द्वारा वेरिफाइड सक्रिय प्रॉपर्टी। कुछ पसंद आया? अपनी ज़रूरत बताएं, हम मैच कर देंगे।">Active properties verified by our team. Like something? Share your requirement and we'll match you.</p>
+        </div>
+        <div class="glass-panel rounded-2xl p-3 grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:items-center text-sm">
+          <select id="f-txn" class="filter-input w-full sm:w-auto" onchange="loadBrowse()"><option value="">Buy &amp; Rent</option><option value="sale">For Sale</option><option value="rent">For Rent</option></select>
+          <select id="f-location" class="filter-input w-full sm:w-auto"><option value="">All Locations</option></select>
+          <select id="f-type" class="filter-input w-full sm:w-auto"><option value="">All Types</option></select>
+          <select id="f-budget" class="filter-input w-full sm:w-auto">
+            <option value="">Any Budget</option>
+            <option value="50">Up to ₹50L</option>
+            <option value="75">Up to ₹75L</option>
+            <option value="100">Up to ₹1 Cr</option>
+            <option value="150">Up to ₹1.5 Cr</option>
+            <option value="250">Up to ₹2.5 Cr</option>
+          </select>
+          <select id="f-sort" class="filter-input w-full sm:w-auto" onchange="loadBrowse()">
+            <option value="newest">Newest first</option>
+            <option value="price_asc">Price: Low → High</option>
+            <option value="price_desc">Price: High → Low</option>
+            <option value="area_desc">Biggest area</option>
+          </select>
+          <input id="f-minarea" type="number" min="0" class="filter-input w-full sm:w-24" placeholder="Min sq ft" data-hi-ph="न्यूनतम वर्ग फ़ुट">
+          <input id="f-maxarea" type="number" min="0" class="filter-input w-full sm:w-24" placeholder="Max sq ft" data-hi-ph="अधिकतम वर्ग फ़ुट">
+          <button onclick="loadBrowse()" class="btn-depth inline-flex items-center justify-center bg-brand-600 text-white font-semibold px-4 py-2 rounded-xl text-sm w-full sm:w-auto"><i class="fas fa-filter mr-1"></i><span data-hi="फ़िल्टर">Filter</span></button>
+          <button onclick="openShortlist()" class="btn-depth inline-flex items-center justify-center bg-white text-brand-700 border border-brand-200 font-semibold px-4 py-2 rounded-xl text-sm relative w-full sm:w-auto"><i class="fas fa-heart text-red-500 mr-1"></i><span data-hi="शॉर्टलिस्ट">Shortlist</span><span id="shortlist-count" style="display:none" class="sl-count absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 grid place-items-center">0</span></button>
+        </div>
+      </div>
+      <div class="flex justify-end mt-6">
+        <div class="inline-flex bg-white border border-brand-200 rounded-xl p-1 text-sm">
+          <button id="view-grid-btn" onclick="setView(false)" class="view-toggle view-on px-4 py-1.5 rounded-lg font-semibold text-stone-600"><i class="fas fa-th-large mr-1"></i><span data-hi="ग्रिड">Grid</span></button>
+          <button id="view-map-btn" onclick="setView(true)" class="view-toggle px-4 py-1.5 rounded-lg font-semibold text-stone-600"><i class="fas fa-map-location-dot mr-1"></i><span data-hi="मैप">Map</span></button>
+        </div>
+      </div>
+      <div id="browse-map" style="display:none;height:480px;position:relative;z-index:0;isolation:isolate" class="rounded-2xl overflow-hidden mt-4 border border-brand-100"></div>
+      <div id="browse-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+        <div class="col-span-full text-center text-stone-400 py-10"><i class="fas fa-circle-notch fa-spin mr-2"></i>Loading listings…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRUST / USP ============ -->
+  <section id="trust-section" class="relative py-20 overflow-hidden">
+    <div class="trust-bg" data-parallax="0.08"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="section-tag" data-hi="अक्षरधाम एसोसिएट्स क्यों">Why Akshardham Associates</span>
+        <h2 class="font-head text-3xl sm:text-4xl font-bold text-brand-900 mt-3" data-hi="भरोसा — <span class='text-brand-500'>सिस्टम में बना हुआ</span>, सिर्फ़ बातों में नहीं">Trust Built Into <span class="text-brand-500">the System</span>, Not Just Words</h2>
+      </div>
+
+      <div class="grid lg:grid-cols-5 gap-8 mt-12 items-start">
+        <!-- Explainer video (YouTube Short — portrait frame) -->
+        <div class="lg:col-span-2 tilt-card overflow-hidden !p-3">
+          <div class="relative aspect-[9/16] max-w-[300px] mx-auto overflow-hidden rounded-2xl bg-brand-900">
+            <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/gPn6iBIDqR0"
+              title="How the Smart Buyer Network works" loading="lazy" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <!-- USP cards -->
+        <div class="lg:col-span-3 grid sm:grid-cols-2 gap-5">
+          <div class="usp-card" data-reveal><i class="fas fa-eye usp-icon text-brand-500"></i><h4 data-hi="100% पारदर्शी">100% Transparent</h4><p data-hi="कीमत, मालिक की जानकारी, रजिस्ट्री स्थिति — सब पहले से साफ़। कोई छुपा चार्ज नहीं।">Price, owner details, registry status — everything upfront. No hidden charges.</p></div>
+          <div class="usp-card" data-reveal><i class="fas fa-user-tie usp-icon text-gold-500"></i><h4 data-hi="प्रोफेशनल टीम">Professional Team</h4><p data-hi="प्रशिक्षित टेलीकॉलिंग + फील्ड टीम। हर follow-up रिकॉर्ड होता है — कोई लीड ठंडी नहीं पड़ती।">Trained telecalling + field team. Every follow-up is recorded — no lead goes cold.</p></div>
+          <div class="usp-card" data-reveal><i class="fas fa-network-wired usp-icon text-emerald-500"></i><h4 data-hi="व्यापक नेटवर्क">Wide Network</h4><p data-hi="सीधे विक्रेता + रियल्टर + एजेंट + रिटेलर — सब एक सिस्टम में जुड़े।">Direct sellers + realtors + agents + retailers — all connected in one system.</p></div>
+          <div class="usp-card" data-reveal><i class="fas fa-scale-balanced usp-icon text-purple-500"></i><h4 data-hi="कानूनी + लोन सेवाएं">Legal + Loan Services</h4><p data-hi="रजिस्ट्री, नक्शा, बैंक लोन — पूरी दस्तावेज़ी मदद एक जगह।">Registry, maps, bank loans — complete documentation support in one place.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT US ============ -->
+  <section id="about-section" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
+      <div>
+        <span class="section-tag" data-hi="हमारे बारे में">About Us</span>
+        <h2 class="font-head text-3xl sm:text-4xl font-bold text-brand-900 mt-3" data-hi="अक्षरधाम एसोसिएट्स के बारे में">About Akshardham Associates</h2>
+        <p class="text-stone-600 mt-4 leading-relaxed" data-hi="अक्षरधाम एसोसिएट्स एक भरोसेमंद प्रॉपर्टी सलाहकार है जो आमतौर पर <b>ग्रामीण प्लॉट्स</b> में डील करता है — साथ ही मकान, कोठी और खेती की ज़मीन में भी। हमारा मुख्य ऑफिस <b>कोटा</b> में है, और शाखा ऑफिस <b>झालावाड़</b> व <b>खानपुर</b> में हैं। हमारा <b>स्मार्ट बायर नेटवर्क</b> एक नई पहल है जो हमने अभी शुरू की है — खरीदार और विक्रेता को एक पारदर्शी सिस्टम में जोड़ने के लिए, जहाँ न फ़र्ज़ी लिस्टिंग हो, न छुपे चार्ज।">Akshardham Associates is a trusted property advisory that normally deals in <b>rural plots</b> — along with houses, kothis and farmland. We operate from our main office in <b>Kota</b>, with branch offices in <b>Jhalawar</b> and <b>Khanpur</b>. Our <b>Smart Buyer Network</b> is a new initiative we've just launched — to connect buyers and sellers in one transparent system, with no fake listings and no hidden charges.</p>
+        <p class="text-stone-600 mt-4 leading-relaxed" data-hi="हमारी प्रशिक्षित टीम हर लीड को follow-up के साथ संभालती है, और साइट विज़िट से लेकर बैंक लोन व रजिस्ट्री तक पूरी मदद देती है — ताकि आपकी प्रॉपर्टी डील आसान और सुरक्षित रहे।">Our trained team handles every lead with proper follow-up, and supports you end-to-end — from site visits to bank loans and registry — so your property deal stays easy and secure.</p>
+        <div class="grid grid-cols-3 gap-4 mt-8">
+          <div class="glass-panel rounded-2xl p-4 text-center"><div class="font-head font-extrabold text-2xl text-brand-600">100%</div><div class="text-xs text-stone-500 mt-1" data-hi="पारदर्शी डील">Transparent Deals</div></div>
+          <div class="glass-panel rounded-2xl p-4 text-center"><div class="font-head font-extrabold text-2xl text-brand-600">5+</div><div class="text-xs text-stone-500 mt-1" data-hi="क्षेत्र कवर">Areas Covered</div></div>
+          <div class="glass-panel rounded-2xl p-4 text-center"><div class="font-head font-extrabold text-2xl text-brand-600">A–Z</div><div class="text-xs text-stone-500 mt-1" data-hi="लोन + कानूनी मदद">Loan + Legal Help</div></div>
+        </div>
+      </div>
+      <div class="glass-panel-strong rounded-3xl p-8">
+        <h3 class="font-head font-bold text-xl text-brand-900" data-hi="हमसे संपर्क करें">Contact Us</h3>
+        <p class="text-stone-500 text-sm mt-1" data-hi="कॉल या WhatsApp करें — हमारी टीम आपकी मदद के लिए तैयार है।">Call or WhatsApp us — our team is ready to help you.</p>
+        <div class="mt-6 space-y-4">
+          <a href="tel:+910000000000" class="flex items-center gap-4 rounded-2xl bg-brand-50 border border-brand-100 p-4 hover:border-brand-300 transition">
+            <span class="w-11 h-11 rounded-xl bg-brand-500 text-white grid place-items-center text-lg"><i class="fas fa-phone"></i></span>
+            <span><span class="block text-xs text-stone-500" data-hi="फ़ोन पर कॉल करें">Call us on phone</span><span class="block font-head font-bold text-brand-900 text-lg">+90000 00000</span></span>
+          </a>
+          <a href="https://wa.me/910000000000" target="_blank" rel="noopener" class="flex items-center gap-4 rounded-2xl bg-emerald-50 border border-emerald-100 p-4 hover:border-emerald-300 transition">
+            <span class="w-11 h-11 rounded-xl bg-[#25D366] text-white grid place-items-center text-lg"><i class="fab fa-whatsapp"></i></span>
+            <span><span class="block text-xs text-stone-500" data-hi="WhatsApp पर मैसेज करें">Message on WhatsApp</span><span class="block font-head font-bold text-emerald-700 text-lg">+90000 00000</span></span>
+          </a>
+          <div class="flex items-center gap-4 rounded-2xl bg-stone-50 border border-stone-100 p-4">
+            <span class="w-11 h-11 rounded-xl bg-gold-400 text-brand-900 grid place-items-center text-lg"><i class="fas fa-clock"></i></span>
+            <span><span class="block text-xs text-stone-500" data-hi="काम के घंटे">Working hours</span><span class="block font-semibold text-brand-900" data-hi="सुबह 10 – शाम 7 (सोम–शनि)">10 AM – 7 PM (Mon–Sat)</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="testimonials" class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+    <div class="text-center">
+      <span class="section-tag" data-hi="लोग क्या कहते हैं">What People Say</span>
+      <h2 class="font-head text-3xl sm:text-4xl font-bold text-brand-900 mt-3" data-hi="खरीदारों और <span class='text-brand-500'>विक्रेताओं का भरोसा</span>">The Trust of <span class="text-brand-500">Buyers &amp; Sellers</span></h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6 mt-12">
+      <figure class="tilt-card" data-tilt data-reveal>
+        <div class="text-gold-400 text-sm mb-3"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <blockquote class="text-stone-600 text-[15px] leading-relaxed" data-hi="&ldquo;मैंने खेत किनारे प्लॉट की ज़रूरत बताई — 4 दिन में ही 3 वेरिफाइड ऑप्शन मिल गईं। सबसे अच्छी बात: उन्होंने मुझे सीधे मालिक से जोड़ा, कोई बिचौलिया नहीं।&rdquo;">"I shared my requirement for a farm-edge plot — within 4 days I got 3 verified options. Best part: they connected me directly with the owner, no middleman drama."</blockquote>
+        <figcaption class="mt-4 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-brand-100 grid place-items-center text-brand-600 font-bold">AP</span>
+          <div><div class="font-semibold text-brand-900 text-sm">Arun Pratap</div><div class="text-xs text-stone-400" data-hi="खरीदार — गाँव किनारे प्लॉट">Buyer — Village-side plot</div></div>
+        </figcaption>
+      </figure>
+      <figure class="tilt-card" data-tilt data-reveal>
+        <div class="text-gold-400 text-sm mb-3"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <blockquote class="text-stone-600 text-[15px] leading-relaxed" data-hi="&ldquo;मुझे अपना खेती वाला प्लॉट बेचना था। मैंने फ़ोटो भेजीं, टीम ने प्रोफेशनल लिस्टिंग बनाई, और 2 हफ़्ते में गंभीर खरीदार आ गए। कीमत भी सही मिली।&rdquo;">"I wanted to sell my farmland plot. I sent photos, the team built a professional listing, and serious buyers showed up within 2 weeks. Got a fair price too."</blockquote>
+        <figcaption class="mt-4 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-gold-100 grid place-items-center text-gold-500 font-bold">SV</span>
+          <div><div class="font-semibold text-brand-900 text-sm">Sunita Verma</div><div class="text-xs text-stone-400" data-hi="विक्रेता — खेती वाला प्लॉट">Seller — Farmland plot</div></div>
+        </figcaption>
+      </figure>
+      <figure class="tilt-card" data-tilt data-reveal>
+        <div class="text-gold-400 text-sm mb-3"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-stroke"></i></div>
+        <blockquote class="text-stone-600 text-[15px] leading-relaxed" data-hi="&ldquo;उन्होंने लोन और रजिस्ट्री में शुरू से आख़िर तक मदद की। पहली बार कोई प्रॉपर्टी डील इतनी आसान लगी। उनका follow-up सिस्टम सच में प्रोफेशनल है।&rdquo;">"They helped me end-to-end with the loan and registry. First time a property deal felt this smooth. Their follow-up system is truly professional."</blockquote>
+        <figcaption class="mt-4 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-emerald-100 grid place-items-center text-emerald-600 font-bold">MY</span>
+          <div><div class="font-semibold text-brand-900 text-sm">Mohd. Yunus</div><div class="text-xs text-stone-400" data-hi="खरीदार — ग्रामीण मकान">Buyer — Rural homestead</div></div>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ CTA STRIP ============ -->
+  <section class="px-4 sm:px-6 pb-20">
+    <div class="max-w-5xl mx-auto rounded-3xl bg-gradient-to-r from-brand-800 to-brand-600 p-10 text-center relative overflow-hidden shadow-2xl shadow-brand-900/30">
+      <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-gold-400/25 blur-3xl"></div>
+      <h2 class="font-head text-2xl sm:text-3xl font-bold text-white relative" data-hi="आज ही अपनी ज़रूरत या प्रॉपर्टी बताएं">Share Your Requirement or Property Today</h2>
+      <p class="text-brand-100 mt-2 relative" data-hi="बस 2 मिनट — बाक़ी काम स्मार्ट बायर नेटवर्क करेगा।">Takes 2 minutes — the Smart Buyer Network does the rest.</p>
+      <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4 relative">
+        <button onclick="openModal('buy')" class="btn-depth bg-white text-brand-800 font-bold px-7 py-3.5 rounded-2xl"><i class="fas fa-search mr-2"></i><span data-hi="बायर फॉर्म">Buyer Form</span></button>
+        <button onclick="location.href='sell.html'" class="btn-depth bg-gold-400 text-brand-900 font-bold px-7 py-3.5 rounded-2xl"><i class="fas fa-tags mr-2"></i><span data-hi="सेलर फॉर्म">Seller Form</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-brand-900 text-brand-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 grid md:grid-cols-3 gap-8">
+      <div>
+        <img src="static/logo.png" alt="Akshardham Associates" class="h-14 w-auto mb-4 brightness-0 invert opacity-90">
+        <p class="text-sm text-brand-100/70 leading-relaxed" data-hi="स्मार्ट बायर नेटवर्क — ज़रूरत से मैच तक, ग्रामीण व अर्ध-शहरी प्लॉट्स के लिए एक पारदर्शी प्रॉपर्टी सिस्टम।">Smart Buyer Network — from requirement to match, one transparent property ecosystem for rural &amp; semi-urban plots.</p>
+      </div>
+      <div>
+        <h5 class="font-head font-semibold text-white mb-3 text-sm uppercase tracking-wider" data-hi="त्वरित लिंक">Quick Links</h5>
+        <ul class="space-y-2 text-sm text-brand-100/70">
+          <li><a href="#browse-section" class="hover:text-gold-400 transition" data-hi="लाइव लिस्टिंग">Live Listings</a></li>
+          <li><a href="#about-section" class="hover:text-gold-400 transition" data-hi="हमारे बारे में">About Us</a></li>
+          <li><button onclick="openModal('buy')" class="hover:text-gold-400 transition" data-hi="बायर ज़रूरत फॉर्म">Buyer Requirement Form</button></li>
+          <li><button onclick="location.href='sell.html'" class="hover:text-gold-400 transition" data-hi="सेलर स्टॉक फॉर्म">Seller Stock Form</button></li>
+          <li><a href="login.html" class="hover:text-gold-400 transition" data-hi="टीम लॉगिन">Team Login</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-head font-semibold text-white mb-3 text-sm uppercase tracking-wider" data-hi="संपर्क">Contact</h5>
+        <ul class="space-y-2 text-sm text-brand-100/70">
+          <li><a href="tel:+910000000000" class="hover:text-gold-400 transition"><i class="fas fa-phone mr-2 text-gold-400"></i>+90000 00000</a></li>
+          <li><a href="https://wa.me/910000000000" target="_blank" rel="noopener" class="hover:text-gold-400 transition"><i class="fab fa-whatsapp mr-2 text-gold-400"></i>WhatsApp: 90000 00000</a></li>
+          <li><i class="fas fa-location-dot mr-2 text-gold-400"></i><span data-hi="ऑफिस: कोटा · झालावाड़ · खानपुर">Offices: Kota · Jhalawar · Khanpur</span></li>
+          <li><i class="fas fa-clock mr-2 text-gold-400"></i><span data-hi="सुबह 10 – शाम 7 (सोम–शनि)">10 AM – 7 PM (Mon–Sat)</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10 text-center text-xs text-brand-100/50 py-4">© 2026 Akshardham Associates — Smart Buyer Network. Phase 1 &amp; 4 Digital Platform.</div>
+  </footer>
+
+  <!-- ============ BUYER REQUIREMENT MODAL ============ -->
+  <div id="modal-buy" class="modal-backdrop hidden">
+    <div class="modal-panel glass-panel-strong max-w-lg w-full mx-4 max-h-[92vh] overflow-y-auto">
+      <div class="sticky top-0 glass-panel-strong px-6 py-4 flex items-center justify-between border-b border-brand-100 rounded-t-3xl z-10">
+        <h3 class="font-head font-bold text-lg text-brand-900"><i class="fas fa-magnifying-glass-location text-brand-500 mr-2"></i><span data-hi="बायर ज़रूरत फॉर्म">Buyer Requirement Form</span></h3>
+        <button onclick="closeModal('buy')" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 grid place-items-center transition"><i class="fas fa-xmark"></i></button>
+      </div>
+      <form id="form-buy" class="p-6 space-y-4" novalidate>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="field col-span-2 sm:col-span-1"><label data-hi="आपका नाम *">Your Name *</label><input name="name" required placeholder="Full name" data-hi-ph="पूरा नाम"></div>
+          <div class="field col-span-2 sm:col-span-1"><label data-hi="मोबाइल नंबर *">Mobile Number *</label><input name="mobile" required inputmode="numeric" maxlength="10" placeholder="10-digit number" data-hi-ph="10 अंकों का नंबर"></div>
+        </div>
+        <div class="field"><label data-hi="पसंदीदा लोकेशन * <span class='text-stone-400 font-normal'>(गाँव / कॉलोनी / रोड)</span>">Location Preference * <span class="text-stone-400 font-normal">(village / colony / road level)</span></label><input name="location" required placeholder="e.g. Village Rampur, near main road" data-hi-ph="जैसे गाँव रामपुर, मेन रोड के पास"></div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="field"><label data-hi="न्यूनतम बजट (₹ लाख)">Budget Min (₹ Lakh)</label><input name="budget_min" type="number" min="0" placeholder="e.g. 10" data-hi-ph="जैसे 10"></div>
+          <div class="field"><label data-hi="अधिकतम बजट (₹ लाख)">Budget Max (₹ Lakh)</label><input name="budget_max" type="number" min="0" placeholder="e.g. 25" data-hi-ph="जैसे 25"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="field"><label data-hi="प्रॉपर्टी प्रकार *">Property Type *</label>
+            <select name="type" required><option value="">— Select —</option><option>Plot</option><option>Makan</option><option>Farm House</option><option>Commercial Plot</option></select>
+          </div>
+          <div class="field"><label data-hi="समय-सीमा">Timeline</label>
+            <select name="timeline"><option value="">— Select —</option><option>Immediate</option><option>Within 1 month</option><option>Within 3 months</option><option>Within 6 months</option><option>Within a year</option></select>
+          </div>
+        </div>
+        <div class="field"><label data-hi="अतिरिक्त जानकारी <span class='text-stone-400 font-normal'>(facing, रोड चौड़ाई, लोन चाहिए…)</span>">Extra Notes <span class="text-stone-400 font-normal">(facing, road width, need a loan…)</span></label><textarea name="notes" rows="2" placeholder="Any specific requirement?" data-hi-ph="कोई ख़ास ज़रूरत?"></textarea></div>
+        <button type="submit" class="btn-depth w-full bg-gradient-to-r from-brand-600 to-brand-500 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-brand-500/30">
+          <span class="submit-label"><i class="fas fa-paper-plane mr-2"></i><span data-hi="ज़रूरत भेजें">Submit Requirement</span></span>
+        </button>
+        <p id="buy-msg" class="hidden text-center text-sm font-medium rounded-xl p-3"></p>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ============ MOBILE BOTTOM NAV (phones only) ============ -->
+  <div id="bn-backdrop" class="bn-backdrop" onclick="closePostSheet()"></div>
+  <div id="bn-sheet" class="bn-sheet">
+    <button onclick="closePostSheet();location.href='sell.html'">
+      <span class="ic" style="background:linear-gradient(135deg,#F7B32B,#F09A0A)"><i class="fas fa-tags"></i></span>
+      <span><span class="block" data-hi="प्रॉपर्टी बेचें">Sell a Property</span><span class="block text-xs font-normal text-stone-400" data-hi="अपनी ज़मीन/मकान लिस्ट करें">List your plot / house</span></span>
+    </button>
+    <button onclick="closePostSheet();openModal('buy')">
+      <span class="ic" style="background:linear-gradient(135deg,#E86B1C,#B44E0E)"><i class="fas fa-user-plus"></i></span>
+      <span><span class="block" data-hi="खरीदार रजिस्टर करें">Register as Buyer</span><span class="block text-xs font-normal text-stone-400" data-hi="अपनी ज़रूरत बताएं">Tell us your requirement</span></span>
+    </button>
+  </div>
+  <nav id="bottom-nav" aria-label="Mobile navigation">
+    <button class="bn-item bn-active" id="bn-home" onclick="bnGoHome()"><i class="fas fa-house"></i><span data-hi="होम">Home</span></button>
+    <button class="bn-item" id="bn-props" onclick="bnGoProps()"><i class="fas fa-magnifying-glass"></i><span data-hi="प्रॉपर्टी">Properties</span></button>
+    <div class="bn-fab"><button id="bn-fab-btn" class="bn-fab-btn" aria-label="Post" onclick="togglePostSheet()"><i class="fas fa-plus"></i></button></div>
+    <button class="bn-item" onclick="openShortlist()"><i class="fas fa-heart"></i><span class="bn-badge sl-count" style="display:none">0</span><span data-hi="पसंद">Shortlist</span></button>
+    <a class="bn-item" href="tel:9000000000"><i class="fas fa-phone"></i><span data-hi="कॉल">Call</span></a>
+  </nav>
+  <script>
+    function togglePostSheet(){
+      const s=document.getElementById('bn-sheet'),b=document.getElementById('bn-backdrop'),f=document.getElementById('bn-fab-btn')
+      const open=s.classList.toggle('open'); b.classList.toggle('open',open); f.classList.toggle('open',open)
+    }
+    function closePostSheet(){
+      document.getElementById('bn-sheet').classList.remove('open')
+      document.getElementById('bn-backdrop').classList.remove('open')
+      document.getElementById('bn-fab-btn').classList.remove('open')
+    }
+    function bnGoHome(){ closePostSheet(); window.scrollTo({top:0,behavior:'smooth'}) }
+    function bnGoProps(){ closePostSheet(); const el=document.getElementById('browse-section'); if(el) el.scrollIntoView({behavior:'smooth'}) }
+    // active-tab highlight on scroll (Home vs Properties)
+    function bnSyncActive(){
+      const br=document.getElementById('browse-section')
+      const r = br && br.getBoundingClientRect()
+      const onProps = !!(r && r.top < innerHeight*0.45 && r.bottom > 90)
+      document.getElementById('bn-props').classList.toggle('bn-active', onProps)
+      document.getElementById('bn-home').classList.toggle('bn-active', !onProps)
+    }
+    addEventListener('scroll', bnSyncActive, {passive:true})
+  </script>
+
+  <!-- ============ LANGUAGE TOGGLE (EN / हिंदी) ============ -->
+  <script>
+    function applyLang(lang) {
+      document.querySelectorAll('[data-hi]').forEach(el => {
+        if (el.dataset.en === undefined) el.dataset.en = el.innerHTML
+        el.innerHTML = (lang === 'hi') ? el.dataset.hi : el.dataset.en
+      })
+      document.querySelectorAll('[data-hi-ph]').forEach(el => {
+        if (el.dataset.enPh === undefined) el.dataset.enPh = el.getAttribute('placeholder') || ''
+        el.setAttribute('placeholder', (lang === 'hi') ? el.dataset.hiPh : el.dataset.enPh)
+      })
+      document.documentElement.lang = lang
+      const lbl = document.getElementById('lang-label')
+      if (lbl) lbl.textContent = (lang === 'hi') ? 'EN' : 'हिं'
+      try { localStorage.setItem('lang', lang) } catch (e) {}
+    }
+    function toggleLang() {
+      const cur = (document.documentElement.lang === 'hi') ? 'hi' : 'en'
+      applyLang(cur === 'hi' ? 'en' : 'hi')
+    }
+    function toggleMenu() {
+      const drawer = document.getElementById('menu-drawer'), ov = document.getElementById('menu-overlay'), btn = document.getElementById('menu-toggle')
+      const open = drawer.classList.contains('translate-x-full')
+      drawer.classList.toggle('translate-x-full', !open)
+      ov.classList.toggle('opacity-0', !open); ov.classList.toggle('pointer-events-none', !open)
+      btn && btn.setAttribute('aria-expanded', String(open))
+      document.body.style.overflow = open ? 'hidden' : ''
+    }
+    applyLang((() => { try { return localStorage.getItem('lang') } catch (e) { return null } })() || 'en')
+  </script>
+
+  <script src="static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="demo/mock.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook post to listing — Akshardham Associates</title>
+  <meta name="description" content="Upload a screenshot of a Facebook post: AI reads the details, then the team approves the listing.">
+  <link rel="icon" type="image/png" href="static/favicon.png">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="static/vendor/fa/css/all.min.css" rel="stylesheet">
+  <link href="static/vendor/cropper.min.css" rel="stylesheet">
+  <script src="static/vendor/cropper.min.js"></script>
+  <style>
+    .field label{display:block;font-size:13px;font-weight:600;color:#57534e;margin-bottom:4px}
+    .field input,.field select,.field textarea{width:100%;border:1px solid #e7e0d5;border-radius:12px;padding:10px 12px;font-size:15px;background:#fff}
+    .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#F0973F;box-shadow:0 0 0 3px #FEF5EC}
+    .ai-filled{border-color:#10b981 !important;background:#f0fdf4 !important}
+  </style>
+  <link rel="stylesheet" href="static/vendor/tw.css">
+</head>
+<body class="font-body bg-[#FBF7F0] text-stone-800 min-h-screen">
+  <header class="bg-white/90 backdrop-blur border-b border-brand-100 sticky top-0 z-10">
+    <div class="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <img src="static/logo-icon.png" class="w-9 h-9 object-contain" alt="">
+        <span class="leading-tight">
+          <span class="block font-head font-extrabold text-sm text-brand-900">Akshardham Associates</span>
+          <span class="block text-[10px] tracking-[0.16em] uppercase text-brand-500 font-semibold">Facebook → Listing</span>
+        </span>
+      </div>
+      <div class="flex items-center gap-3 text-sm">
+        <a href="dashboard.html" class="text-brand-700 font-semibold" title="Dashboard"><i class="fas fa-gauge-high"></i></a>
+        <button onclick="logout()" class="text-stone-400 hover:text-red-500" title="Logout"><i class="fas fa-right-from-bracket"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-2xl mx-auto px-4 py-6">
+    <div class="text-center mb-5">
+      <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white grid place-items-center text-2xl shadow-lg shadow-brand-500/30"><i class="fab fa-facebook"></i></div>
+      <h1 class="font-head text-2xl font-bold text-brand-900 mt-3">Turn a Facebook post into a listing</h1>
+      <p class="text-stone-500 mt-1 text-sm">Upload a <b>screenshot</b> of the post → AI fills in the details → check and submit. The team approves it before it goes on the website.</p>
+    </div>
+
+    <!-- Step 1: screenshot -->
+    <div class="bg-white rounded-3xl shadow-sm border border-brand-100 p-5 mb-5">
+      <h2 class="font-head font-bold text-brand-900 text-sm mb-3"><span class="inline-grid place-items-center w-6 h-6 rounded-full bg-brand-100 text-brand-700 text-xs font-bold mr-1.5">1</span>Choose a screenshot of the whole post → crop the photo</h2>
+      <input id="img" type="file" accept="image/*" class="hidden">
+      <label id="pick-zone" for="img" class="block border-2 border-dashed border-brand-200 rounded-2xl p-6 text-center cursor-pointer hover:bg-brand-50 transition">
+        <i class="fas fa-cloud-arrow-up text-3xl text-brand-300"></i>
+        <div class="text-sm text-stone-500 mt-2">Tap to choose a screenshot<br>(from the gallery or camera)</div>
+      </label>
+      <div id="crop-zone" class="hidden">
+        <p class="text-xs text-brand-700 bg-brand-50 border border-brand-100 rounded-xl p-2.5 mb-2"><i class="fas fa-crop-simple mr-1"></i>Keep only <b>the property photo</b> inside the box: it becomes the listing <b>photo</b>. 👉 The details are read by <b>AI from the whole post</b>.</p>
+        <div class="rounded-xl overflow-hidden bg-stone-100" style="max-height:340px"><img id="crop-img" style="max-width:100%;display:block"></div>
+        <button type="button" onclick="resetPick()" class="mt-2 text-sm text-stone-500 hover:text-brand-600 font-semibold"><i class="fas fa-rotate-left mr-1"></i>Choose another image</button>
+      </div>
+      <button id="extract-btn" onclick="extract()" disabled
+        class="mt-4 w-full bg-gradient-to-r from-brand-600 to-brand-500 text-white font-bold py-3.5 rounded-2xl disabled:opacity-40 disabled:cursor-not-allowed">
+        <i class="fas fa-wand-magic-sparkles mr-2"></i><span id="extract-label">Read details with AI</span>
+      </button>
+      <p id="extract-msg" class="hidden text-center text-sm font-medium rounded-xl p-2.5 mt-3"></p>
+    </div>
+
+    <!-- Step 2: review form -->
+    <form id="form" class="bg-white rounded-3xl shadow-sm border border-brand-100 p-5 space-y-4">
+      <h2 class="font-head font-bold text-brand-900 text-sm"><span class="inline-grid place-items-center w-6 h-6 rounded-full bg-brand-100 text-brand-700 text-xs font-bold mr-1.5">2</span>Check and correct the details</h2>
+      <p class="text-xs text-amber-600 bg-amber-50 border border-amber-100 rounded-xl p-2.5"><i class="fas fa-circle-info mr-1"></i>Fields filled by AI show in <b>green</b>. Correct anything wrong and fill in any empty field.</p>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="field col-span-2 sm:col-span-1"><label>Name (seller / agent)</label><input name="seller_name" placeholder="e.g. Ramesh Sharma"></div>
+        <div class="field col-span-2 sm:col-span-1"><label>Mobile *</label><input name="mobile" inputmode="numeric" maxlength="10" placeholder="10-digit number"></div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="field"><label>Location *</label><input name="location" placeholder="e.g. Kota"></div>
+        <div class="field"><label>Village / colony</label><input name="colony" placeholder="e.g. Rampur Colony"></div>
+      </div>
+      <div class="field"><label>Sale / rent *</label>
+        <select name="txn" id="cap-txn" required onchange="capToggleRent()"><option value="sale">Sale</option><option value="rent">Rent</option></select>
+      </div>
+      <div class="grid grid-cols-3 gap-3">
+        <div class="field"><label>Size (sq ft)</label><input name="size_sqyd" type="number" min="0" placeholder="1200"></div>
+        <div class="field" id="cap-sale-price"><label>Asking price (₹ lakh)</label><input name="rate_lakh" type="number" min="0" step="0.5" placeholder="20"></div>
+        <div class="field hidden" id="cap-rent-price"><label>Monthly rent (₹)</label><input name="rent_monthly" type="number" min="0" placeholder="12000"></div>
+        <div class="field"><label>Type *</label>
+          <select name="type" required><option value="">—</option><option>Plot</option><option>Makan</option><option>Farm House</option><option>Commercial Plot</option></select>
+        </div>
+      </div>
+      <div class="field"><label>Details</label><textarea name="description" rows="3" placeholder="Facing, road, water and power, bigha, rate per gaj…"></textarea></div>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+      <button type="submit" class="w-full bg-gradient-to-r from-gold-500 to-brand-500 text-white font-bold py-3.5 rounded-2xl">
+        <span class="submit-label"><i class="fas fa-paper-plane mr-2"></i>Send to pending</span>
+      </button>
+      <p id="save-msg" class="hidden text-center text-sm font-medium rounded-xl p-3"></p>
+    </form>
+  </main>
+
+  <script>
+    const $ = s => document.querySelector(s)
+    function capToggleRent(){ const rent = document.getElementById('cap-txn').value === 'rent'; document.getElementById('cap-rent-price').classList.toggle('hidden', !rent); document.getElementById('cap-sale-price').classList.toggle('hidden', rent); }
+    // login gate
+    ;(async () => {
+      try { const r = await fetch('/api/auth/me'); const d = await r.json(); if (!d.user) location.href = 'login.html' }
+      catch { location.href = 'login.html' }
+    })()
+    async function logout(){ try{ await fetch('/api/auth/logout',{method:'POST'}) }catch{}; location.href='login.html' }
+
+    const imgInput = $('#img'), extractBtn = $('#extract-btn')
+    let cropper = null
+    imgInput.addEventListener('change', () => {
+      const f = imgInput.files[0]
+      if (!f) return
+      const cimg = $('#crop-img'); cimg.src = URL.createObjectURL(f)
+      $('#pick-zone').classList.add('hidden'); $('#crop-zone').classList.remove('hidden')
+      if (cropper) { cropper.destroy(); cropper = null }
+      try { cropper = new Cropper(cimg, { viewMode: 1, autoCropArea: 0.9, background: false, zoomable: false, rotatable: false }) } catch {}
+      extractBtn.disabled = false
+    })
+    function resetPick(){
+      if (cropper) { cropper.destroy(); cropper = null }
+      imgInput.value = ''
+      $('#crop-zone').classList.add('hidden'); $('#pick-zone').classList.remove('hidden')
+      extractBtn.disabled = true
+    }
+    // The cropped region → used ONLY as the listing photo. (AI reads the full image separately.)
+    async function getCroppedBlob(){
+      if (cropper) {
+        const canvas = cropper.getCroppedCanvas({ maxWidth: 1600, maxHeight: 1600, imageSmoothingQuality: 'high' })
+        if (canvas) { const b = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.85)); if (b && b.size) return b }
+      }
+      return compressImage(imgInput.files[0])
+    }
+
+    function showMsg(el, ok, text){ el.className = 'text-center text-sm font-medium rounded-xl p-2.5 mt-3 ' + (ok?'bg-emerald-50 text-emerald-700 border border-emerald-200':'bg-red-50 text-red-600 border border-red-200'); el.textContent = text; el.classList.remove('hidden') }
+
+    // Shrink the screenshot in the browser before upload: faster, cheaper, and keeps the edge worker well under its limits.
+    async function compressImage(file, maxDim = 1400, quality = 0.85){
+      try {
+        let w, h, src
+        if (self.createImageBitmap) { const bmp = await createImageBitmap(file); w = bmp.width; h = bmp.height; src = bmp }
+        else { const img = await new Promise((res, rej)=>{ const i = new Image(); i.onload=()=>res(i); i.onerror=rej; i.src = URL.createObjectURL(file) }); w = img.naturalWidth; h = img.naturalHeight; src = img }
+        const scale = Math.min(1, maxDim / Math.max(w, h))
+        const cw = Math.max(1, Math.round(w*scale)), ch = Math.max(1, Math.round(h*scale))
+        const cv = document.createElement('canvas'); cv.width = cw; cv.height = ch
+        cv.getContext('2d').drawImage(src, 0, 0, cw, ch)
+        const blob = await new Promise(r => cv.toBlob(r, 'image/jpeg', quality))
+        return (blob && blob.size) ? blob : file
+      } catch { return file }
+    }
+
+    async function extract(){
+      if (!imgInput.files[0]) return
+      const msg = $('#extract-msg'), lbl = $('#extract-label')
+      extractBtn.disabled = true; lbl.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1"></i>AI is reading…'; msg.classList.add('hidden')
+      try {
+        const blob = await compressImage(imgInput.files[0])   // FULL post → AI reads ALL details (crop is only for the photo)
+        const fd = new FormData(); fd.set('image', blob, 'post.jpg')
+        const res = await fetch('/api/extract', { method:'POST', body: fd })
+        const data = await res.json().catch(()=>({ error: 'The server sent an unexpected response. Please try again shortly.' }))
+        if (!res.ok) throw new Error((data.error || 'AI fail') + (data.detail ? ' — ' + data.detail : ''))
+        const F = data.fields || {}
+        let filled = 0
+        for (const k of ['seller_name','mobile','location','colony','size_sqyd','rate_lakh','type','description']) {
+          const el = $(`#form [name="${k}"]`); if (!el) continue
+          if (F[k]) { el.value = F[k]; el.classList.add('ai-filled'); filled++ }
+        }
+        showMsg(msg, true, filled ? `✓ AI filled ${filled} fields. Check them below.` : 'Nothing clear in the post. Fill in the form below by hand.')
+        $('#form').scrollIntoView({ behavior:'smooth' })
+      } catch (e) {
+        showMsg(msg, false, e.message || 'Something went wrong. Please try again.')
+      } finally {
+        extractBtn.disabled = false; lbl.innerHTML = '<i class="fas fa-wand-magic-sparkles mr-2"></i>Run AI again'
+      }
+    }
+
+    $('#form').addEventListener('submit', async (e) => {
+      e.preventDefault()
+      const form = e.target, msg = $('#save-msg'), btn = form.querySelector('button[type=submit]')
+      const fd = new FormData(form)
+      fd.set('is_public', '1')
+      if (!/^\d{10}$/.test(String(fd.get('mobile')||''))) { showSave(false,'The mobile number must be 10 digits'); return }
+      if (!fd.get('location') || !fd.get('type')) { showSave(false,'Location and type are required'); return }
+      if (!fd.get('seller_name')) fd.set('seller_name', 'Facebook post')
+      // Attach the CROPPED region as the listing's photo (saved to R2 if enabled). AI already read the full post.
+      if (imgInput.files[0]) { try { const img = await getCroppedBlob(); if (img && img.size) fd.set('front', img, 'property.jpg') } catch {} }
+      btn.disabled = true; btn.querySelector('.submit-label').innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i>Sending…'
+      try {
+        const res = await fetch('/api/stock', { method:'POST', body: fd })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || 'Save fail')
+        showSave(true, `✓ ${data.message||'Sent!'} (Ref #STK-${data.id}). Activate it from Pending in the dashboard.`)
+        form.reset()
+        document.querySelectorAll('.ai-filled').forEach(el => el.classList.remove('ai-filled'))
+        resetPick()
+        window.scrollTo({top:0,behavior:'smooth'})
+      } catch (err) {
+        showSave(false, err.message)
+      } finally {
+        btn.disabled = false; btn.querySelector('.submit-label').innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Send to pending'
+      }
+    })
+    function showSave(ok, text){ const m=$('#save-msg'); m.className='text-center text-sm font-medium rounded-xl p-3 '+(ok?'bg-emerald-50 text-emerald-700 border border-emerald-200':'bg-red-50 text-red-600 border border-red-200'); m.textContent=text; m.classList.remove('hidden') }
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="demo/mock.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Login — Akshardham Associates</title>
+  <link rel="icon" type="image/png" href="static/favicon.png">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="static/vendor/fa/css/all.min.css" rel="stylesheet">
+  <link href="static/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="static/vendor/tw.css">
+</head>
+<body class="font-body min-h-screen hero-bg flex items-center justify-center px-4">
+  <div class="hero-blob blob-1"></div>
+  <div class="hero-blob blob-2"></div>
+
+  <div class="glass-panel-strong w-full max-w-md p-8 relative z-10" style="animation: modalUp .4s cubic-bezier(.34,1.4,.64,1)">
+    <a href="/" class="absolute top-4 left-4 text-xs text-stone-400 hover:text-brand-600 transition"><i class="fas fa-arrow-left mr-1"></i>Website</a>
+    <div class="text-center mb-7 mt-2">
+      <img src="static/logo.png" alt="Akshardham Associates" class="h-16 w-auto mx-auto mb-3">
+      <h1 class="font-head font-extrabold text-2xl text-brand-900">Team Login</h1>
+      <p class="text-sm text-stone-500 mt-1">Telecaller &amp; Admin panel — Smart Buyer Network</p>
+    </div>
+
+    <form id="login-form" class="space-y-4">
+      <div class="field"><label>Registered Mobile</label><input name="phone" required inputmode="numeric" maxlength="10" placeholder="10-digit number" autocomplete="username"></div>
+      <div class="field"><label>Password</label><input name="password" type="password" required placeholder="••••••••" autocomplete="current-password"></div>
+      <button type="submit" class="btn-depth w-full bg-gradient-to-r from-brand-600 to-brand-500 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-brand-500/30">
+        <span class="submit-label"><i class="fas fa-right-to-bracket mr-2"></i>Login</span>
+      </button>
+      <p id="login-msg" class="hidden text-center text-sm font-medium rounded-xl p-3 bg-red-50 text-red-600 border border-red-200"></p>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('login-form')
+    form.addEventListener('submit', async e => {
+      e.preventDefault()
+      const btn = form.querySelector('button[type=submit]')
+      const body = Object.fromEntries(new FormData(form).entries())
+      btn.disabled = true
+      btn.querySelector('.submit-label').innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i>Checking…'
+      try {
+        const res = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || 'Login failed')
+        location.href = data.user.role === 'admin' ? 'dashboard.html' : 'telecaller.html'
+      } catch (err) {
+        const msg = document.getElementById('login-msg')
+        msg.textContent = err.message
+        msg.classList.remove('hidden')
+        btn.disabled = false
+        btn.querySelector('.submit-label').innerHTML = '<i class="fas fa-right-to-bracket mr-2"></i>Login'
+      }
+    })
+    // already logged in? go straight to panel
+    fetch('/api/auth/me').then(r => r.json()).then(d => {
+      if (d.user) location.href = d.user.role === 'admin' ? 'dashboard.html' : 'telecaller.html'
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <script src="demo/mock.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List your property — Akshardham Associates</title>
+  <meta name="description" content="Add your property details. Our team verifies them and activates the listing.">
+  <link rel="icon" type="image/png" href="static/favicon.png">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="static/vendor/fa/css/all.min.css" rel="stylesheet">
+  <style>
+    .field label{display:block;font-size:13px;font-weight:600;color:#57534e;margin-bottom:4px}
+    .field input,.field select,.field textarea{width:100%;border:1px solid #e7e0d5;border-radius:12px;padding:10px 12px;font-size:15px;background:#fff}
+    .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#F0973F;box-shadow:0 0 0 3px #FEF5EC}
+    .photo-slot{display:flex;align-items:center;gap:10px;border:1px dashed #e7cfae;border-radius:12px;padding:10px 12px;cursor:pointer;background:#fff}
+    .photo-slot.has-file{border-color:#10b981;background:#f0fdf4}
+    .photo-badge{width:24px;height:24px;border-radius:50%;background:#FEF5EC;color:#B44E0E;font-weight:700;display:grid;place-items:center;font-size:13px;flex:0 0 auto}
+    .photo-slot input[type=file]{display:none}
+  </style>
+  <link rel="stylesheet" href="static/vendor/tw.css">
+</head>
+<body class="font-body bg-[#FBF7F0] text-stone-800 min-h-screen">
+  <header class="bg-white/90 backdrop-blur border-b border-brand-100">
+    <div class="max-w-2xl mx-auto px-4 h-16 flex items-center justify-center gap-2.5">
+      <img src="static/logo-icon.png" class="w-9 h-9 object-contain" alt="">
+      <span class="leading-tight text-center">
+        <span class="block font-head font-extrabold text-sm text-brand-900">Akshardham Associates</span>
+        <span class="block text-[10px] tracking-[0.16em] uppercase text-brand-500 font-semibold">List Your Property</span>
+      </span>
+    </div>
+  </header>
+
+  <main class="max-w-2xl mx-auto px-4 py-8">
+    <div class="text-center mb-6">
+      <div class="w-14 h-14 mx-auto rounded-2xl bg-brand-500 text-white grid place-items-center text-2xl shadow-lg shadow-brand-500/30"><i class="fas fa-house-chimney-medical"></i></div>
+      <h1 class="font-head text-2xl sm:text-3xl font-bold text-brand-900 mt-4">List your property</h1>
+      <p class="text-stone-500 mt-1 text-sm">Colonizer, agent or owner: add your property details. It uploads as soon as you submit, and appears on the website once our team approves it.</p>
+    </div>
+
+    <form id="form-sell" class="bg-white rounded-3xl shadow-sm border border-brand-100 p-5 sm:p-7 space-y-5" novalidate>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+      <input type="hidden" name="property_kind" id="property_kind" value="plot">
+      <div class="grid grid-cols-2 gap-2 p-1 bg-brand-50 rounded-2xl">
+        <button type="button" id="tab-plot" onclick="setSellTab('plot')" class="py-2.5 rounded-xl font-semibold text-sm transition"><i class="fas fa-building mr-1.5"></i>Plot / House</button>
+        <button type="button" id="tab-zameen" onclick="setSellTab('zameen')" class="py-2.5 rounded-xl font-semibold text-sm transition"><i class="fas fa-mountain-sun mr-1.5"></i>Farm land</button>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="field"><label>Your name *</label><input name="seller_name" required placeholder="Full name"></div>
+        <div class="field"><label>Mobile *</label><input name="mobile" required inputmode="numeric" maxlength="10" placeholder="10-digit number"></div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="field"><label>Town / district *</label><input name="location" required placeholder="e.g. Kota, Jhalawar"></div>
+        <div class="field"><label>Village / colony</label><input name="colony" placeholder="e.g. Rampur village"></div>
+      </div>
+      <div class="field"><label>For sale or rent? *</label>
+        <select name="txn" id="sell-txn" required onchange="toggleRent()"><option value="sale">For sale</option><option value="rent">For rent</option></select>
+      </div>
+      <!-- Price (both tabs) -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="field" id="sell-sale-price"><label>Asking price (₹ lakh)</label><input name="rate_lakh" type="number" min="0" step="0.5" placeholder="e.g. 18"></div>
+        <div class="field hidden" id="sell-rent-price"><label>Monthly rent (₹)</label><input name="rent_monthly" type="number" min="0" placeholder="e.g. 12000"></div>
+      </div>
+      <!-- PLOT / MAKAN fields -->
+      <div id="plot-fields">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="field"><label>Size (sq ft)</label><input name="size_sqyd" type="number" min="0" placeholder="e.g. 1200"></div>
+          <div class="field"><label>Type</label>
+            <select name="type"><option>Plot</option><option>Makan</option><option>Farm House</option><option>Commercial Plot</option></select>
+          </div>
+        </div>
+      </div>
+      <!-- ZAMEEN / LAND fields -->
+      <div id="zameen-fields" class="hidden">
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div class="field"><label>Khasra no.</label><input name="khasra_no" placeholder="e.g. 123/4"></div>
+          <div class="field"><label>Khata no.</label><input name="khata_no" placeholder="e.g. 56"></div>
+          <div class="field"><label>Land area (rakba)</label><input name="rakba" placeholder="e.g. 2 bigha 10 biswa"></div>
+        </div>
+        <p class="text-xs text-stone-400 mt-2"><i class="fas fa-circle-info mr-1"></i>Enter the village name in "Village / colony" above.</p>
+      </div>
+      <div class="field"><label>Details</label><textarea name="description" rows="2" placeholder="Facing, road, water and power, boundary wall…"></textarea></div>
+
+      <div class="rounded-2xl bg-stone-50 border border-stone-200 p-4 grid sm:grid-cols-2 gap-4">
+        <p class="sm:col-span-2 text-xs font-semibold text-stone-500 -mb-1"><i class="fas fa-user-tie mr-1.5 text-brand-500"></i>Office use (optional)</p>
+        <div class="field"><label>Executive name</label><input name="executive_name" placeholder="Name of the person filling the form"></div>
+        <div class="field"><label>Convert Status</label>
+          <select name="convert_status" id="sell-convert" onchange="sellConvertChanged()"><option value="pending">Pending</option><option value="convert">Convert</option><option value="non_convert">Non-convert</option></select>
+        </div>
+        <div class="field hidden sm:col-span-2" id="sell-convert-date-wrap"><label>Convert / non-convert date</label><input name="convert_date" type="date"></div>
+      </div>
+
+      <div class="rounded-2xl bg-brand-50 border border-brand-100 p-4">
+        <h4 class="font-semibold text-brand-900 text-sm mb-1"><i class="fas fa-camera mr-2 text-brand-500"></i>Add photos (in this order)</h4>
+        <p class="text-xs text-stone-500 mb-3">Photos in this order make a better listing and video.</p>
+        <div class="space-y-2.5">
+          <label class="photo-slot"><span class="photo-badge">1</span><span class="flex-1 text-sm"><b>Front</b>: from the gate or road</span><input type="file" name="front" accept="image/*" class="photo-input"><i class="fas fa-cloud-arrow-up text-brand-400"></i></label>
+          <label class="photo-slot"><span class="photo-badge">2</span><span class="flex-1 text-sm"><b>Entrance</b></span><input type="file" name="entrance" accept="image/*" class="photo-input"><i class="fas fa-cloud-arrow-up text-brand-400"></i></label>
+          <label class="photo-slot"><span class="photo-badge">3</span><span class="flex-1 text-sm"><b>Interior</b></span><input type="file" name="room" accept="image/*" class="photo-input"><i class="fas fa-cloud-arrow-up text-brand-400"></i></label>
+          <label class="photo-slot"><span class="photo-badge">4</span><span class="flex-1 text-sm"><b>Map / layout</b> (optional)</span><input type="file" name="extra1" accept="image/*" class="photo-input"><i class="fas fa-cloud-arrow-up text-brand-400"></i></label>
+          <label class="photo-slot"><span class="photo-badge">5</span><span class="flex-1 text-sm"><b>Extra</b> (optional)</span><input type="file" name="extra2" accept="image/*" class="photo-input"><i class="fas fa-cloud-arrow-up text-brand-400"></i></label>
+        </div>
+        <p id="sell-files" class="text-xs text-brand-600 mt-2"></p>
+      </div>
+
+      <button type="submit" class="w-full bg-gradient-to-r from-brand-600 to-brand-500 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-brand-500/30">
+        <span class="submit-label"><i class="fas fa-paper-plane mr-2"></i>Submit property</span>
+      </button>
+      <p id="sell-msg" class="hidden text-center text-sm font-medium rounded-xl p-3"></p>
+      <p class="text-center text-xs text-stone-400"><i class="fas fa-shield-halved mr-1"></i>Our team verifies your entry before it goes live on the site.</p>
+    </form>
+
+    <p class="text-center text-sm text-stone-500 mt-6">Questions? <a href="tel:+910000000000" class="text-brand-600 font-semibold">Call 90000 00000</a> · <a href="https://wa.me/910000000000" target="_blank" class="text-emerald-600 font-semibold"><i class="fab fa-whatsapp"></i> WhatsApp</a></p>
+  </main>
+
+  <script>
+    const $ = s => document.querySelector(s)
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]))
+    function toggleRent(){ const rent = document.getElementById('sell-txn').value === 'rent'; document.getElementById('sell-rent-price').classList.toggle('hidden', !rent); document.getElementById('sell-sale-price').classList.toggle('hidden', rent); }
+    function setSellTab(kind){
+      document.getElementById('property_kind').value = kind
+      const plot = kind === 'plot'
+      document.getElementById('plot-fields').classList.toggle('hidden', !plot)
+      document.getElementById('zameen-fields').classList.toggle('hidden', plot)
+      const base = 'py-2.5 rounded-xl font-semibold text-sm transition '
+      const active = 'bg-white text-brand-700 shadow-sm', idle = 'text-stone-500'
+      document.getElementById('tab-plot').className = base + (plot ? active : idle)
+      document.getElementById('tab-zameen').className = base + (plot ? idle : active)
+    }
+    setSellTab('plot')
+    function sellConvertChanged(){
+      const v = document.getElementById('sell-convert').value, wrap = document.getElementById('sell-convert-date-wrap'), inp = wrap.querySelector('input')
+      const show = v !== 'pending'
+      wrap.classList.toggle('hidden', !show)
+      if (show && !inp.value) inp.value = new Date().toISOString().slice(0,10)
+      if (!show) inp.value = ''
+    }
+    const sellForm = $('#form-sell')
+    sellForm.addEventListener('change', e => {
+      if (!e.target.matches('.photo-input')) return
+      e.target.closest('.photo-slot').classList.toggle('has-file', e.target.files.length > 0)
+      const n = [...sellForm.querySelectorAll('.photo-input')].filter(i => i.files.length).length
+      $('#sell-files').textContent = n ? `✓ ${n} photo(s) selected` : ''
+    })
+    sellForm.addEventListener('submit', async e => {
+      e.preventDefault()
+      const msg = $('#sell-msg'), btn = sellForm.querySelector('button[type=submit]')
+      const fd = new FormData(sellForm)
+      fd.set('is_public', '1')   // default public; admin still reviews (pending) before it goes live
+      if (fd.get('property_kind') === 'zameen') fd.set('type', 'Agricultural Land')   // land has no plot-type dropdown
+      if (!/^\d{10}$/.test(fd.get('mobile') || '')) { msg.className = 'text-center text-sm font-medium rounded-xl p-3 bg-red-50 text-red-600 border border-red-200'; msg.textContent = 'The mobile number must be 10 digits'; msg.classList.remove('hidden'); return }
+      btn.disabled = true; btn.querySelector('.submit-label').innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i>Sending…'
+      try {
+        const res = await fetch('/api/stock', { method: 'POST', body: fd })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || 'Something went wrong')
+        sellForm.reset()
+        document.querySelectorAll('.photo-slot').forEach(s => s.classList.remove('has-file'))
+        $('#sell-files').textContent = ''
+        msg.className = 'text-center text-sm font-medium rounded-xl p-4 bg-emerald-50 text-emerald-700 border border-emerald-200'
+        msg.innerHTML = `<i class="fas fa-circle-check mr-1"></i>${esc(data.message || 'Your property has been received. Our team will verify and activate it.')}<br><span class="text-xs font-normal">Ref #STK-${data.id}</span>`
+        msg.classList.remove('hidden')
+        msg.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      } catch (err) {
+        msg.className = 'text-center text-sm font-medium rounded-xl p-3 bg-red-50 text-red-600 border border-red-200'
+        msg.textContent = err.message; msg.classList.remove('hidden')
+      } finally {
+        btn.disabled = false; btn.querySelector('.submit-label').innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Submit property'
+      }
+    })
+  </script>
+</body>
+</html>
