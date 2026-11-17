@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#243B78">
+<title>Akshardham PMS</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<style>
+/* Design tokens: Akshardham PMS PRD v1, section 6.2 */
+:root{--pri:#3446A8;--pri-d:#243B78;--pri-l:#EBEEF8;--bg:#F3F5F9;--card:#FFFFFF;--ink:#182230;--mut:#667085;--line:#E2E6EF;
+  --ok:#16865B;--ok-l:#E6F4EE;--warn:#D97706;--warn-t:#B54708;--warn-l:#FEF3E2;--bad:#D92D20;--bad-t:#B42318;--bad-l:#FEE4E2;
+  --vp:#0E7490;--vp-l:#E0F2F7;--bl:#6941C6;--bl-l:#F0EBFB;--ns:#98A2B3;--ns-l:#F2F4F7;
+  --r:12px;--rc:8px;--sh:0 1px 2px rgba(16,24,40,.05);--side:248px}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,Aptos,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+a{color:var(--pri)}
+:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+svg{display:block;flex:none}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- login ---------- */
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.lcard{width:100%;max-width:380px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:32px 24px}
+.lcard img{height:52px;margin-bottom:18px}
+.lcard h1{font-size:22px;margin:0;color:var(--pri-d)}
+.lcard p{margin:4px 0 20px;color:var(--mut);font-size:14px}
+.lerr{background:var(--bad-l);color:var(--bad-t);border-radius:var(--rc);padding:10px 12px;font-size:14px;margin-bottom:14px}
+label.f{display:block;font-size:13.5px;font-weight:600;margin:14px 0 6px}
+label.f small{font-weight:400;color:var(--mut)}
+.in{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--rc);background:#fff;font-size:16px;outline:none}
+.in:focus{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-l)}
+textarea.in{min-height:72px;resize:vertical}
+.pin{letter-spacing:.4em;text-align:center;font-weight:600}
+
+/* ---------- buttons, badges ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:var(--rc);border:1px solid var(--line);background:#fff;font-weight:600;font-size:14px;white-space:nowrap}
+.btn.pri{background:var(--pri);border-color:var(--pri);color:#fff}.btn.pri:hover{background:var(--pri-d)}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.danger{color:var(--bad-t);border-color:#F4C7C3}
+.btn.block{width:100%;height:44px;margin-top:18px}
+.btn:disabled{opacity:.6;cursor:wait}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap;background:var(--ns-l);color:#475467}
+.badge i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.s-done{background:var(--ok-l);color:var(--ok)}.s-vp{background:var(--vp-l);color:var(--vp)}.s-wip{background:var(--warn-l);color:var(--warn-t)}
+.s-nd{background:var(--bad-l);color:var(--bad-t)}.s-bl{background:var(--bl-l);color:var(--bl)}.s-ns{background:var(--ns-l);color:#475467}
+.due{font-size:13px;color:var(--mut)}.due.soon{color:var(--warn-t);font-weight:600}.due.late{color:var(--bad-t);font-weight:600}
+.role{font-size:11.5px;font-weight:600;padding:1px 7px;border-radius:6px;background:var(--pri-l);color:var(--pri-d)}
+
+/* ---------- app shell (PRD 6.3) ---------- */
+.side{position:fixed;inset:0 auto 0 0;width:var(--side);background:var(--card);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:20;transition:width .15s}
+.brand{display:flex;align-items:center;gap:10px;height:64px;padding:0 18px;border-bottom:1px solid var(--line);overflow:hidden}
+.brand img{height:32px}.brand b{font-size:15px;color:var(--pri-d);white-space:nowrap}
+.snav{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.sgrp{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);padding:14px 10px 6px;white-space:nowrap}
+.sitem{display:flex;align-items:center;gap:12px;height:40px;padding:0 10px;border-radius:var(--rc);color:#344054;font-weight:500;font-size:14px;white-space:nowrap;text-decoration:none;width:100%;text-align:left}
+.sitem:hover{background:var(--bg)}.sitem.on{background:var(--pri-l);color:var(--pri-d);font-weight:600}
+.sitem .cnt{margin-left:auto;font-size:12px;font-weight:600;background:var(--bad);color:#fff;border-radius:99px;min-width:20px;height:20px;padding:0 6px;display:grid;place-items:center}
+.sfoot{border-top:1px solid var(--line);padding:10px}
+.side.mini{--side:72px}.side.mini .sitem span,.side.mini .sitem .cnt,.side.mini .sgrp,.side.mini .brand b{display:none}.side.mini .sitem{justify-content:center}
+.main{margin-left:var(--side);min-height:100vh;transition:margin .15s}
+.side.mini~.main{margin-left:72px}
+.tbar{position:sticky;top:0;z-index:15;height:64px;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 24px}
+.tbar h1{font-size:18px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumb{font-size:12.5px;color:var(--mut);line-height:1.2}
+.tsearch{position:relative;margin-left:auto;width:280px}
+.tsearch svg{position:absolute;left:11px;top:11px;color:var(--mut)}
+.tsearch input{padding-left:36px;min-height:40px;font-size:14px}
+.ibtn{position:relative;width:40px;height:40px;border-radius:var(--rc);display:grid;place-items:center;color:#475467}
+.ibtn:hover{background:var(--bg)}
+.ibtn .dot{position:absolute;top:6px;right:6px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:var(--bad);color:#fff;font-size:10.5px;font-weight:700;display:grid;place-items:center}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--pri);color:#fff;font-weight:600;font-size:13px;display:grid;place-items:center}
+.menu{position:absolute;right:16px;top:58px;width:280px;background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:0 12px 32px rgba(16,24,40,.14);z-index:40;overflow:hidden}
+.menu h4{margin:0;padding:12px 14px;border-bottom:1px solid var(--line);font-size:14px}
+.menu .mi{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13.5px}
+.menu .mi:hover{background:var(--bg)}.menu .mi:last-child{border:0}
+.menu .mi small{display:block;color:var(--mut)}
+.page{padding:24px 32px 48px;max-width:1360px}
+.phead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.phead h2{font-size:22px;margin:0}.phead p{margin:2px 0 0;color:var(--mut);font-size:14px}
+.stale{display:flex;align-items:center;gap:8px;background:var(--warn-l);color:var(--warn-t);border-radius:var(--rc);padding:8px 12px;font-size:13.5px;margin-bottom:16px}
+.bnav{display:none}
+
+/* ---------- cards / dashboard (PRD 6.4 B) ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh)}
+.card .ch{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.card .ch h3{margin:0;font-size:15px}.card .ch small{color:var(--mut);font-size:12.5px}
+.card .cb{padding:14px 16px}
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.kpis.k4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.kpi{text-align:left;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.kpi:hover{border-color:#C9D0E0}
+.kpi span{font-size:13px;color:var(--mut);font-weight:500}
+.kpi b{font-size:28px;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums}
+.kpi b em{font-style:normal;font-size:16px;color:var(--mut);font-weight:500}
+.kpi small{font-size:12px;color:var(--mut)}
+.kpi.bad b{color:var(--bad-t)}.kpi.warn b{color:var(--warn-t)}.kpi.good b{color:var(--ok)}
+.grid2{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;margin-bottom:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.stack{display:flex;height:12px;border-radius:99px;overflow:hidden;background:var(--ns-l)}
+.stack i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px;font-size:13px;color:#344054}
+.legend span{display:inline-flex;align-items:center;gap:6px}.legend i{width:10px;height:10px;border-radius:3px}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+.t th{text-align:left;font-size:12px;font-weight:600;color:var(--mut);padding:10px 16px;border-bottom:1px solid var(--line);background:#FAFBFC;position:sticky;top:64px;white-space:nowrap}
+.t td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+.t tr:last-child td{border-bottom:0}
+.t tbody tr{cursor:pointer}.t tbody tr:hover td{background:#FAFBFC}
+.t .tid{font-weight:600;color:var(--mut);font-size:12.5px;white-space:nowrap}
+.t .ttl{font-weight:600}
+.t .r{text-align:right}
+.bar{height:6px;border-radius:99px;background:var(--ns-l);overflow:hidden;min-width:60px}.bar i{display:block;height:100%;background:var(--pri)}
+.att{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;padding:11px 16px;border-bottom:1px solid var(--line);font-size:14px}
+.att:last-child{border-bottom:0}.att:hover{background:#FAFBFC}
+.att .ic{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:none}
+.att small{display:block;color:var(--mut);font-size:12.5px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stats div{background:var(--bg);border-radius:var(--rc);padding:10px 12px}
+.stats b{display:block;font-size:20px;font-variant-numeric:tabular-nums}.stats span{font-size:12.5px;color:var(--mut)}
+.ring{display:flex;align-items:center;gap:16px}
+.ring svg{width:84px;height:84px}
+.empty{text-align:center;padding:32px 16px;color:var(--mut)}
+.empty b{display:block;color:var(--ink);font-size:15px;margin-bottom:4px}
+.skel{background:linear-gradient(90deg,#EEF0F4 25%,#F6F7F9 50%,#EEF0F4 75%);background-size:200% 100%;animation:sk 1.2s infinite;border-radius:var(--rc)}
+@keyframes sk{to{background-position:-200% 0}}
+
+/* ---------- tasks (PRD 6.4 D) ---------- */
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:var(--rc);padding:3px;gap:2px}
+.seg button{height:32px;padding:0 12px;border-radius:6px;font-size:13.5px;font-weight:600;color:#475467}
+.seg button.on{background:var(--pri-l);color:var(--pri-d)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{height:34px;padding:0 12px;border:1px solid var(--line);background:#fff;border-radius:var(--rc);font-size:13.5px;font-weight:500;display:inline-flex;align-items:center;gap:6px;color:#344054}
+.chip b{font-weight:600;color:var(--mut)}
+.chip.on{border-color:var(--pri);background:var(--pri-l);color:var(--pri-d)}.chip.on b{color:var(--pri-d)}
+.mcards{display:none}
+.tcard{display:block;width:100%;text-align:left;padding:14px;margin-bottom:10px}
+.tcard .row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.tcard .ttl{font-weight:600;line-height:1.35}
+.tcard .meta{display:flex;flex-wrap:wrap;gap:6px 10px;margin-top:8px;align-items:center;font-size:13px;color:var(--mut)}
+.board{display:grid;grid-template-columns:repeat(6,minmax(220px,1fr));gap:12px;overflow-x:auto;padding-bottom:8px}
+.col{background:#EDF0F5;border-radius:var(--r);padding:10px;min-height:120px}
+.col h4{margin:2px 4px 10px;font-size:13px;display:flex;justify-content:space-between}
+.col .tcard{padding:12px;margin-bottom:8px}
+.blk{display:inline-flex;align-items:center;gap:4px;color:var(--bl);font-weight:600;font-size:12.5px}
+
+/* ---------- drawer (task detail) ---------- */
+.scrim{position:fixed;inset:0;background:rgba(16,24,40,.35);z-index:50}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(520px,100%);background:#fff;z-index:51;display:flex;flex-direction:column;box-shadow:-12px 0 32px rgba(16,24,40,.12)}
+.dh{display:flex;gap:10px;align-items:flex-start;padding:18px 20px;border-bottom:1px solid var(--line)}
+.dh h3{margin:2px 0 6px;font-size:18px;line-height:1.3}
+.db{flex:1;overflow-y:auto;padding:16px 20px 32px}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:8px 12px;font-size:14px;margin-bottom:12px}
+.kv dt{color:var(--mut)}.kv dd{margin:0}
+.box{background:var(--bg);border-radius:var(--rc);padding:12px 14px;font-size:14px;margin:10px 0;white-space:pre-line}
+.box b{display:block;font-size:12.5px;color:var(--mut);font-weight:600;margin-bottom:4px}
+.act{border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-top:16px}
+.act h4{margin:0 0 4px;font-size:15px}.act p{margin:0 0 8px;color:var(--mut);font-size:13.5px}
+.stg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.st{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--rc);font-weight:600;font-size:14px;text-align:left;background:#fff}
+.st i{width:10px;height:10px;border-radius:3px;flex:none}
+.st.on{border-color:var(--pri);background:var(--pri-l);box-shadow:inset 0 0 0 1px var(--pri)}
+.brow{display:flex;gap:8px;margin-top:14px}.brow .btn{flex:1}
+.filein{display:flex;align-items:center;gap:10px;border:1px dashed #C9D0E0;border-radius:var(--rc);padding:10px 12px;font-size:14px;color:var(--mut);cursor:pointer}
+.filein input{position:absolute;opacity:0;width:1px;height:1px}
+
+/* ---------- task edit, messages, task map, leads ---------- */
+.pick{display:flex;flex-wrap:wrap;gap:8px}
+.pick button{height:36px;padding:0 12px;border:1px solid var(--line);border-radius:var(--rc);background:#fff;font-size:13.5px;font-weight:500}
+.pick button.on{border-color:var(--pri);background:var(--pri-l);color:var(--pri-d);font-weight:600}
+.hint{font-size:13px;color:var(--mut);margin-top:6px}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.banner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;margin-bottom:14px;border-color:#F5D9A8;background:var(--warn-l)}
+.banner div{flex:1;min-width:200px;font-size:14px}.banner b{display:block}
+.sec{font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin:20px 2px 10px}
+.msgs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.bubble{background:#E7F6E9;border-radius:var(--rc);padding:12px 14px;font-size:14px;white-space:pre-wrap;max-height:360px;overflow-y:auto;line-height:1.55}
+.bubble.private{background:var(--bg)}
+.mrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn.wa{background:#1F8F4E;border-color:#1F8F4E;color:#fff}
+.sent{display:inline-flex;align-items:center;gap:6px;color:var(--ok);font-size:13px;font-weight:600;margin-top:10px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}
+.tile{height:46px;border-radius:var(--rc);font-size:12px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;border:2px solid transparent}
+.tile small{font-size:10px;font-weight:600;opacity:.8}
+.tile.late{border-color:var(--bad)}
+.cmp{font-size:11.5px;color:var(--mut)}.cmp.up{color:var(--ok)}.cmp.down{color:var(--bad-t)}
+.call{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:var(--rc);border:1px solid var(--line);color:var(--ok);flex:none;margin-left:auto}
+
+/* ---------- field data frame ---------- */
+/* dvh = jitni screen sach me dikh rahi hai (Android ka address bar chhod ke). Isse Field app ke neeche wale button kat-te nahi. */
+.frame{border:0;width:100%;height:calc(100vh - 64px);height:calc(100dvh - 64px);display:block;background:var(--bg)}
+body.field{overflow:hidden}
+.tback{display:none;align-items:center;gap:4px;height:40px;padding:0 12px 0 8px;border-radius:var(--rc);background:var(--pri-l);color:var(--pri-d);font-weight:600;font-size:14px;flex:none}
+.msearch{display:none;position:relative;flex:1 1 100%}
+.msearch svg{position:absolute;left:11px;top:12px;color:var(--mut)}.msearch input{padding-left:36px}
+.tscroll{overflow-x:auto}.tscroll .t th{position:static}
+@media (max-width:1179px){.desk{display:none}.mcards{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mcards .tcard{margin:0}}
+
+/* ---------- toast ---------- */
+#toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:var(--rc);font-weight:500;font-size:14px;z-index:90;max-width:90vw;text-align:center}
+#toast.bad{background:var(--bad-t)}
+
+/* ---------- responsive (PRD 6.5) ---------- */
+@media (max-width:1279px){.msgs{grid-template-columns:minmax(0,1fr)}.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}.tsearch{width:220px}}
+@media (max-width:1023px){.brand{padding:0 8px;justify-content:center}.brand img{height:26px;max-width:56px;object-fit:contain}.side{--side:72px}.side .sitem span,.side .sitem .cnt,.side .sgrp,.side .brand b{display:none}.side .sitem{justify-content:center}.main{margin-left:72px}.grid2{grid-template-columns:minmax(0,1fr)}.page{padding:20px 16px 40px}.tbar{padding:0 16px}}
+@media (max-width:767px){
+  .side{display:none}.main,.side.mini~.main{margin-left:0}
+  .tbar{height:56px;padding:0 12px}.tbar h1{font-size:17px}.tsearch{display:none}
+  .page{padding:16px 12px calc(88px + env(safe-area-inset-bottom))}
+  .page.flush{padding:0}
+  .frame{height:calc(100vh - 56px);height:calc(100dvh - 56px)}
+  body.field .tback{display:inline-flex}
+  .msearch{display:block}
+  .chip{height:38px;flex:none}
+  .chips{flex-wrap:nowrap;overflow-x:auto;width:100%;scrollbar-width:none;padding-bottom:2px}.chips::-webkit-scrollbar{display:none}
+  body.field .crumb{display:none}
+  .tools .seg[aria-label="View"]{margin-left:0!important}
+  .kpis,.kpis.k4{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.kpi b{font-size:24px}
+  .grid3{grid-template-columns:minmax(0,1fr)}
+  .t th{top:56px}
+  .desk{display:none}.mcards{display:block}.mcards .tcard{margin-bottom:10px}
+  .phead h2{font-size:19px}
+  .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  .bnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:var(--mut);padding:4px 0;position:relative}
+  .bnav button.on{color:var(--pri)}
+  .bnav .dot{position:absolute;top:0;left:calc(50% + 6px);min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:var(--bad);color:#fff;font-size:10.5px;display:grid;place-items:center}
+  body.field .bnav{display:none}
+  .menu{right:8px;left:8px;width:auto}
+  .drawer{top:auto;max-height:92vh;border-radius:16px 16px 0 0}
+  #toast{bottom:84px}
+}
+.ibtn.spin svg{animation:rot 1s linear infinite}@keyframes rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div style="position:fixed;right:10px;bottom:10px;z-index:95;background:#101828;color:#fff;font:600 11px/1 Inter,system-ui,sans-serif;padding:6px 10px;border-radius:99px;opacity:.85;pointer-events:none">Demo · sample data</div>
+<div id="toast" role="status" hidden></div>
+<input type="file" id="photo" accept="image/*" hidden>
+<script src="demo/mock.js"></script>
+<script>
+/* ======= Backend URLs (purane dono backend, bas ek app) ======= */
+const TASKS_API = 'demo://tasks';
+const FIELD_API = 'demo://field';
+const FIELD_APP = '../sarola-demo/sarola-demo.html?embed=1';   // demo: the Sarola field database demo
+const PROJECT = 'Project Sarola';
+const VER = '2 Nov · v5';
+/* =============================================================== */
+
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const ls = { get(k) { try { return localStorage.getItem(k) } catch (e) { return null } }, set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v) } catch (e) { } } };
+const sv = p => `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const I = {
+  home: sv('<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'),
+  tasks: sv('<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1.5 1.5L7.5 5M3.5 12 5 13.5 7.5 11M3.5 18 5 19.5 7.5 17"/>'),
+  report: sv('<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'),
+  field: sv('<path d="M3 20h18M5 20V9l7-5 7 5v11"/><path d="M9 20v-6h6v6"/>'),
+  bell: sv('<path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 0 0 4 0"/>'),
+  search: sv('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
+  menu: sv('<path d="M4 6h16M4 12h16M4 18h16"/>'), x: sv('<path d="M6 6l12 12M18 6 6 18"/>'),
+  collapse: sv('<path d="M15 6l-6 6 6 6"/>'), expand: sv('<path d="M9 6l6 6-6 6"/>'),
+  refresh: sv('<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>'),
+  alert: sv('<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>'),
+  block: sv('<circle cx="12" cy="12" r="9"/><path d="m5.7 5.7 12.6 12.6"/>'),
+  clock: sv('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
+  user: sv('<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'),
+  help: sv('<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01"/>'),
+  check: sv('<path d="m5 12 5 5 9-10"/>'), camera: sv('<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>'),
+  logout: sv('<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l-5-5 5-5M5 12h11"/>'),
+  list: sv('<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>'), board: sv('<rect x="3" y="4" width="5" height="16" rx="1"/><rect x="10" y="4" width="5" height="10" rx="1"/><rect x="17" y="4" width="4" height="13" rx="1"/>'),
+  trend: sv('<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>'),
+  plus: sv('<path d="M12 5v14M5 12h14"/>'), edit: sv('<path d="M4 20h4L19 9l-4-4L4 16z"/>'), trash: sv('<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>'),
+  phone: sv('<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>'),
+  copy: sv('<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/>'),
+  send: sv('<path d="M21 3 3 10l7 3 3 7z"/><path d="m10 13 4-4"/>'), msg: sv('<path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/>')
+};
+
+/* Status: backend ke naam -> app me dikhne wale English naam + colour class */
+const ST = {
+  'Not Started': ['Not started', 's-ns', '#98A2B3'], 'WIP': ['In progress', 's-wip', '#D97706'], 'Not Done': ['Not done today', 's-nd', '#D92D20'],
+  'Blocked': ['Blocked', 's-bl', '#6941C6'], 'Verify Pending': ['Awaiting verification', 's-vp', '#0E7490'], 'Done': ['Done', 's-done', '#16865B']
+};
+const ORDER = ['Not Started', 'WIP', 'Blocked', 'Not Done', 'Verify Pending', 'Done'];
+const stBadge = s => { const x = ST[s] || [s, 's-ns']; return `<span class="badge ${x[1]}"><i></i>${esc(x[0])}</span>` };
+const open_ = s => s !== 'Done' && s !== 'Verify Pending';
+const dueTxt = t => { const d = t.daysLeft; if (d === '' || d == null) return '<span class="due">No due date</span>';
+  if (!open_(t.status)) return `<span class="due">${esc(t.deadline)}</span>`;
+  if (d < 0) return `<span class="due late">${-d}d overdue</span>`; if (d === 0) return '<span class="due soon">Due today</span>';
+  if (d <= 3) return `<span class="due soon">Due in ${d}d</span>`; return `<span class="due">${esc(t.deadline)}</span>` };
+const initials = n => String(n || '?').split(/\s+/).slice(0, 2).map(w => w[0] || '').join('').toUpperCase();
+const ROLE = { A: 'Accountable', R: 'Responsible', C: 'Consulted', I: 'Informed' };
+
+let S = { token: ls.get('ts_token') || '', code: ls.get('ts_code') || '', me: null, dash: null, field: null, team: [], sync: false, draft: {}, t0: Date.now(), msgs: null, ed: null, person: '',
+  stale: false, err: '', scope: 'mine', filter: 'all', tview: ls.get('pms_tview') || 'list', q: '', menu: '', pick: {}, mini: ls.get('pms_mini') === '1' };
+
+/* ---------------- API ---------------- */
+async function post(url, body) {
+  let r;
+  try { r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) }) }
+  catch (e) { throw new Error('Could not reach the server. Check your internet connection.') }
+  let j; try { j = await r.json() } catch (e) { throw new Error('The server sent an unexpected response.') }
+  if (!j.ok) throw new Error(j.error || 'Something went wrong');
+  return j.data;
+}
+const WRITES = ['accept', 'report', 'verify', 'taskSave', 'taskDelete'];
+const api = (action, p) => post(TASKS_API, Object.assign({ action }, S.token ? { token: S.token } : {}, WRITES.includes(action) && isMgr() ? { withDash: true } : {}, p || {}));
+function toast(m, bad) { const t = $('#toast'); t.textContent = m; t.className = bad ? 'bad' : ''; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, bad ? 5000 : 2600) }
+const isAuthErr = e => /Login|PIN|Code galat/i.test(e.message);
+
+/* ---------------- routing: #/overview  #/tasks  #/tasks/P1-03  #/tasks/P1-03/edit  #/tasks/new  #/report  #/messages  #/field ---------------- */
+const VIEWS = ['overview', 'tasks', 'report', 'messages', 'field'];
+const route = () => { const p = location.hash.replace(/^#\/?/, '').split('/'); let v = VIEWS.includes(p[0]) ? p[0] : 'overview';
+  if (v === 'messages' && !isMgr()) v = 'overview'; return { view: v, task: p[1] ? decodeURIComponent(p[1]) : '', edit: p[2] === 'edit' || p[1] === 'new' } };
+const go = (view, task, sub) => { location.hash = '#/' + view + (task ? '/' + encodeURIComponent(task) : '') + (sub ? '/' + sub : '') };
+addEventListener('hashchange', () => render());
+
+/* ---------------- data ---------------- */
+const myTasks = () => (S.me && S.me.tasks) || [];
+const toAccept = () => myTasks().filter(t => t.needsAccept);
+const toReport = () => myTasks().filter(t => t.canReport && !t.needsAccept);
+const toVerify = () => myTasks().filter(t => t.canVerify);
+const dashTask = id => (isMgr() && S.dash && S.dash.tasks.find(t => t.id === id)) || null;
+const tel = (m, who) => m ? `<a class="call" href="tel:${esc(m)}" aria-label="Call ${esc(who || '')}" onclick="event.stopPropagation()">${I.phone}</a>` : '';
+const pendingReport = () => toReport().filter(t => !t.reportedToday);
+const notifCount = () => toAccept().length + pendingReport().length + toVerify().length;
+const isMgr = () => S.me && S.me.isCoordinator;
+function allTasks() { return isMgr() && S.dash ? S.dash.tasks : [] }
+function taskById(id) { return myTasks().find(t => t.id === id) || allTasks().find(t => t.id === id) }
+
+/* Speed: ek call me login + dashboard ("boot"). Purana backend ho to do call (login, dashboard). */
+async function bootCall(cred) {
+  try { return await post(TASKS_API, Object.assign({ action: 'boot' }, cred)) }
+  catch (e) { if (!/Unknown action/.test(e.message)) throw e;
+    const me = await post(TASKS_API, Object.assign({ action: 'login' }, cred));
+    if (me.isCoordinator) me.dash = await post(TASKS_API, { action: 'dashboard', token: me.token }); return me }
+}
+function applyBoot(me) {
+  if (me.token) { S.token = me.token; ls.set('ts_token', me.token); delete me.token }
+  if (me.dash) { S.dash = me.dash; S.dash.at = Date.now(); ls.set('pms_dash', JSON.stringify(S.dash)); delete me.dash }
+  S.me = me; S.code = me.code; ls.set('ts_code', me.code); ls.set('pms_me_' + me.code, JSON.stringify(me)); S.stale = false; S.err = '';
+}
+async function boot() {
+  ls.set('ts_pin', null);
+  if (!S.token) return renderLogin();
+  let cached = null; try { cached = JSON.parse(ls.get('pms_me_' + S.code)) } catch (e) { }
+  try { S.field = JSON.parse(ls.get('sfd_cache')) } catch (e) { }
+  // Pichhla data turant dikhao, naya peeche se aata rahe
+  if (cached) { S.me = cached; try { S.dash = JSON.parse(ls.get('pms_dash')) } catch (e) { } render() } else renderLoading();
+  await refresh(true);
+}
+async function refresh(quiet) {
+  S.sync = true; const rb = $('.ibtn[aria-label="Refresh"]'); if (rb) rb.classList.add('spin');
+  try {
+    applyBoot(await bootCall({ token: S.token })); S.sync = false;
+    if (route().view === 'field') try { $('#ff').contentWindow.load() } catch (e) { }
+    render(); if (!quiet) toast('Updated');
+    afterBoot();
+  } catch (e) {
+    S.sync = false;
+    if (isAuthErr(e)) return logout(e.message);
+    if (S.me) { S.stale = true; S.err = e.message; render() } else renderError(e.message);
+  }
+}
+/* Boot ke baad peeche se: Field data pehle se load (khulte hi turant dikhe), coordinator ke messages + team list */
+function afterBoot() {
+  ensureFrame();
+  if (isMgr()) setTimeout(() => { if (!S.msgs) loadMsgs(); if (!S.team.length) api('team').then(t => { S.team = t; ls.set('pms_team', JSON.stringify(t)) }).catch(() => { }) }, 1500);
+}
+function ensureFrame() { const fw = $('#fwrap'); if (fw && !$('#ff')) fw.innerHTML = `<iframe class="frame" id="ff" src="${FIELD_APP}" title="Field data" allow="microphone"></iframe>` }
+// Field app (iframe) apna data sfd_cache me rakhta hai: wahi se Overview ka Field card, alag call nahi
+addEventListener('storage', e => { if (e.key === 'sfd_cache' && e.newValue && S.me) { try { S.field = JSON.parse(e.newValue) } catch (x) { } if (route().view !== 'field') render() } });
+function logout(msg) {
+  ['ts_token', 'ts_pin', 'ts_me_' + S.code, 'pms_me_' + S.code, 'pms_dash', 'sfd_cache'].forEach(k => ls.set(k, null));
+  S = Object.assign(S, { token: '', me: null, dash: null, field: null, msgs: null, ed: null, person: '', menu: '', draft: {} }); history.replaceState(null, '', location.pathname); renderLogin(msg);
+}
+
+/* ---------------- login (PRD 6.4 A) ---------------- */
+async function renderLogin(err) {
+  document.body.className = '';
+  $('#root').innerHTML = `<div class="login"><form class="lcard" id="lf">
+    <img src="logo.png" alt="Akshardham Associates" onerror="this.remove()">
+    <h1>Akshardham PMS</h1><p>Project management and field operations</p>
+    ${err ? `<div class="lerr" role="alert">${esc(err)}</div>` : ''}
+    <label class="f" for="lc">Name</label><select class="in" id="lc" required><option value="">Loading team…</option></select>
+    <label class="f" for="lp">PIN</label><input class="in pin" id="lp" type="password" inputmode="numeric" maxlength="6" autocomplete="current-password" placeholder="••••" aria-describedby="lph" required>
+    <p class="hint" id="lph" style="margin:6px 0 0">Hint: your PIN is the last 4 digits of your mobile number.</p>
+    <button class="btn pri block" id="lb">Sign in</button>
+    <p style="margin:14px 0 0;text-align:center">Forgot your PIN? Ask your coordinator.</p></form></div>`;
+  $('#lf').onsubmit = async ev => {
+    ev.preventDefault(); const b = $('#lb'); b.disabled = true; b.textContent = 'Signing in…';
+    try { applyBoot(await bootCall({ code: $('#lc').value, pin: $('#lp').value.trim() })); try { S.field = JSON.parse(ls.get('sfd_cache')) } catch (e) { }
+      if (!location.hash) go('overview'); render(); afterBoot() }
+    catch (e) { renderLogin(e.message) }
+  };
+  const fill = () => { const sel = $('#lc'); if (!sel || !S.team.length) return; const v = sel.value;
+    sel.innerHTML = `<option value="">Select your name</option>` + S.team.map(m => `<option value="${esc(m.code)}" ${m.code === (v || S.code) ? 'selected' : ''}>${esc(m.naam)}</option>`).join('') };
+  try { S.team = JSON.parse(ls.get('pms_team')) || [] } catch (e) { } fill();   // pichhli list turant
+  try { S.team = await post(TASKS_API, { action: 'team' }); ls.set('pms_team', JSON.stringify(S.team)) } catch (e) { }
+  fill();
+}
+function renderLoading() { $('#root').innerHTML = `<div class="login"><div class="lcard"><div class="skel" style="height:22px;width:60%"></div><div class="skel" style="height:14px;width:40%;margin-top:10px"></div><p style="margin-top:18px">Loading your workspace…</p></div></div>` }
+function renderError(m) { $('#root').innerHTML = `<div class="login"><div class="lcard"><h1>Can't load the workspace</h1><div class="lerr" style="margin-top:14px">${esc(m)}</div><button class="btn pri block" onclick="boot()">Try again</button><button class="btn block" style="margin-top:8px" onclick="logout()">Sign out</button></div></div>` }
+
+/* ---------------- shell (PRD 6.3) ---------------- */
+const NAV = () => [
+  ['overview', 'Overview', I.home, 0], ['tasks', 'Tasks', I.tasks, toAccept().length + toVerify().length],
+  ['report', 'Daily report', I.report, pendingReport().length], ...(isMgr() ? [['messages', 'Messages', I.msg, 0]] : []), ['field', 'Field data', I.field, 0]];
+const TITLES = { overview: ['Overview', PROJECT], tasks: ['Tasks', PROJECT], report: ['Daily report', 'Due by 6 PM'], messages: ['Messages', 'WhatsApp updates for the team'], field: ['Field data', 'Sarola field database'] };
+
+function render() {
+  if (!S.me) return;
+  const r = route(), [title, crumb] = TITLES[r.view], n = notifCount();
+  document.body.className = r.view === 'field' ? 'field' : '';
+  if (!$('#page')) $('#root').innerHTML = `<aside class="side" id="side" aria-label="Main navigation"></aside>
+  <div class="main"><header class="tbar" id="tbar"></header><main class="page" id="page"></main><div id="fwrap" hidden></div></div>
+  <nav class="bnav" id="bnav" aria-label="Sections"></nav><div id="drw"></div>`;
+  const side = $('#side'); side.className = 'side' + (S.mini ? ' mini' : '');
+  side.innerHTML = `<div class="brand"><img src="logo.png" alt="" onerror="this.remove()"><b>Akshardham PMS</b></div>
+    <nav class="snav"><div class="sgrp">${esc(PROJECT)}</div>
+      ${NAV().map(([k, l, ic, c]) => `<a class="sitem ${r.view === k ? 'on' : ''}" href="#/${k}" ${r.view === k ? 'aria-current="page"' : ''} title="${l}">${ic}<span>${l}</span>${c ? `<em class="cnt">${c}</em>` : ''}</a>`).join('')}
+    </nav>
+    <div class="sfoot"><button class="sitem" onclick="toggleMini()" title="${S.mini ? 'Expand' : 'Collapse'} sidebar">${S.mini ? I.expand : I.collapse}<span>Collapse</span></button></div>`;
+  $('#tbar').innerHTML = `<button class="tback" onclick="go('overview')" aria-label="Back to home">${I.collapse}Back</button><div style="min-width:0"><div class="crumb">${esc(crumb)}</div><h1>${esc(title)}</h1></div>
+      <label class="tsearch" ${r.view === 'field' ? 'hidden' : ''}>${I.search}<span class="sr">Search tasks</span><input class="in" id="q" type="search" placeholder="Search tasks" value="${esc(S.q)}"></label>
+      <div style="display:flex;gap:4px;margin-left:${r.view === 'field' ? 'auto' : '0'}">
+        <button class="ibtn ${S.sync ? 'spin' : ''}" onclick="refresh()" aria-label="Refresh">${I.refresh}</button>
+        <button class="ibtn" onclick="toggleMenu('notif')" aria-label="Notifications, ${n} pending">${I.bell}${n ? `<span class="dot">${n}</span>` : ''}</button>
+        <button class="ibtn" onclick="toggleMenu('me')" aria-label="Profile"><span class="avatar">${esc(initials(S.me.naam))}</span></button>
+      </div>${S.menu ? menuHTML() : ''}`;
+  $('#bnav').innerHTML = NAV().map(([k, l, ic, c]) => `<button class="${r.view === k ? 'on' : ''}" onclick="go('${k}')">${ic}${c ? `<span class="dot">${c}</span>` : ''}<span>${l.replace('Daily report', 'Report').replace('Field data', 'Field')}</span></button>`).join('');
+  // Field data ek baar load hota hai aur khula rehta hai: wapas aane par turant dikhta hai
+  const page = $('#page'), fw = $('#fwrap'); page.hidden = r.view === 'field'; fw.hidden = r.view !== 'field';
+  if (r.view === 'field') ensureFrame()
+  else page.innerHTML = (S.stale && S.err ? `<div class="stale" role="status">${I.clock}<span>Showing saved data. ${esc(S.err)}</span></div>` : '') +
+    ({ overview: isMgr() ? vExec : vMyDay, tasks: vTasks, report: vReport, messages: vMsgs })[r.view]();
+  if (r.view === 'messages' && !S.msgs) loadMsgs();
+  ['#q', '#mq'].forEach(id => { const q = $(id); if (q) q.oninput = () => { S.q = q.value; if (route().view !== 'tasks') go('tasks'); else { const p = q.selectionStart; render(); const n = $(id); n.focus(); n.setSelectionRange(p, p) } } });
+  // Form me kuch likha hai to background refresh drawer ko dobara nahi banata (likha hua bacha rahe)
+  const box = $('#drw'), key = r.task + (r.edit ? '/edit' : '');
+  const typed = !!r.task && box.dataset.key === key && (r.edit ? !!box.querySelector('#ek') : [...box.querySelectorAll('textarea,input:not([type=file])')].some(x => x.value.trim()) || !!(box.querySelector('#rp') && $('#rp').files.length));
+  if (!typed) renderDrawer(r.task, r.edit);
+}
+const redraw = () => { const b = $('#drw'); if (b) b.dataset.key = '-'; render() };
+function toggleMini() { S.mini = !S.mini; ls.set('pms_mini', S.mini ? '1' : '0'); render() }
+function toggleMenu(m) { S.menu = S.menu === m ? '' : m; render() }
+document.addEventListener('click', e => { if (S.menu && !e.target.closest('.menu,.ibtn')) { S.menu = ''; render() } });
+function menuHTML() {
+  if (S.menu === 'me') return `<div class="menu" role="menu"><h4>${esc(S.me.naam)}<small style="display:block;font-weight:400;color:var(--mut)">${isMgr() ? 'Coordinator' : 'Team member'} · ${esc(S.me.today)}</small></h4>
+    ${!isMgr() && S.me.coordinator && S.me.coordinator.mobile ? `<a class="mi" href="tel:${esc(S.me.coordinator.mobile)}" style="text-decoration:none;color:inherit">${I.phone}<span>Call ${esc(S.me.coordinator.naam)}<small>Coordinator</small></span></a>` : ''}
+    <button class="mi" onclick="logout()">${I.logout}<span>Sign out</span></button><div class="mi" style="cursor:default"><small>App version ${VER}</small></div></div>`;
+  const items = [...toAccept().map(t => [t, 'Review and accept', I.help]), ...pendingReport().map(t => [t, 'Report due today', I.report]), ...toVerify().map(t => [t, 'Waiting for your verification', I.check])];
+  return `<div class="menu" role="menu"><h4>Notifications</h4>${items.length ? items.slice(0, 8).map(([t, w, ic]) => `<button class="mi" onclick="S.menu='';go('tasks','${esc(t.id)}')">${ic}<span>${esc(t.kaam)}<small>${w} · ${esc(t.id)}</small></span></button>`).join('')
+    : '<div class="empty"><b>You are all caught up</b>No pending actions.</div>'}</div>`;
+}
+
+/* ---------------- Overview: executive (PRD 6.4 B) ---------------- */
+function vExec() {
+  const d = S.dash;
+  if (!d) return `<div class="kpis">${'<div class="card kpi"><div class="skel" style="height:14px;width:60%"></div><div class="skel" style="height:28px;width:40%;margin-top:8px"></div></div>'.repeat(6)}</div>`;
+  const T = d.tasks, c = d.counts || {}, openT = T.filter(t => open_(t.status));
+  const late = openT.filter(t => t.daysLeft !== '' && t.daysLeft < 0), blocked = T.filter(t => t.status === 'Blocked');
+  const rep = d.people.reduce((a, p) => [a[0] + p.repToday, a[1] + p.dueToday], [0, 0]);
+  const acc = d.people.reduce((a, p) => [a[0] + p.accepted, a[1] + p.accTotal], [0, 0]);
+  const pct = (a, b) => b ? Math.round(a / b * 100) + '%' : '—';
+  const kpi = (lbl, val, sub, cls, f) => `<button class="card kpi ${cls || ''}" onclick="S.scope='all';S.filter='${f}';go('tasks')"><span>${lbl}</span><b>${val}</b><small>${sub}</small></button>`;
+  const noOwner = T.filter(t => t.noOwner);
+  const att = [
+    ...late.map(t => [I.alert, 's-nd', t, `${-t.daysLeft}d overdue · A: ${t.aNames || '—'}`]),
+    ...blocked.map(t => [I.block, 's-bl', t, `Blocked · ${(t.last && t.last.rukawat) || 'reason not given'}`]),
+    ...noOwner.map(t => [I.user, 's-wip', t, 'No accountable or responsible owner']),
+    ...(d.doubts || []).map(x => [I.help, 's-wip', null, `${x.naam} has a question: ${x.doubt}`, x.kaam, x.mobile, x.naam]),
+    ...(d.silent || []).map(x => [I.clock, 's-ns', null, `${x.naam}: no report for ${x.days} days`, x.kaam, x.mobile, x.naam])];
+  return `<div class="phead"><div><h2>${esc(PROJECT)} overview</h2><p>As of ${esc(d.today)}, ${esc(d.updated)} · ${d.total} tasks · ${d.total ? Math.round((c['Done'] || 0) / d.total * 100) : 0}% done</p></div>
+    <div style="display:flex;gap:8px"><a class="btn" href="#/tasks" onclick="S.scope='all';S.filter='all';S.person=''">View all tasks</a><button class="btn pri" onclick="go('tasks','new')">${I.plus}New task</button></div></div>
+  <div class="kpis">
+    ${kpi('Open tasks', openT.length, `${c['Done'] || 0} done of ${d.total}`, '', 'open')}
+    ${kpi('Overdue', late.length, 'Open tasks past due date', late.length ? 'bad' : 'good', 'late')}
+    ${kpi('Blocked', blocked.length, 'Need help to move', blocked.length ? 'bad' : 'good', 'Blocked')}
+    ${kpi('Awaiting verification', c['Verify Pending'] || 0, 'Done, waiting for accountable', (c['Verify Pending'] ? 'warn' : ''), 'Verify Pending')}
+    ${kpi("Today's report compliance", `${pct(rep[0], rep[1])}`, `${rep[0]} of ${rep[1]} expected reports`, rep[1] && rep[0] < rep[1] ? 'warn' : 'good', 'open')}
+    ${kpi('Tasks accepted', `${acc[0]}<em>/${acc[1]}</em>`, 'Owner assignments accepted', acc[0] < acc[1] ? 'warn' : 'good', 'all')}
+  </div>
+  <div class="card" style="margin-bottom:16px"><div class="cb"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><b>Work status</b><small style="color:var(--mut)">${d.total} tasks</small></div>
+    <div class="stack" role="img" aria-label="Task status distribution">${ORDER.map(s => c[s] ? `<i style="width:${c[s] / d.total * 100}%;background:${ST[s][2]}"></i>` : '').join('')}</div>
+    <div class="legend">${ORDER.map(s => `<span><i style="background:${ST[s][2]}"></i>${ST[s][0]} <b class="num">${c[s] || 0}</b></span>`).join('')}</div></div></div>
+  <div class="grid2">
+    <div class="card"><div class="ch"><h3>Team accountability</h3><small>Today</small></div>
+      <div class="tscroll"><table class="t"><thead><tr><th>Person</th><th class="r">Open</th><th class="r">Overdue</th><th>Today's reports</th><th class="r">Accepted</th></tr></thead><tbody>
+      ${d.people.map(p => { const o = p.total - (p.st['Done'] || 0) - (p.st['Verify Pending'] || 0); return `<tr onclick="S.scope='all';S.filter='all';S.q='';S.person='${esc(p.code)}';go('tasks')" title="Show ${esc(p.naam)}'s tasks"><td><div style="display:flex;align-items:center;gap:8px"><b>${esc(p.naam)}</b>${tel(p.mobile, p.naam)}</div></td><td class="r num">${o}</td><td class="r num" style="${p.late ? 'color:var(--bad-t);font-weight:600' : ''}">${p.late}</td>
+        <td><div style="display:flex;align-items:center;gap:8px"><div class="bar" style="flex:1"><i style="width:${p.dueToday ? p.repToday / p.dueToday * 100 : 0}%"></i></div><span class="num" style="font-size:13px">${p.repToday}/${p.dueToday}</span></div></td><td class="r num">${p.accepted}/${p.accTotal}</td></tr>` }).join('')}
+      </tbody></table></div></div>
+    <div class="card"><div class="ch"><h3>Needs attention</h3><small>${att.length} items</small></div>
+      ${att.length ? att.slice(0, 12).map(([ic, cl, t, why, k, mob, who]) => `<div class="att" ${t ? `role="button" tabindex="0" style="cursor:pointer" onclick="go('tasks','${esc(t.id)}')"` : ''}><span class="ic badge ${cl}" style="padding:0">${ic}</span><span><b>${esc(t ? t.kaam : k)}</b><small>${esc(why)}</small></span>${tel(mob, who)}</div>`).join('') + (att.length > 12 ? `<div class="att"><small>+ ${att.length - 12} more</small></div>` : '')
+      : '<div class="empty"><b>Nothing needs attention</b>No overdue, blocked or unowned work.</div>'}</div>
+  </div>
+  <div class="grid3" style="margin-bottom:16px">
+    ${fieldCard()}
+    ${leadsCard(d.growth)}
+    <div class="card"><div class="ch"><h3>Upcoming deadlines</h3><small>Next 7 days</small></div>
+      ${(() => { const up = openT.filter(t => t.daysLeft !== '' && t.daysLeft >= 0 && t.daysLeft <= 7).sort((a, b) => a.daysLeft - b.daysLeft);
+        return up.length ? up.slice(0, 6).map(t => `<button class="att" onclick="go('tasks','${esc(t.id)}')"><span class="ic badge s-ns" style="padding:0">${I.clock}</span><span><b>${esc(t.kaam)}</b><small>${t.daysLeft === 0 ? 'Due today' : 'Due ' + esc(t.deadline)} · ${esc(t.rNames || t.aNames || '—')}</small></span></button>`).join('')
+        : '<div class="empty"><b>No deadlines this week</b></div>' })()}</div>
+  </div>
+  <div class="grid2">
+    <div class="card"><div class="ch"><h3>Latest reports</h3><small>Most recent per task</small></div>
+      ${(() => { const rec = T.filter(t => t.last).sort((a, b) => (b.last.date > a.last.date) - (b.last.date < a.last.date)).slice(0, 6);
+        return rec.length ? rec.map(t => `<button class="att" onclick="go('tasks','${esc(t.id)}')">${stBadge(t.last.status)}<span><b>${esc(t.kaam)}</b><small>${esc(t.last.naam)} · ${esc(t.last.date)} · ${esc(t.last.kya)}</small></span></button>`).join('')
+        : '<div class="empty"><b>No reports yet</b>Reports appear here as the team submits them.</div>' })()}</div>
+    <div class="card"><div class="ch"><h3>Project map</h3><small>One tile per task · red border = overdue</small></div><div class="cb">
+      <div class="tiles">${[...T].sort((a, b) => String(a.id).localeCompare(String(b.id), 'en', { numeric: true })).map(t => { const x = ST[t.status] || ST['Not Started'], [pg, n] = String(t.id).split('-');
+        return `<button class="tile badge ${x[1]} ${open_(t.status) && t.daysLeft !== '' && t.daysLeft < 0 ? 'late' : ''}" style="border-radius:var(--rc)" onclick="go('tasks','${esc(t.id)}')" title="${esc(t.kaam)}: ${esc(x[0])}"><small>${esc(n ? pg : '')}</small>${esc(n || pg)}</button>` }).join('')}</div>
+      <div class="legend">${ORDER.map(s => `<span><i style="background:${ST[s][2]}"></i>${ST[s][0]}</span>`).join('')}</div></div></div>
+  </div>`;
+}
+
+/* Tejas Vihar leads (Plot CRM se, purane dashboard jaisa). Backend me CRM_EMAIL / CRM_PASSWORD na ho to error dikhta hai. */
+function leadsCard(g) {
+  const head = '<div class="card"><div class="ch"><h3>Tejas Vihar leads</h3><small>From Plot CRM, today</small></div><div class="cb">';
+  if (!g || !g.ok) return head + `<div class="empty" style="padding:16px"><b>Lead data unavailable</b>${esc((g && g.error) || 'Not connected')}</div></div></div>`;
+  const s = k => (g.byStatus || {})[k] || 0, tot = g.total || 1;
+  const cmp = (a, b) => `<small class="cmp ${a > b ? 'up' : a < b ? 'down' : ''}">${a > b ? '▲' : a < b ? '▼' : ''} yesterday ${b}</small>`;
+  const st = [['fresh', 'Fresh', '#98A2B3'], ['warm', 'Warm', '#D97706'], ['hot', 'Hot', '#D92D20'], ['visit', 'Site visit', '#6941C6'], ['booked', 'Booked', '#16865B']];
+  return head + `<div class="stats"><div><b>${g.newToday.length}</b><span>New leads</span><br>${cmp(g.newToday.length, g.newYday)}</div><div><b>${g.fuToday}</b><span>Follow-ups</span><br>${cmp(g.fuToday, g.fuYday)}</div>
+      <div><b>${g.visits}</b><span>Site visits</span></div><div><b>${g.booked}</b><span>Bookings</span></div></div>
+    <div class="stack" style="margin-top:14px" role="img" aria-label="Leads by stage">${st.map(([k, , col]) => s(k) ? `<i style="width:${s(k) / tot * 100}%;background:${col}"></i>` : '').join('')}</div>
+    <div class="legend">${st.map(([k, l, col]) => `<span><i style="background:${col}"></i>${l} <b class="num">${s(k)}</b></span>`).join('')}<span>Total <b class="num">${g.total}</b></span></div>
+    ${(g.changes || []).slice(0, 5).map(c => `<div style="display:flex;justify-content:space-between;gap:8px;font-size:13px;margin-top:8px"><span><b>${esc(c.name)}</b> ${esc(c.prev)} → ${esc(c.next)}</span><small style="color:var(--mut)">${esc(c.by)}</small></div>`).join('')}
+    ${g.overdue ? `<p style="margin:10px 0 0;font-size:13px;color:var(--bad-t);font-weight:600">${g.overdue} lead follow-ups overdue</p>` : ''}</div></div>`;
+}
+
+/* Field database completion: Field Database app ke calc() jaisa hi formula (Targets tab se). Formula badle to dono jagah badalna. */
+function fieldCard() {
+  const F = S.field;
+  const head = '<div class="card"><div class="ch"><h3>Field database</h3><a href="#/field" style="font-size:13px">Open</a></div><div class="cb">';
+  if (!F || !F.schema) return head + (Date.now() - S.t0 > 25000 ? '<div class="empty" style="padding:16px"><b>Field data not loaded yet</b><a href="#/field">Open Field data</a></div>' : '<div class="skel" style="height:84px"></div>') + '</div></div>';
+  const rows = k => F.data[k] || [], ent = k => F.schema.find(e => e.key === k), V = rows('Villages');
+  const miss = (e, r) => e.fields.some(f => f.req && (!r[f.k] || (f.t === 'tel' && !/^[6-9]\d{9}$/.test(r[f.k]))));
+  const td = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+  const L = F.targets.filter(t => ent(t.Entity)).map(t => {
+    const e = ent(t.Entity), min = +t.Minimum || 1, ok = rows(t.Entity).filter(r => !miss(e, r) && (!t.Field || (t.Value === '*' ? !!r[t.Field] : String(r[t.Field] || '').split(', ').includes(t.Value))));
+    const need = t.Scope === 'PerVillage' ? min * V.length : min, have = t.Scope === 'PerVillage' ? V.reduce((a, v) => a + Math.min(min, ok.filter(r => r.VillageID === v.ID).length), 0) : Math.min(min, ok.length);
+    const p = need ? have / need : 0; return { p, late: t.Deadline && t.Deadline < td && p < 1 } });
+  const pct = L.length ? Math.round(L.reduce((a, l) => a + l.p, 0) / L.length * 100) : 0, late = L.filter(l => l.late).length, C = 2 * Math.PI * 34;
+  return head + `<div class="ring"><svg viewBox="0 0 84 84" role="img" aria-label="${pct}% complete"><circle cx="42" cy="42" r="34" fill="none" stroke="#EDF0F5" stroke-width="9"/><circle cx="42" cy="42" r="34" fill="none" stroke="var(--pri)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct / 100)}" transform="rotate(-90 42 42)"/><text x="42" y="47" text-anchor="middle" font-size="17" font-weight="700" fill="#182230">${pct}%</text></svg>
+    <div><b>${V.length} villages · ${rows('People').length} people</b><p style="margin:4px 0 0;font-size:13px;color:${late ? 'var(--bad-t)' : 'var(--mut)'}">${late ? late + ' targets past deadline' : 'All targets on schedule'}</p></div></div></div></div>`;
+}
+
+/* ---------------- Overview: my day (team member) ---------------- */
+function vMyDay() {
+  const T = myTasks(), openT = T.filter(t => open_(t.status)), late = openT.filter(t => t.daysLeft !== '' && t.daysLeft < 0), soon = openT.filter(t => t.daysLeft !== '' && t.daysLeft >= 0 && t.daysLeft <= 3);
+  const kpi = (l, v, s, cls, f) => `<button class="card kpi ${cls || ''}" onclick="S.scope='mine';S.filter='${f}';go('tasks')"><span>${l}</span><b>${v}</b><small>${s}</small></button>`;
+  const actions = [...toAccept().map(t => [t, 'Review and accept']), ...pendingReport().map(t => [t, "Send today's report"]), ...toVerify().map(t => [t, 'Verify completion'])];
+  return `<div class="phead"><div><h2>Good ${new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'}, ${esc(S.me.naam)}</h2><p>${esc(S.me.today)} · ${esc(PROJECT)}</p></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">${S.me.coordinator && S.me.coordinator.mobile ? `<a class="btn" href="tel:${esc(S.me.coordinator.mobile)}">${I.phone}Call ${esc(S.me.coordinator.naam)}</a>` : ''}
+    ${pendingReport().length ? `<button class="btn pri" onclick="go('report')">${I.report}Send today's report</button>` : ''}</div></div>
+  ${acceptBanner()}
+  <div class="kpis k4">
+    ${kpi('My open tasks', openT.length, `${T.length} assigned in total`, '', 'open')}
+    ${kpi('Due in 3 days', soon.length, 'Plan these first', soon.length ? 'warn' : '', 'open')}
+    ${kpi('Overdue', late.length, 'Past due date', late.length ? 'bad' : 'good', 'late')}
+    ${kpi("Today's reports", `${toReport().length - pendingReport().length}<em>/${toReport().length}</em>`, 'Submit by 6 PM', pendingReport().length ? 'warn' : 'good', 'report')}
+  </div>
+  <div class="grid2"><div class="card"><div class="ch"><h3>My actions</h3><small>${actions.length} pending</small></div>
+    ${actions.length ? actions.map(([t, w]) => `<button class="att" onclick="go('tasks','${esc(t.id)}')"><span class="ic badge s-wip" style="padding:0">${I.check}</span><span><b>${esc(t.kaam)}</b><small>${w} · ${dueTxt(t)}</small></span></button>`).join('') : '<div class="empty"><b>You are all caught up</b>No pending actions right now.</div>'}</div>
+  ${fieldCard()}</div>`;
+}
+
+/* Naye kaam: ek-ek padh ke accept karo, ya sab ek saath */
+function acceptBanner() {
+  const n = toAccept().length; if (!n) return '';
+  return `<div class="card banner" role="status"><div><b>${n} task${n > 1 ? 's' : ''} waiting for you to accept</b>Read each task. If it is clear, accept it. If not, ask a question and ${esc((S.me.coordinator || {}).naam || 'the coordinator')} will call you.</div>
+    <button class="btn" onclick="S.scope='mine';S.filter='accept';go('tasks')">Review one by one</button><button class="btn ok" id="accall" onclick="acceptAll()">${I.check}I have read all ${n}, accept all</button></div>`;
+}
+async function acceptAll() {
+  const items = toAccept().map(t => ({ taskId: t.id, response: 'Accepted' }));
+  toast(`All ${items.length} tasks accepted. They are now in your daily report.`);
+  await optimistic(t => t.needsAccept && Object.assign({}, t, { needsAccept: false }), () => api('accept', { items }));
+}
+
+/* ---------------- Tasks (PRD 6.4 D) ---------------- */
+function scoped() {
+  const base = S.scope === 'all' && isMgr() ? allTasks() : myTasks(), nq = S.q.trim().toLowerCase(), pc = S.scope === 'all' ? S.person : '';
+  return base.filter(t => !pc || (t.rCodes || []).includes(pc) || (t.aRaw || []).includes(pc)).filter(t => !nq || (t.kaam + ' ' + t.id + ' ' + (t.aNames || '') + ' ' + (t.rNames || '')).toLowerCase().includes(nq));
+}
+const FILTERS = [['all', 'All', () => true], ['open', 'Open', t => open_(t.status)], ['late', 'Overdue', t => open_(t.status) && t.daysLeft !== '' && t.daysLeft < 0],
+  ['Blocked', 'Blocked', t => t.status === 'Blocked'], ['Verify Pending', 'Awaiting verification', t => t.status === 'Verify Pending'],
+  ['norep', 'Not reported today', t => open_(t.status) && (t.today || []).some(x => !x.status)], ['noowner', 'No owner', t => t.noOwner],
+  ['accept', 'To accept', t => t.needsAccept], ['report', 'To report', t => t.canReport && !t.needsAccept && !t.reportedToday], ['Done', 'Done', t => t.status === 'Done']];
+const MINE_ONLY = ['accept', 'report'], ALL_ONLY = ['norep', 'noowner'];
+function vTasks() {
+  if (!isMgr()) S.scope = 'mine';
+  const base = scoped(), fs = FILTERS.filter(f => !(S.scope === 'mine' ? ALL_ONLY : MINE_ONLY).includes(f[0]));
+  const pn = S.scope === 'all' && S.person ? ((S.dash && S.dash.people.find(p => p.code === S.person)) || {}).naam || S.person : '';
+  if (!fs.some(f => f[0] === S.filter)) S.filter = 'all';
+  const fn = FILTERS.find(f => f[0] === S.filter)[2], list = base.filter(fn).sort((a, b) => (open_(b.status) - open_(a.status)) || ((a.daysLeft === '' ? 999 : a.daysLeft) - (b.daysLeft === '' ? 999 : b.daysLeft)));
+  const roleTags = t => (t.roles || []).filter(x => x === 'A' || x === 'R').map(x => `<span class="role">${ROLE[x]}</span>`).join(' ');
+  const empty = `<div class="card empty"><b>${S.q ? 'No tasks match your search' : 'No tasks here'}</b>${S.q ? 'Try a different name or task ID.' : 'Try another filter.'}</div>`;
+  const row = t => `<tr onclick="go('tasks','${esc(t.id)}')"><td class="tid">${esc(t.id)}</td><td><div class="ttl">${esc(t.kaam)}</div>${t.status === 'Blocked' ? `<span class="blk">${I.block}Blocked</span>` : ''}</td>
+    <td>${esc(t.aNames || '—')}</td><td>${esc(t.rNames || '—')}</td><td>${dueTxt(t)}</td><td>${stBadge(t.status)}</td><td>${t.priority === 'High' ? '<span class="badge s-nd">High</span>' : '<span class="due">Normal</span>'}</td></tr>`;
+  const card = t => `<button class="card tcard" onclick="go('tasks','${esc(t.id)}')"><div class="row"><span class="ttl">${esc(t.kaam)}</span>${stBadge(t.status)}</div>
+    <div class="meta"><span class="tid" style="font-weight:600">${esc(t.id)}</span>${dueTxt(t)}${t.priority === 'High' ? '<span class="badge s-nd">High</span>' : ''}${roleTags(t)}${t.needsAccept ? '<span class="badge s-wip">To accept</span>' : ''}${t.canReport && !t.needsAccept && !t.reportedToday ? '<span class="badge s-wip">Report due</span>' : ''}</div></button>`;
+  const body = !list.length ? empty : S.tview === 'board'
+    ? `<div class="board">${ORDER.map(s => { const L = list.filter(t => t.status === s); return `<section class="col" aria-label="${ST[s][0]}"><h4>${ST[s][0]}<span class="num">${L.length}</span></h4>${L.map(card).join('') || '<div class="empty" style="padding:12px;font-size:13px">None</div>'}</section>` }).join('')}</div>`
+    : `<div class="card desk"><table class="t"><thead><tr><th>ID</th><th>Task</th><th>Accountable</th><th>Responsible</th><th>Due</th><th>Status</th><th>Priority</th></tr></thead><tbody>${list.map(row).join('')}</tbody></table></div><div class="mcards">${list.map(card).join('')}</div>`;
+  return `<div class="phead"><div><h2>${S.scope === 'all' ? (pn ? esc(pn) + "'s tasks" : 'All tasks') : 'My tasks'}</h2><p>${list.length} of ${base.length} tasks${S.q ? ` matching “${esc(S.q)}”` : ''}</p></div>
+    ${isMgr() ? `<button class="btn pri" onclick="go('tasks','new')">${I.plus}New task</button>` : ''}</div>
+  ${S.scope === 'mine' ? acceptBanner() : ''}
+  <div class="tools"><label class="msearch">${I.search}<span class="sr">Search tasks</span><input class="in" id="mq" type="search" placeholder="Search tasks or names" value="${esc(S.q)}"></label>${pn ? `<button class="chip on" onclick="S.person='';render()" aria-label="Clear person filter">${esc(pn)} ${I.x}</button>` : ''}${isMgr() ? `<div class="seg" role="tablist" aria-label="Scope"><button class="${S.scope === 'mine' ? 'on' : ''}" onclick="S.scope='mine';S.person='';render()">My tasks</button><button class="${S.scope === 'all' ? 'on' : ''}" onclick="S.scope='all';render()">All tasks</button></div>` : ''}
+    <div class="chips">${fs.map(([k, l, f]) => `<button class="chip ${S.filter === k ? 'on' : ''}" onclick="S.filter='${k}';render()">${l} <b class="num">${base.filter(f).length}</b></button>`).join('')}</div>
+    <div class="seg" style="margin-left:auto" aria-label="View"><button class="${S.tview === 'list' ? 'on' : ''}" onclick="setView('list')" aria-label="List view">${I.list}</button><button class="${S.tview === 'board' ? 'on' : ''}" onclick="setView('board')" aria-label="Board view">${I.board}</button></div></div>
+  ${body}`;
+}
+function setView(v) { S.tview = v; ls.set('pms_tview', v); render() }
+
+/* ---------------- Daily report (PRD 6.4 E) ---------------- */
+function vReport() {
+  const L = toReport(), done = L.filter(t => t.reportedToday), due = L.filter(t => !t.reportedToday && t.mustReport), asA = L.filter(t => !t.reportedToday && !t.mustReport);
+  const card = t => `<button class="card tcard" onclick="go('report','${esc(t.id)}')"><div class="row"><span class="ttl">${esc(t.kaam)}</span>${t.reportedToday ? stBadge(t.reportedToday.status) : t.status !== 'Not Started' ? stBadge(t.status) : '<span class="badge s-wip">Not submitted</span>'}</div>
+      <div class="meta"><span class="tid" style="font-weight:600">${esc(t.id)}</span>${dueTxt(t)}</div>${t.reportedToday ? `<p style="margin:8px 0 0;font-size:13.5px;color:#344054">${esc(t.reportedToday.kya)}</p>` : ''}</button>`;
+  return `<div class="phead"><div><h2>Today's report</h2><p>${esc(S.me.today)} · ${done.length} of ${L.length} submitted · due by 6 PM</p></div></div>
+  ${acceptBanner()}
+  ${L.length ? `<div class="card" style="margin-bottom:8px"><div class="cb"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px"><b>${done.length === L.length ? 'All reports submitted. Well done!' : `${L.length - done.length} report${L.length - done.length > 1 ? 's' : ''} left`}</b><span class="num">${done.length}/${L.length}</span></div>
+      <div class="bar" style="height:10px"><i style="width:${done.length / L.length * 100}%;background:var(--ok)"></i></div></div></div>
+    ${due.length ? `<div class="sec">Report due (${due.length})</div>` + due.map(card).join('') : ''}
+    ${asA.length ? `<div class="sec">You are accountable (${asA.length})</div><p class="hint" style="margin:-4px 2px 10px">Your team reports on these. You can add an update too.</p>` + asA.map(card).join('') : ''}
+    ${done.length ? `<div class="sec">Reported today (${done.length})</div>` + done.map(card).join('') : ''}`
+  : `<div class="card empty"><b>No reports due today</b>${toAccept().length ? 'Accept your assigned tasks first, then they appear here.' : 'You have no open tasks to report on.'}</div>`}`;
+}
+
+/* ---------------- Task drawer ---------------- */
+function renderDrawer(id, edit) {
+  const box = $('#drw'); if (!box) return; box.dataset.key = (id || '') + (edit ? '/edit' : '');
+  if (edit && isMgr() && (id === 'new' || dashTask(id))) return renderEdit(id === 'new' ? null : dashTask(id));
+  const t = id && taskById(id);
+  if (!t) { box.innerHTML = ''; return }
+  const dt = dashTask(id);
+  const mine = myTasks().find(x => x.id === id), back = route().view;
+  const last = t.last;
+  let actions = '';
+  if (mine && mine.needsAccept) actions = `<div class="act"><h4>Review this task</h4><p>Read what “done” means and the steps. Accept if it is clear, or ask a question.</p>
+    ${mine.doubtPending ? `<div class="box"><b>Your question (waiting)</b>${esc(mine.doubtPending)}</div>` : ''}
+    <label class="f" for="dq">Question <small>(only if something is unclear)</small></label><textarea class="in" id="dq" placeholder="What is unclear?"></textarea>
+    <div class="brow"><button class="btn" onclick="doAccept('${esc(t.id)}','Doubt')">Ask question</button><button class="btn ok" onclick="doAccept('${esc(t.id)}','Accepted')">${I.check}Accept task</button></div></div>`;
+  else if (mine && mine.canReport && !mine.reportedToday) { const pk = S.pick[t.id] || '';
+    actions = `<div class="act"><h4>Today's report</h4><p>Takes under a minute. Due by 6 PM.</p>
+    <div class="stg" role="radiogroup" aria-label="Status today">${[['Done', 'Work complete'], ['WIP', 'Some progress'], ['Not Done', 'No progress today'], ['Blocked', 'Stuck, need help']].map(([s, sub]) =>
+      `<button class="st ${pk === s ? 'on' : ''}" role="radio" aria-checked="${pk === s}" onclick="pickSt('${esc(t.id)}','${s}',this)"><i style="background:${ST[s][2]}"></i><span>${ST[s][0].replace(' today', '')}<small style="display:block;font-weight:400;color:var(--mut);font-size:12px">${sub}</small></span></button>`).join('')}</div>
+    <label class="f" for="rk">What did you do today?</label><textarea class="in" id="rk" placeholder="Two lines are enough">${esc((S.draft[t.id] || {}).kya || '')}</textarea>
+    <label class="f" for="rn">Next step <small>(optional)</small></label><input class="in" id="rn" placeholder="What will you do tomorrow?" value="${esc((S.draft[t.id] || {}).kal || '')}">
+    <label class="f" for="rb" id="rbl">${pk === 'Blocked' ? 'What is blocking you? Who can help?' : 'Blocker or help needed <small>(optional)</small>'}</label><textarea class="in" id="rb" placeholder="Blocker or help needed">${esc((S.draft[t.id] || {}).ruk || '')}</textarea>
+    <label class="f">Photo proof <small>(optional)</small></label><label class="filein">${I.camera}<span id="pn">Add a photo</span><input type="file" id="rp" accept="image/*" onchange="$('#pn').textContent=this.files[0]?this.files[0].name:'Add a photo'"></label>
+    <button class="btn pri block" id="rbtn" onclick="doReport('${esc(t.id)}')">Submit report</button></div>` }
+  else if (mine && mine.reportedToday) actions = `<div class="act"><h4>Reported today ${stBadge(mine.reportedToday.status)}</h4><p style="margin:6px 0 0">${esc(mine.reportedToday.kya)}</p></div>`;
+  if (mine && mine.canVerify) actions += `<div class="act"><h4>Verify completion</h4><p>${esc((last && last.naam) || 'The team')} marked this done. Check the proof, then approve or send back.</p>
+    <label class="f" for="vc">Reason <small>(required to send back)</small></label><textarea class="in" id="vc"></textarea>
+    <div class="brow"><button class="btn danger" onclick="doVerify('${esc(t.id)}','return')">Send back</button><button class="btn ok" onclick="doVerify('${esc(t.id)}','approve')">${I.check}Approve</button></div></div>`;
+  box.innerHTML = `<div class="scrim" onclick="go('${back}')"></div><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="dt">
+    <div class="dh"><div style="flex:1;min-width:0"><div class="crumb">${esc(t.id)} · ${esc(t.page || PROJECT)}</div><h3 id="dt">${esc(t.kaam)}</h3><div style="display:flex;gap:6px;flex-wrap:wrap">${stBadge(t.status)}${t.priority === 'High' ? '<span class="badge s-nd">High priority</span>' : ''}${(t.roles || []).map(x => `<span class="role">${ROLE[x]}</span>`).join('')}</div></div>
+      <button class="ibtn" onclick="go('${back}')" aria-label="Close">${I.x}</button></div>
+    <div class="db">
+      ${actions && !(mine && mine.needsAccept) ? actions : ''}
+      <dl class="kv" ${actions && !(mine && mine.needsAccept) ? 'style="margin-top:16px"' : ''}><dt>Due</dt><dd>${(d => !t.deadline || d.includes('>' + esc(t.deadline) + '<') ? d : esc(t.deadline) + ' · ' + d)(dueTxt(t))}</dd><dt>Accountable</dt><dd>${esc(t.aNames || '—')}</dd><dt>Responsible</dt><dd>${esc(t.rNames || '—')}</dd></dl>
+      ${t.done ? `<div class="box"><b>Done when</b>${esc(t.done)}</div>` : ''}
+      ${t.steps ? `<div class="box"><b>How to do it</b>${esc(t.steps)}</div>` : ''}
+      ${t.note ? `<div class="box" style="background:var(--warn-l)"><b>Note</b>${esc(t.note)}</div>` : ''}
+      ${last ? `<div class="box"><b>Last report · ${esc(last.date)} · ${esc(last.naam)}</b>${stBadge(last.status)}<br>${esc(last.kya)}${last.kal ? '<br><span style="color:var(--mut)">Next: ' + esc(last.kal) + '</span>' : ''}${last.rukawat ? '<br><span style="color:var(--bad-t)">Blocker: ' + esc(last.rukawat) + '</span>' : ''}${last.proof ? `<br><a href="${esc(last.proof)}" target="_blank" rel="noopener">View proof</a>` : ''}</div>` : '<div class="box"><b>Last report</b>No report yet</div>'}
+      ${dt && (dt.today || []).length && open_(dt.status) ? `<div class="box"><b>Today's reports</b><div class="who">${dt.today.map(x => `<span class="badge ${x.status ? ST[x.status][1] : 's-ns'}">${esc(x.naam)}: ${x.status ? esc(ST[x.status][0]) : 'not yet'}</span>`).join('')}</div></div>` : ''}
+      ${dt && dt.noOwner ? '<div class="box" style="background:var(--bad-l);color:var(--bad-t)"><b style="color:var(--bad-t)">No owner</b>Choose an accountable and a responsible person (Edit).</div>' : ''}
+      ${dt ? `<div class="brow" style="margin-top:0"><button class="btn" onclick="go('tasks','${esc(t.id)}','edit')">${I.edit}Edit</button><button class="btn danger" id="delbtn" onclick="delTask('${esc(t.id)}')">${I.trash}Delete</button></div>` : ''}
+      ${actions ? (mine && mine.needsAccept ? actions : '') : `<p style="color:var(--mut);font-size:13.5px">${mine && mine.canReport ? '' : mine ? 'You are kept informed on this task.' : 'You are not on this task.'} ${mine && mine.canReport ? '' : 'Only the accountable and responsible people can report on it.'}</p>`}
+    </div></aside>`;
+}
+function pickSt(id, st, el) {   // status chuno bina form dobara banaye
+  S.pick[id] = st; [...el.parentNode.children].forEach(b => { b.classList.toggle('on', b === el); b.setAttribute('aria-checked', b === el) });
+  $('#rbl').innerHTML = st === 'Blocked' ? 'What is blocking you? Who can help?' : 'Blocker or help needed <small>(optional)</small>';
+}
+async function withBusy(btn, fn) { const b = btn && $(btn); if (b) { b.disabled = true } try { await fn() } catch (e) { if (isAuthErr(e)) return logout(e.message); toast(e.message, 1) } finally { if (b && document.contains(b)) b.disabled = false } }
+async function doAccept(id, resp) {
+  const doubt = ($('#dq') || {}).value || '';
+  if (resp === 'Doubt' && !doubt.trim()) return toast('Write your question first', 1);
+  toast(resp === 'Doubt' ? 'Question sent to the coordinator' : 'Task accepted');
+  await optimistic(t => t.id === id && Object.assign({}, t, resp === 'Doubt' ? { doubtPending: doubt } : { needsAccept: false }), () => api('accept', { items: [{ taskId: id, response: resp, doubt }] }));
+}
+async function doReport(id) {
+  const status = S.pick[id], kya = $('#rk').value.trim(), kal = $('#rn').value.trim(), ruk = $('#rb').value.trim(), f = $('#rp').files[0];
+  if (!status) return toast('Choose a status', 1); if (kya.length < 3) return toast('Write what you did today', 1); if (status === 'Blocked' && !ruk) return toast('Write what is blocking you', 1);
+  let photo = null; if (f) { const b = $('#rbtn'); b.disabled = true; b.textContent = 'Preparing photo…'; try { photo = await compress(f) } catch (e) { b.disabled = false; b.textContent = 'Submit report'; return toast(e.message, 1) } }
+  const view = route().view; S.draft[id] = { kya, kal, ruk }; go(view);
+  toast(photo ? 'Report sent. Uploading photo…' : 'Report sent');
+  await optimistic(t => t.id === id && Object.assign({}, t, { reportedToday: { status, kya }, status: status === 'Done' ? 'Verify Pending' : status }),
+    async () => { const r = await api('report', { taskId: id, status, kya, kal, rukawat: ruk, photo }); delete S.pick[id]; delete S.draft[id];
+      if (photo || r.status === 'Verify Pending') toast(r.status === 'Verify Pending' ? 'Report saved. The accountable person will verify.' : 'Report and photo saved'); return r },
+    () => { toast('Report not sent. Your text is kept, please submit again.', 1); go(view, id) });
+}
+async function doVerify(id, decision) {
+  const comment = $('#vc').value.trim(); if (decision !== 'approve' && !comment) return toast('Write why you are sending it back', 1);
+  await withBusy(null, async () => { const r = await api('verify', { taskId: id, decision, comment }); applyMe(r); toast(decision === 'approve' ? 'Approved as done' : 'Sent back'); go(route().view) });
+}
+/* Server ka jawab aaya: naya data lagao. Coordinator ka dashboard isi jawab me aata hai (purana backend ho to peeche se). */
+const PEND = new Set();   // abhi server tak pahunch rahe badlav: naya jawab aaye to bhi ye dikhte rahen
+const withPend = me => PEND.size ? Object.assign({}, me, { tasks: me.tasks.map(t => [...PEND].reduce((x, f) => f(x) || x, t)) }) : me;
+function applyMe(r) {
+  S.me = withPend(r.me); ls.set('pms_me_' + r.me.code, JSON.stringify(r.me));
+  if (r.dash) { S.dash = r.dash; S.dash.at = Date.now(); ls.set('pms_dash', JSON.stringify(r.dash)) }
+  else if (isMgr()) api('dashboard').then(d => { S.dash = d; ls.set('pms_dash', JSON.stringify(d)); render() }).catch(() => { });
+  render();
+}
+/* Turant dikhao, server peeche se save kare (2-5 sec ka intezaar nahi). Fail ho to wapas pehle jaisa. */
+async function optimistic(change, call, onFail) {
+  PEND.add(change); S.me = withPend(S.me); redraw();
+  let r; try { r = await call() } catch (e) {
+    PEND.delete(change); if (isAuthErr(e)) return logout(e.message);
+    S.me = withPend(JSON.parse(ls.get('pms_me_' + S.me.code)) || S.me); redraw(); toast(e.message, 1); onFail && onFail(e); return }
+  PEND.delete(change); applyMe(r);
+}
+
+/* ---------------- Task add / edit / delete (sirf coordinator; Sheet me seedha) ---------------- */
+function renderEdit(t) {
+  const key = t ? t.id : 'new';
+  if (!S.ed || S.ed.key !== key) S.ed = { key, a: t ? (t.aRaw || [])[0] || '' : '', r: t ? [...(t.rRaw || [])] : [], pr: t && t.priority === 'High' ? 'High' : 'Normal' };
+  if (!S.team.length) api('team').then(x => { S.team = x; if (route().edit) renderEdit(t) }).catch(e => toast(e.message, 1));
+  const team = S.team, back = t ? `go('tasks','${esc(t.id)}')` : `go('tasks')`;
+  $('#drw').innerHTML = `<div class="scrim" onclick="${back}"></div><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="dt">
+    <div class="dh"><div style="flex:1;min-width:0"><div class="crumb">${t ? esc(t.id) + ' · changes save to the Sheet' : 'A new row is added to the Sheet'}</div><h3 id="dt">${t ? 'Edit task' : 'New task'}</h3></div>
+      <button class="ibtn" onclick="${back}" aria-label="Close">${I.x}</button></div>
+    <div class="db">
+      <label class="f" for="ek">Task</label><input class="in" id="ek" value="${esc(t ? t.kaam : '')}" placeholder="e.g. Put up 5 hoardings on the highway">
+      <label class="f">Accountable (A) <small>one person, owns the outcome</small></label>
+      <div class="pick" id="pa">${team.map(m => `<button type="button" class="${S.ed.a === m.code ? 'on' : ''}" onclick="S.ed.a='${esc(m.code)}';[...this.parentNode.children].forEach(b=>b.classList.toggle('on',b===this))">${esc(m.naam)}</button>`).join('') || '<span class="hint">Loading team…</span>'}</div>
+      <label class="f">Responsible (R) <small>one or more, do the work</small></label>
+      <div class="pick" id="pr">${team.map(m => `<button type="button" class="${S.ed.r.includes(m.code) ? 'on' : ''}" onclick="edR('${esc(m.code)}',this)">${esc(m.naam)}</button>`).join('')}</div>
+      <label class="f" for="ed">Days to complete</label><input class="in" id="ed" type="number" min="1" max="365" inputmode="numeric" value="${esc(t ? t.din : 7)}" oninput="dlHint()">
+      <div class="hint" id="edl"></div>
+      <label class="f">Priority</label>
+      <div class="pick">${['Normal', 'High'].map(x => `<button type="button" class="${S.ed.pr === x ? 'on' : ''}" onclick="S.ed.pr='${x}';[...this.parentNode.children].forEach(b=>b.classList.toggle('on',b===this))">${x}</button>`).join('')}</div>
+      <label class="f" for="edn">Done when <small>(optional)</small></label><input class="in" id="edn" value="${esc(t ? t.done : '')}" placeholder="e.g. 5 hoardings up, photos shared">
+      <label class="f" for="est">How to do it <small>(optional, one step per line)</small></label><textarea class="in" id="est" rows="4" placeholder="1. Finalise locations&#10;2. Get vendor rates">${esc(t ? t.steps : '')}</textarea>
+      <div class="brow"><button class="btn" onclick="${back}">Cancel</button><button class="btn pri" id="esave" onclick="saveTask('${t ? esc(t.id) : ''}')">${t ? 'Save changes' : 'Add task'}</button></div>
+    </div></aside>`;
+  dlHint();
+}
+function edR(c, el) { const i = S.ed.r.indexOf(c); i < 0 ? S.ed.r.push(c) : S.ed.r.splice(i, 1); el.classList.toggle('on', i < 0) }
+function dlHint() {
+  const din = parseInt(($('#ed') || {}).value, 10), el = $('#edl'); if (!el) return;
+  if (!(din >= 1)) return el.textContent = 'Enter the number of days';
+  const t = S.ed.key !== 'new' && dashTask(S.ed.key), base = t && t.start ? new Date(t.start + 'T00:00:00') : new Date();
+  base.setDate(base.getDate() + din);
+  el.innerHTML = `Due date: <b>${base.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</b>${t && t.start ? ' (from start date)' : ' (from today)'}`;
+}
+async function saveTask(id) {
+  const task = { id, kaam: $('#ek').value.trim(), a: S.ed.a, r: S.ed.r.join(','), din: $('#ed').value, priority: S.ed.pr, done: $('#edn').value.trim(), steps: $('#est').value.trim() };
+  if (task.kaam.length < 3) return toast('Write the task name', 1); if (!task.a) return toast('Choose the accountable person', 1);
+  if (!task.r) return toast('Choose at least one responsible person', 1); if (!(parseInt(task.din, 10) >= 1)) return toast('Enter the number of days', 1);
+  await withBusy('#esave', async () => { const r = await api('taskSave', { task }); applyMe(r); S.ed = null;
+    toast(id ? 'Changes saved to the Sheet' : `Task added (${r.id})`); go('tasks', r.id) });
+}
+async function delTask(id) {
+  const t = dashTask(id); if (!t) return;
+  if (!confirm(`Delete "${t.kaam}" permanently?\n\nIt is removed from the Sheet. Its old reports stay in the record.\n\nIf the work is finished, approve it as Done instead.`)) return;
+  await withBusy('#delbtn', async () => { const r = await api('taskDelete', { taskId: id }); applyMe(r); toast('Task deleted from the Sheet'); go('tasks') });
+}
+
+/* ---------------- Messages (coordinator): subah / shaam ke WhatsApp message ---------------- */
+async function loadMsgs(rebuild) {
+  S.msgs = { loading: true };
+  try { S.msgs = await api('messages', rebuild ? { rebuild } : {}) } catch (e) { if (isAuthErr(e)) return logout(e.message); S.msgs = { error: e.message } }
+  if (route().view === 'messages') render();
+}
+function vMsgs() {
+  const m = S.msgs;
+  if (!m || m.loading) return '<div class="msgs">' + '<div class="card"><div class="cb"><div class="skel" style="height:18px;width:40%"></div><div class="skel" style="height:140px;margin-top:12px"></div></div></div>'.repeat(2) + '</div>';
+  if (m.error) return `<div class="card empty"><b>Could not load messages</b>${esc(m.error)}<br><button class="btn" style="margin-top:12px" onclick="loadMsgs()">Try again</button></div>`;
+  const sent = String(m.sent || '');
+  const box = (key, title, old, hint, group, rebuild) => { const text = m[key], was = group && (sent.includes(title) || sent.includes(old));
+    return `<div class="card"><div class="ch"><div><h3>${title}</h3><small>${hint}</small></div>${group ? '<span class="badge s-done">Group</span>' : '<span class="badge s-ns">Private</span>'}</div><div class="cb">
+      ${text ? `<div class="bubble ${group ? '' : 'private'}">${esc(text)}</div>` : '<div class="empty" style="padding:16px"><b>Not created yet</b></div>'}
+      <div class="mrow">${text && group ? `<a class="btn wa" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener" onclick="markSent('${title}')">${I.send}Send on WhatsApp</a>` : ''}
+        ${text ? `<button class="btn" onclick="copyMsg('${key}')">${I.copy}Copy</button>` : ''}
+        ${rebuild ? `<button class="btn" onclick="loadMsgs('${rebuild}');render()">${I.refresh}${text ? 'Rebuild' : 'Create now'}</button>` : ''}</div>
+      ${was ? `<div class="sent">${I.check}Sent today</div>` : ''}</div></div>` };
+  return `<div class="phead"><div><h2>Today's messages</h2><p>${esc(m.date)} · read, then send to the Attendance group</p></div></div>
+  <div class="msgs">${box('morning', 'Morning message', 'Subah ka message', "Today's tasks, for the Attendance group", true, 'morning')}
+    ${box('evening', 'Evening feedback', 'Shaam ka feedback', 'Who worked, what is pending. Created automatically at 8 PM.', true, 'evening')}
+    ${box('alerts', 'Your alerts', '', 'Do not post in the group. Call these people.', false, '')}
+    ${box('director', 'Summary for the director', '', 'Forward to the director personally', false, '')}</div>`;
+}
+async function copyMsg(key) {
+  const text = S.msgs[key];
+  try { await navigator.clipboard.writeText(text) } catch (e) { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove() }
+  toast('Message copied');
+}
+async function markSent(which) { try { const r = await api('markSent', { which }); S.msgs.sent = (S.msgs.sent ? S.msgs.sent + '\n' : '') + r.sent; render() } catch (e) { } }
+function compress(file) {
+  return new Promise((res, rej) => { const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => { const s = Math.min(1, 1280 / Math.max(img.width, img.height)), c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url); res({ name: file.name, type: 'image/jpeg', data: c.toDataURL('image/jpeg', .72).split(',')[1] }) };
+    img.onerror = () => rej(new Error('Could not open the photo. Try another one.')); img.src = url });
+}
+document.addEventListener('keydown', e => { const r = route(); if (e.key === 'Escape' && r.task) r.edit && r.task !== 'new' ? go(r.view, r.task) : go(r.view) });
+
+boot();
+</script>
+</body>
+</html>
