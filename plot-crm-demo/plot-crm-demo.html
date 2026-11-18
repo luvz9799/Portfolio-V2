@@ -328,6 +328,71 @@
   .badge.ontime{background:#d1fae5;color:#047857}
   .badge.absent{background:#f3f4f6;color:#9ca3af}
   .off-set{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:#fff}
+  /* attendance: calendar (mine) + status-group team board */
+  .cal-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+  .cal-sum div{background:#f6f7fb;border-radius:10px;padding:7px 9px}
+  .cal-sum span{display:block;font-size:.64rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .cal-sum b{font-size:1.05rem}
+  .cal-g{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+  .cal-h div{text-align:center;font-size:.64rem;font-weight:700;color:var(--muted);padding-bottom:2px}
+  .cal-c,.wk-d{border:0;border-radius:9px;background:#f6f7fb;color:#94a3b8;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;font:inherit;font-style:normal}
+  .cal-c{height:46px;gap:1px;cursor:pointer}
+  .cal-c b{font-size:.82rem;color:var(--ink)} .cal-c span{font-size:.6rem;font-weight:700}
+  .cal-c.ok,.wk-d.ok{background:#dcfce7;color:#15803d} .cal-c.late,.wk-d.late{background:#fef3c7;color:#b45309}
+  .cal-c.abs,.wk-d.abs{background:#fee2e2;color:#b91c1c} .cal-c.leave,.wk-d.leave{background:#e0f2fe;color:#0369a1}
+  .cal-c.hol,.cal-c.off,.wk-d.hol,.wk-d.off{background:#eceef3;color:#64748b} .cal-c.fut,.wk-d.fut{background:transparent;border:1px dashed var(--line)}
+  .cal-c.tod{box-shadow:inset 0 0 0 2px var(--brand)} .cal-c.sel{box-shadow:inset 0 0 0 2px #0f172a}
+  .cal-det{margin-top:9px;padding:8px 10px;border-radius:10px;background:#f6f7fb;font-size:.84rem}
+  .cal-leg{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:9px;font-size:.7rem;color:var(--muted)}
+  .cal-leg i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .cal-leg .ok{background:#86efac}.cal-leg .late{background:#fcd34d}.cal-leg .abs{background:#fca5a5}.cal-leg .leave{background:#7dd3fc}.cal-leg .hol{background:#cbd5e1}
+  .att-seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;text-transform:none;letter-spacing:0}
+  .att-seg button{border:0;background:#fff;padding:5px 13px;font:inherit;font-size:.74rem;font-weight:700;color:var(--muted);cursor:pointer}
+  .att-seg button.on{background:var(--brand);color:#fff}
+  .att-pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 11px;font:inherit;font-size:.76rem;font-weight:700;color:var(--ink);margin:0 5px 5px 0;cursor:pointer}
+  .att-pill.on{background:#eef0ff;border-color:#c7d2fe;color:#4338ca}
+  .att-bar{height:7px;border-radius:4px;background:#eceef3;overflow:hidden} .att-bar i{display:block;height:100%;background:#22c55e}
+  .att-gt{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin:12px 0 6px}
+  .att-gt.ok{color:#15803d}.att-gt.wait{color:var(--muted)}.att-gt.warn{color:#b45309}.att-gt.abs{color:#b91c1c}.att-gt.leave{color:#0369a1}
+  .att-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px 3px 3px;margin:0 5px 6px 0;font:inherit;font-size:.8rem;font-weight:600;color:var(--ink);cursor:pointer}
+  .att-chip .avatar{width:24px;height:24px;font-size:.72rem}
+  .att-chip.ok{background:#f0fdf4;border-color:#bbf7d0}.att-chip.late{background:#fffbeb;border-color:#fde68a}.att-chip.abs{background:#fef2f2;border-color:#fecaca}.att-chip.leave{background:#f0f9ff;border-color:#bae6fd}
+  .att-chip b{font-weight:800;color:#15803d} .att-chip.late b{color:#b45309}
+  .att-banner{padding:16px;text-align:center;font-weight:700;color:#475569;background:#f6f7fb}
+  .wk-r{display:grid;grid-template-columns:78px repeat(6,minmax(32px,1fr));gap:4px;align-items:center;margin-bottom:4px;font-size:.78rem}
+  .wk-h span{text-align:center;font-size:.64rem;font-weight:700;color:var(--muted);line-height:1.25}
+  .wk-d{height:28px;font-size:.64rem;font-weight:700}
+  /* huddle: plan/report form + team progress tiles */
+  .hp-row{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+  .hp-row .n{font-weight:800;color:var(--muted);width:18px;flex:none;font-size:.8rem}
+  .hr-row{border:1px solid var(--line);border-radius:11px;padding:8px 10px;margin-bottom:7px;background:#fff}
+  .hr-top{display:flex;align-items:center;gap:8px}
+  .st-seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex:none}
+  .st-seg button{border:0;border-left:1px solid var(--line);background:#fff;padding:6px 9px;font:inherit;font-size:.72rem;font-weight:700;color:var(--muted);cursor:pointer}
+  .st-seg button:first-child{border-left:0}
+  .st-seg button.done{background:#dcfce7;color:#15803d}.st-seg button.partial{background:#fef3c7;color:#b45309}.st-seg button.notdone{background:#fee2e2;color:#b91c1c}
+  .clip{border:0;background:none;cursor:pointer;font-size:1rem;padding:4px;opacity:.45;flex:none} .clip.has{opacity:1}
+  .yest-btn{width:100%;display:flex;align-items:center;gap:8px;text-align:left;border:1px solid var(--line);background:#f6f7fb;border-radius:11px;padding:9px 12px;font:inherit;font-size:.86rem;font-weight:600;color:var(--ink);cursor:pointer;margin-bottom:8px}
+  .hud-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+  .hud-tile{text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px;font:inherit;color:var(--ink);cursor:pointer;box-shadow:var(--sh);min-width:0}
+  .hud-tile b{display:block;font-size:.88rem} .hud-tile .tiny{margin-top:2px}
+  .hud-tile.rep{border-color:#bbf7d0;background:#f0fdf4}
+  .hud-tile.none{border-style:dashed;background:transparent;box-shadow:none;color:var(--muted);cursor:default}
+  .hud-tile .bar{height:5px;border-radius:3px;background:#eceef3;overflow:hidden;margin-top:7px} .hud-tile .bar i{display:block;height:100%;background:#22c55e}
+  /* home: my day */
+  .home-grid{display:grid;gap:14px;margin-top:14px}
+  @media(min-width:1000px){.home-grid{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)}}
+  .md-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .md-t{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:linear-gradient(180deg,#fff,#f8f9fe);text-align:left;font:inherit;color:var(--ink);cursor:pointer;box-shadow:var(--sh),var(--hl);min-width:0}
+  .md-t span{display:block;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .md-t b{display:block;font-size:1.05rem;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .md-t.ok{background:#f0fdf4;border-color:#bbf7d0}.md-t.ok b{color:#15803d}
+  .md-t.wn{background:#fffbeb;border-color:#fde68a}.md-t.wn b{color:#b45309}
+  .call-row{display:flex;align-items:center;gap:10px;padding:9px 2px;border-top:1px solid var(--line);cursor:pointer}
+  .hm-pill{font-size:.64rem;font-weight:800;padding:3px 8px;border-radius:999px;white-space:nowrap;flex:none}
+  .hm-pill.dn{background:#fee2e2;color:#b91c1c}.hm-pill.wn{background:#fef3c7;color:#b45309}.hm-pill.ac{background:#eef0ff;color:#4338ca}
+  .saathi-btn{display:flex;align-items:center;gap:9px;border:0;border-radius:14px;padding:9px 16px;cursor:pointer;color:#fff;font:inherit;text-align:left;background:linear-gradient(135deg,#6d5efc,#8b5cf6 55%,#a855f7);box-shadow:0 10px 24px -12px rgba(109,94,252,.7),inset 0 1px 0 rgba(255,255,255,.28)}
+  .saathi-btn b{display:block;font-size:.92rem} .saathi-btn small{display:block;font-size:.7rem;opacity:.9}
 
   /* mobile bottom navigation bar (app-jaisa) */
   .bottomnav{display:none}
@@ -395,7 +460,7 @@
       const name = k[0].toUpperCase() + k.slice(1), isToday = day === D(0);
       if ((di + pi) % 4 === 3 && !(isToday && k === 'amit')) return;
       if (a) store.attendance[day+'__'+k] = { date: day, name, nameKey: k, inTime: '09:5'+pi, office:'kota', officeName:'Kota', ts: T0 };
-      if (p) store.standups[day+'__'+k] = { date: day, name, nameKey: k, tasks: work[(di+pi)%3].map(t => ({ t, st: r && !isToday ? 'done' : '', rm:'' })), issues: [], ts: T0 };
+      if (p) store.standups[day+'__'+k] = { date: day, name, nameKey: k, tasks: work[(di+pi)%3].map((t, ti) => ({ t, st: r && (!isToday || ti === 0) ? 'done' : '', rm:'' })), issues: [], ts: T0 };
     }));
   })();
 
@@ -1251,7 +1316,7 @@ async function leadMergeGroup(phone){
     const batch=db.batch();
     rest.forEach(L=>batch.set(col().doc(L.id),{deleted:true,deletedBy:(user&&user.email||''),deletedAt:Date.now(),mergedInto:keep.id},{merge:true}));
     await batch.commit();
-    toast(rest.length+' lead merge ho gaye ✓');
+    toast(rest.length+' leads merged ✓');
     const m=document.querySelector('.modal-bg'); if(m)m.remove(); render();
   }catch(e){ alert('Merge fail: '+e.message); }
 }
@@ -1433,17 +1498,13 @@ async function _agTool(name,a){
         notMarked:Object.values(OFFICE_STAFF).flat().filter(n=>!seen.has(n.toLowerCase()))}; }
     const nm=_agWho(a.name); if(!_agCanSee(nm)) return {error:'Only admins can see another member’s attendance'};
     const doc=await db.collection('attendance').doc(attId(d,nm)).get(), r=doc.exists?doc.data():null;
-    return r?{name:nm,date:d,punchedIn:!!r.inTime,in:r.inTime||'',out:r.outTime||'',late:!!r.late,office:r.officeName||'',leave:!!(r.leave&&!r.inTime)}
-      :{name:nm,date:d,punchedIn:false,note:'no attendance on this day'}; }
+    const st=attStatus(r,d);
+    return r?{name:nm,date:d,status:st.l,punchedIn:!!r.inTime,in:r.inTime||'',out:r.outTime||'',late:!!r.late,office:r.officeName||'',leave:!!(r.leave&&!r.inTime)}
+      :{name:nm,date:d,status:st.l,punchedIn:false,note:(st.k==='hol'||st.k==='off')?'office band tha ('+st.l+')':'no attendance on this day'}; }
   if(name==='member_report'){ const nm=_agWho(a.name); if(!_agCanSee(nm)) return {error:'Only admins can see another member’s report'};
     const h=await _agHist(nm);
-    // Score Board wala hi formula: attendance(1) + plan(1) + report(1) roz; weekly = non-leave dino ka avg × 6
-    const day=dt=>{ const r=h.att.find(x=>x.date===dt), s=h.std.find(x=>x.date===dt), t=(s&&Array.isArray(s.tasks))?s.tasks:[];
-      const A=(r&&r.inTime)?1:0, P=t.length?1:0, R=(t.length&&t.every(x=>x.st))?1:0;
-      return {date:dt,leave:!!(r&&r.leave&&!r.inTime),att:A,plan:P,report:R,score:A+P+R,tasks:t.length,done:t.filter(x=>x.st).length}; };
     const last7=[]; for(let i=0;i<7;i++){ const x=new Date(); x.setUTCDate(x.getUTCDate()-i); last7.push(x.toISOString().slice(0,10)); }
-    const wk=_weekDates(today()).map(day).filter(r=>!r.leave);
-    return {name:nm, weekScore:wk.length?Math.round(wk.reduce((s,r)=>s+r.score,0)/wk.length*6):0, weekMax:18, last7:last7.map(day)}; }
+    return {name:nm, weekScore:_weekScoreOf(h.std,h.att,today()), weekMax:18, last7:last7.map(d=>_dayScoreOf(h.std,h.att,d))}; }
   if(name==='standup_history'){ const nm=_agWho(a.name); if(!_agCanSee(nm)) return {error:'Only admins can see another member’s standups'};
     const n=Math.min(Math.max(parseInt(a.days)||7,1),14), from=new Date(Date.now()-n*86400e3).toISOString().slice(0,10);
     const h=await _agHist(nm);
@@ -2450,7 +2511,7 @@ function hudFillDraftFor(date){
   if(!hud.draft.tasks.length) hud.draft.tasks=[_blankTask()];
   if(!hud.draft.issues.length) hud.draft.issues=[''];
 }
-let hud = { date: today(), items: [], mine: [], draft: blankDraft(), report:null, editing:false, execFilter:'' };
+let hud = { date: today(), items: [], mine: [], draft: blankDraft(), report:null, editing:false, execFilter:'', mode:'', open:{} };
 // Huddle ka naam LOGGED-IN EMAIL se (device-shared myName se nahi) — taaki har user ko sirf apna kaam dikhe
 function hudMyName(){ const e=(user&&user.email||'').toLowerCase(); return NAME_BY_EMAIL[e] || localStorage.getItem('hudName_'+e) || ''; }
 function hudSetMyName(n){ const e=(user&&user.email||'').toLowerCase(); if(e) localStorage.setItem('hudName_'+e, n); }
@@ -2487,9 +2548,11 @@ function attShareReport(){
   const rows=[], lines=[]; let present=0,total=0;
   OFFICES.forEach(o=>{ const staff=OFFICE_STAFF[o.id]||[]; if(!staff.length) return;
     rows.push({t:o.name,b:true,c:'#4f46e5'}); lines.push('*'+o.name+'*');
-    staff.forEach(nm=>{ total++; const a=byKey[nm.toLowerCase()]; if(a)present++;
-      rows.push({t:(a?'✅ ':'❌ ')+nm+(a?'  '+a.inTime+(a.late?' (Late)':''):'  Absent'),pad:12,c:a?(a.late?'#b45309':'#047857'):'#b91c1c'});
-      lines.push((a?'✅ ':'❌ ')+nm+(a?' '+a.inTime+(a.late?' (Late)':''):' — Absent')); });
+    staff.forEach(nm=>{ total++; const s=attStatus(byKey[nm.toLowerCase()],att.date); if(s.t)present++;
+      const ic=s.t?'✅ ':(['leave','hol','off'].includes(s.k)?'🌴 ':s.k==='wait'?'⏳ ':'❌ ');
+      const txt=s.t?nm+'  '+s.t+(s.k==='late'?' (Late)':''):nm+'  '+s.l;
+      rows.push({t:ic+txt,pad:12,c:s.t?(s.k==='late'?'#b45309':'#047857'):(s.k==='abs'?'#b91c1c':'#64748b')});
+      lines.push(ic+(s.t?txt:nm+' — '+s.l)); });
   });
   const dt=fmtDate(att.date);
   const text='📋 *Attendance — '+dt+'*\n'+present+'/'+total+' present\n\n'+lines.join('\n')+'\n\n🙏 If you have not punched in, please do it in the app now.\n\n📲 Open attendance in the app';
@@ -2509,7 +2572,9 @@ function hudShareReport(){
   shareReport('Daily Huddle — '+dt, posted.length+' posted'+(missing.length?' · '+missing.length+' pending':''), rows, text);
 }
 
-function openHuddle(){ route.view='huddle'; route.id=null; hud.date=today(); hud.mine=[]; hud.items=[]; hud.draft=blankDraft(); hud.report=null; hud.editing=false; hud.execFilter=''; render(); hudLoad(); window.scrollTo(0,0); }
+// mode: 'plan' | 'report' (Home ke tiles se seedha) — warna 2 baje se pehle plan, baad me report
+function openHuddle(mode){ route.view='huddle'; route.id=null; hud.date=today(); hud.mine=[]; hud.items=[]; hud.draft=blankDraft(); hud.report=null; hud.editing=false; hud.execFilter='';
+  hud.mode=(mode==='plan'||mode==='report')?mode:(new Date(Date.now()+5.5*3600e3).getUTCHours()<14?'plan':'report'); hud.open={}; render(); hudLoad(); window.scrollTo(0,0); }
 function hudEdit(id){ const s=hud.mine.find(x=>x.id===id); if(!s) return;
   hud.draft={ date:s.date, yesterday:stdYesterday(s), tasks:stdTasks(s), issues:stdIssues(s) };
   if(!hud.draft.tasks.length) hud.draft.tasks=[_blankTask()];
@@ -2527,7 +2592,7 @@ function hudFormDate(dstr){ hud.editing=false; hudFillDraftFor(dstr); render(); 
 function hudDelete(id){ if(!confirm('Delete this standup?')) return;
   db.collection('standups').doc(id).delete().then(()=>{ toast('Deleted'); hudLoad(); }).catch(e=>alert(e.message)); }
 function hudSetDate(d){ hud.date=d; hudLoad(); }
-function hudShiftDay(n){ const dt=new Date(hud.date+'T00:00'); dt.setDate(dt.getDate()+n); hud.date=dt.toISOString().slice(0,10); hudLoad(); }
+function hudShiftDay(n){ hud.date=_addDays(hud.date,n); hudLoad(); }   // UTC (local→UTC se IST me date galat khisakti thi)
 
 async function hudLoad(){
   const mine=hudMyName().toLowerCase();
@@ -2567,17 +2632,17 @@ async function hudSaveStandup(){
   const yesterday=await build(hud.draft.yesterday,'yfile');
   const tasks=await build(hud.draft.tasks,'tfile');
   const issues=hud.draft.issues.map(x=>(x||'').trim()).filter(Boolean);
-  if(!tasks.length && !issues.length && !yesterday.length){ alert('Fill in something: yesterday’s work, today’s tasks or an issue'); return; }
+  if(!tasks.length && !issues.length && !yesterday.length){ alert('Add at least one task, a blocker or yesterday\'s work.'); return; }
   const id=date+'__'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
   db.collection('standups').doc(id).set({ date, name, nameKey:name.toLowerCase(), yesterday, tasks, issues, ts:Date.now() }, {merge:true})
-    .then(()=>{ pushHuddleSheet({date, name, yesterday, tasks, issues}); toast(hud.editing?'Standup updated ✓':'Standup saved ✓'); hud.editing=false; hudLoad(); })
+    .then(()=>{ pushHuddleSheet({date, name, yesterday, tasks, issues}); toast(hud.editing?'Standup updated ✓':(hud.mode==='report'?'Report submitted ✓':'Plan saved ✓')); hud.editing=false; home.loaded=false; hudLoad(); })
     .catch(e=>alert('Save failed: '+e.message));
 }
 function hudFeedback(id){
   const el=document.getElementById('fb_'+id); if(!el) return;
   db.collection('standups').doc(id).set({ feedback:(el.value||'').trim(),
       feedbackBy:(user&&user.email?user.email.split('@')[0]:''), feedbackTs:Date.now() }, {merge:true})
-    .then(()=>{ toast('Feedback saved ✓'); hudLoad(); })
+    .then(()=>{ toast('Feedback saved ✓'); const m=document.querySelector('.modal-bg'); if(m) m.remove(); hudLoad(); })
     .catch(e=>alert(e.message));
 }
 
@@ -2600,111 +2665,119 @@ function hudCard(s, editable, own){
       <div class="grow"><div class="hud-name">${esc(nm)}</div><div class="tiny">${fmtDate(s.date)}</div></div>
       ${own?`<button class="btn ghost sm" onclick="hudEdit('${esc(s.id)}')">${IC.edit} Edit</button>`:''}
     </div>
-    ${yest.length?`<div class="hud-b" style="margin-bottom:10px"><span class="hud-lbl">What I did yesterday</span>${rowsHTML(yest)}</div>`:''}
-    <div class="hud-b" style="margin-bottom:10px"><span class="hud-lbl">Today’s tasks</span>${tasks.length?rowsHTML(tasks):'<div class="tiny">—</div>'}</div>
-    ${issues.length?`<div class="hud-b amber"><span class="hud-lbl">Issues</span>${issueHTML}</div>`:''}
+    ${yest.length?`<div class="hud-b" style="margin-bottom:10px"><span class="hud-lbl">Yesterday</span>${rowsHTML(yest)}</div>`:''}
+    <div class="hud-b" style="margin-bottom:10px"><span class="hud-lbl">Today's tasks</span>${tasks.length?rowsHTML(tasks):'<div class="tiny">—</div>'}</div>
+    ${issues.length?`<div class="hud-b amber"><span class="hud-lbl">Blockers</span>${issueHTML}</div>`:''}
     ${editable
       ? `<div class="hud-fb"><label>Feedback</label>
-          <textarea id="fb_${esc(s.id)}" rows="2" placeholder="Manager’s feedback…">${esc(s.feedback||'')}</textarea>
+          <textarea id="fb_${esc(s.id)}" rows="2" placeholder="Write feedback…">${esc(s.feedback||'')}</textarea>
           <button class="btn sm" style="margin-top:8px" onclick="hudFeedback('${esc(s.id)}')">${IC.check} Save feedback</button></div>`
       : (s.feedback ? `<div class="hud-fb"><div class="hud-fb-view">
-          <span class="hud-lbl">Manager’s feedback${s.feedbackBy?' · '+esc(s.feedbackBy):''}</span>
+          <span class="hud-lbl">Feedback${s.feedbackBy?' · '+esc(s.feedbackBy):''}</span>
           <div class="txt">${esc(s.feedback)}</div></div></div>` : '')}
     ${own?`<div style="margin-top:10px;text-align:right"><a href="#" onclick="hudDelete('${esc(s.id)}');return false" style="color:#dc2626;font-size:.78rem;font-weight:700">Delete</a></div>`:''}
   </div>`;
 }
 
+// ── Huddle form: subah "Morning plan" (sirf task lines), shaam "Evening report" (har task pe ek tap) ──
+const _istHour = () => new Date(Date.now()+5.5*3600e3).getUTCHours();
+function hudSetMode(m){ hud.mode=m; render(); }
+function hudSetSt(grp,i,st){ const t=hud.draft[grp][i]; if(t) t.st = t.st===st ? '' : st; render(); }
+function hudTog(k){ hud.open[k]=!hud.open[k]; render(); }
+function hudEnterTask(i){ const d=hud.draft; if(i===d.tasks.length-1){ d.tasks.push(_blankTask()); render(); }
+  setTimeout(()=>{ const el=document.getElementById('ht_'+(i+1)); if(el) el.focus(); },0); }
+// proof file turant upload (re-render me file input khaali ho jaata hai, isliye save tak rukna nahi)
+async function hudUpload(grp,i,inputId){ const u=await uploadFile(inputId); if(u&&hud.draft[grp][i]){ hud.draft[grp][i].proofUrl=u; toast('Proof attached ✓'); render(); } }
+function hudOpenCard(id){ const s=hud.items.find(x=>x.id===id); if(!s) return;
+  modal(`${hudCard(s,true)}<button class="btn ghost" style="width:100%;margin-top:10px" onclick="this.closest('.modal-bg').remove()">Close</button>`); }
+
 function huddleHTML(){
-  const admin=canViewAllHA();   // Neha + sir: sabka board
+  const admin=canViewAllHA();   // Neha + admin: team board
   const myName=hudMyName();
-  const d=hud.draft;
-  const posted=new Set(hud.items.map(x=>(x.nameKey||(x.name||'').toLowerCase())));
-  const missing=EXECS.filter(n=>!posted.has(n.toLowerCase()));
-  const stSelect=(grp,i,st)=>`<select onchange="hud.draft.${grp}[${i}].st=this.value" style="width:auto;flex:none;font-size:.82rem">
-            <option value="">Status</option>
-            <option value="done" ${st==='done'?'selected':''}>✓ Done</option>
-            <option value="partial" ${st==='partial'?'selected':''}>~ Partial</option>
-            <option value="notdone" ${st==='notdone'?'selected':''}>✕ Not Done</option>
-          </select>`;
-  const proofRow=(grp,i,t,prefix)=>`
-        <input placeholder="Proof or result: text or link (optional)" value="${esc(t.proof||'')}" oninput="hud.draft.${grp}[${i}].proof=this.value" style="margin-top:6px;font-size:.82rem">
-        <input id="${prefix}${i}" type="file" style="margin-top:6px;font-size:.72rem;padding:7px">
-        ${t.proofUrl?(_isImg(t.proofUrl)?`<a href="${esc(t.proofUrl)}" target="_blank" style="display:inline-block;margin-top:4px"><img src="${esc(t.proofUrl)}" loading="lazy" style="max-width:90px;max-height:90px;border-radius:6px;border:1px solid var(--line)"></a>`:`<a href="${esc(t.proofUrl)}" target="_blank" class="tiny" style="color:var(--brand);display:inline-block;margin-top:4px">📎 attached file</a>`):''}`;
-  const yestRows=d.yesterday.map((t,i)=>`
-      <div style="border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:8px">
-        <div class="row" style="gap:6px;align-items:center">
-          <span style="font-weight:800;color:var(--muted);width:16px;flex:none">${i+1}.</span>
-          <input placeholder="Yesterday’s task ${i+1}" value="${esc(t.t)}" oninput="hud.draft.yesterday[${i}].t=this.value">
-          <button class="iconbtn" style="background:#f1f5f9;color:#b91c1c;padding:7px;flex:none" onclick="hudDelYest(${i})">✕</button>
-        </div>
-        <div class="row" style="gap:6px;margin-top:6px">${stSelect('yesterday',i,t.st)}
-          <input placeholder="Remark" value="${esc(t.rm)}" oninput="hud.draft.yesterday[${i}].rm=this.value" style="flex:1;font-size:.85rem">
-        </div>
-        ${proofRow('yesterday',i,t,'yfile')}
-      </div>`).join('');
-  const taskRows=d.tasks.map((t,i)=>`
-      <div style="border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:8px">
-        <div class="row" style="gap:6px;align-items:center">
-          <span style="font-weight:800;color:var(--muted);width:16px;flex:none">${i+1}.</span>
-          <input placeholder="Today’s task ${i+1}" value="${esc(t.t)}" oninput="hud.draft.tasks[${i}].t=this.value">
-          ${d.tasks.length>1?`<button class="iconbtn" style="background:#f1f5f9;color:#b91c1c;padding:7px;flex:none" onclick="hudDelTask(${i})">✕</button>`:''}
-        </div>
-        <div class="row" style="gap:6px;margin-top:6px">${stSelect('tasks',i,t.st)}
-          <input placeholder="Remark" value="${esc(t.rm)}" oninput="hud.draft.tasks[${i}].rm=this.value" style="flex:1;font-size:.85rem">
-        </div>
-        ${proofRow('tasks',i,t,'tfile')}
-      </div>`).join('');
-  const issueRows=d.issues.map((x,i)=>`
-      <div class="row" style="gap:6px;align-items:center;margin-bottom:7px">
-        <span style="font-weight:800;color:var(--muted);width:16px;flex:none">${i+1}.</span>
-        <input placeholder="Issue ${i+1}" value="${esc(x)}" oninput="hud.draft.issues[${i}]=this.value">
-        ${d.issues.length>1?`<button class="iconbtn" style="background:#f1f5f9;color:#b91c1c;padding:7px;flex:none" onclick="hudDelIssue(${i})">✕</button>`:''}
-      </div>`).join('');
+  const d=hud.draft, mode=hud.mode||(_istHour()<14?'plan':'report');
+  const ST=[['done','Done'],['partial','Part'],['notdone','No']];
+  const stSeg=(grp,i,st)=>`<span class="st-seg">${ST.map(([k,l])=>`<button class="${st===k?k:''}" onclick="hudSetSt('${grp}',${i},'${k}')">${l}</button>`).join('')}</span>`;
+  // Report row: task + Done/Part/No + 📎 (remark/proof sirf khulne par)
+  const repRow=(grp,i,t,prefix)=>{ const k=grp+'-'+i, has=!!(t.rm||t.proof||t.proofUrl);
+    return `<div class="hr-row"><div class="hr-top">
+        ${t.t&&!hud.open['new-'+k]?`<div class="grow" style="min-width:0;font-size:.9rem">${esc(t.t)}</div>`
+          :`<input class="grow" placeholder="Task" value="${esc(t.t)}" oninput="hud.draft.${grp}[${i}].t=this.value" onfocus="hud.open['new-${k}']=true">`}
+        ${stSeg(grp,i,t.st)}
+        <button class="clip ${has?'has':''}" onclick="hudTog('${k}')" title="Remark / proof">📎</button></div>
+      ${hud.open[k]?`<div style="margin-top:7px">
+        <input placeholder="Remark" value="${esc(t.rm)}" oninput="hud.draft.${grp}[${i}].rm=this.value" style="font-size:.85rem">
+        <input placeholder="Proof / result — text or link" value="${esc(t.proof||'')}" oninput="hud.draft.${grp}[${i}].proof=this.value" style="margin-top:6px;font-size:.85rem">
+        <input id="${prefix}${i}" type="file" onchange="hudUpload('${grp}',${i},'${prefix}${i}')" style="margin-top:6px;font-size:.72rem;padding:7px">
+        ${t.proofUrl?(_isImg(t.proofUrl)?`<a href="${esc(t.proofUrl)}" target="_blank" style="display:inline-block;margin-top:4px"><img src="${esc(t.proofUrl)}" loading="lazy" style="max-width:90px;max-height:90px;border-radius:6px;border:1px solid var(--line)"></a>`:`<a href="${esc(t.proofUrl)}" target="_blank" class="tiny" style="color:var(--brand);display:inline-block;margin-top:4px">📎 Attached file</a>`):''}
+      </div>`:''}</div>`; };
+  const yN=d.yesterday.filter(t=>t.t).length, yDone=d.yesterday.filter(t=>t.t&&t.st==='done').length;
+  const yestHTML = yN ? `<button class="yest-btn" onclick="hudTog('yest')"><span class="grow"><span class="tiny" style="display:block;font-weight:800;text-transform:uppercase;letter-spacing:.05em">Yesterday</span>${yDone} of ${yN} done${d.yesterday.some(t=>t.t&&!t.st)?' · tap to update':''}</span><span>${hud.open.yest?'▲':'▼'}</span></button>
+      ${hud.open.yest?d.yesterday.map((t,i)=>t.t?repRow('yesterday',i,t,'yfile'):'').join(''):''}` : '';
+  const issues=d.issues, showIss=hud.open.iss||issues.some(x=>(x||'').trim());
+  const issHTML = showIss ? `<label style="margin-top:14px">Blockers</label>${issues.map((x,i)=>`<div class="hp-row"><span class="n">${i+1}.</span>
+        <input placeholder="What's blocking you?" value="${esc(x)}" oninput="hud.draft.issues[${i}]=this.value">
+        ${issues.length>1?`<button class="iconbtn" style="background:#f1f5f9;color:#b91c1c;padding:7px;flex:none" onclick="hudDelIssue(${i})">✕</button>`:''}</div>`).join('')}
+      <button class="btn ghost sm" onclick="hudAddIssue()">${IC.add} Add blocker</button>`
+    : `<button class="btn ghost sm" style="margin-top:12px" onclick="hudTog('iss')">${IC.add} Add a blocker</button>`;
+  const planRows = d.tasks.map((t,i)=>`<div class="hp-row"><span class="n">${i+1}.</span>
+      <input id="ht_${i}" placeholder="Task ${i+1}" value="${esc(t.t)}" oninput="hud.draft.tasks[${i}].t=this.value" onkeydown="if(event.key==='Enter'){event.preventDefault();hudEnterTask(${i})}">
+      ${d.tasks.length>1?`<button class="iconbtn" style="background:#f1f5f9;color:#b91c1c;padding:7px;flex:none" onclick="hudDelTask(${i})">✕</button>`:''}</div>`).join('');
+  const planned=d.tasks.filter(t=>t.t.trim());
+  const pendingSt=planned.filter(t=>!t.st).length;
+  const body = mode==='plan'
+    ? `<label style="margin-top:12px">Today's tasks <span style="text-transform:none;font-weight:600;color:var(--faint)">(Enter = next line)</span></label>
+       ${planRows}<button class="btn ghost sm" onclick="hudAddTask()">${IC.add} Add task</button>${issHTML}`
+    : `<label style="margin-top:12px">How did today go?</label>
+       ${planned.length?d.tasks.map((t,i)=>(t.t.trim()||hud.open['new-tasks-'+i])?repRow('tasks',i,t,'tfile'):'').join('')
+         :`<div class="tiny" style="margin:4px 0 10px">No tasks planned for this day. <a href="#" onclick="hudSetMode('plan');return false" style="color:var(--brand);font-weight:700">Add your plan</a> or add work you did below.</div>`}
+       <button class="btn ghost sm" onclick="hudAddTask();hud.open['new-tasks-'+(hud.draft.tasks.length-1)]=true;render()">${IC.add} Add work done</button>${issHTML}`;
   const formCard=`<div class="card" style="padding:16px">
       <div class="row" style="justify-content:space-between;align-items:center;gap:8px">
-        <b>${hud.editing?('Edit — '+fmtDate(d.date)):(admin?'Your own standup':'Today’s standup')}</b>
-        <button class="btn ghost sm" onclick="hudPickName()">${myName?esc(myName):'Choose a name'}</button>
+        <b>${hud.editing?'Edit — '+fmtDate(d.date):'Your standup'}</b>
+        <button class="btn ghost sm" onclick="hudPickName()">${myName?esc(myName):'Choose name'}</button></div>
+      <div class="row" style="justify-content:space-between;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <span class="att-seg"><button class="${mode==='plan'?'on':''}" onclick="hudSetMode('plan')">Morning plan</button><button class="${mode==='report'?'on':''}" onclick="hudSetMode('report')">Evening report</button></span>
+        ${hud.open.date?`<input id="hud_date" type="date" value="${d.date}" onchange="hudFormDate(this.value)" style="width:auto">`
+          :`<a href="#" class="tiny" onclick="hudTog('date');return false" style="font-weight:700;color:var(--muted)">${fmtDate(d.date)} · change</a>`}
       </div>
-      <div class="field" style="margin-top:12px"><label>Date</label>
-        <input id="hud_date" type="date" value="${d.date}" onchange="hudFormDate(this.value)"></div>
-      <label>What I did yesterday <span style="text-transform:none;font-weight:600;color:var(--faint)">(auto · add status)</span></label>
-      ${d.yesterday.length?yestRows:'<div class="tiny" style="margin-bottom:8px">Filled from your last standup. Otherwise add with "+ Add".</div>'}
-      <button class="btn ghost sm" onclick="hudAddYest()">${IC.add} Add</button>
-      <label style="margin-top:16px">Today’s tasks <span style="text-transform:none;font-weight:600;color:var(--faint)">(morning: write tasks · evening: fill status = day report)</span></label>
-      ${taskRows}
-      <button class="btn ghost sm" onclick="hudAddTask()">${IC.add} Add Task</button>
-      <label style="margin-top:16px">Issues / Blockers</label>
-      ${issueRows}
-      <button class="btn ghost sm" onclick="hudAddIssue()">${IC.add} Add Issue</button>
+      <div style="margin-top:12px">${yestHTML}</div>
+      ${body}
       <div class="row" style="gap:9px;margin-top:16px">
         ${hud.editing?`<button class="btn ghost grow" onclick="hudCancelEdit()">Cancel</button>`:''}
-        <button class="btn ${hud.editing?'grow':'wide'}" onclick="hudSaveStandup()">${IC.check} ${hud.editing?'Update':'Save Standup'}</button>
-      </div>
+        <button class="btn ${hud.editing?'grow':'wide'}" onclick="hudSaveStandup()">${IC.check} ${hud.editing?'Update':(mode==='plan'?'Save plan':'Submit report')}</button></div>
+      ${mode==='report'&&pendingSt?`<div class="tiny" style="margin-top:8px;color:#b45309">${pendingSt} task${pendingSt>1?'s':''} still need${pendingSt>1?'':'s'} a status — the report counts once every task has one.</div>`:''}
     </div>`;
   const mineList=`<div class="sec">${IC.cal} My standups</div>
-    ${hud.mine.length ? hud.mine.map(s=>hudCard(s,false,true)).join('') : '<div class="empty">No standups yet. Add the first one with the form.</div>'}`;
-  const fitems = hud.execFilter ? hud.items.filter(x=>(x.nameKey||'')===hud.execFilter) : hud.items;
-  const board=admin ? `
-      <div class="sec" style="display:flex;align-items:center;gap:8px">${IC.users} Team Board — ${fmtDate(hud.date)}
-        <button class="btn sm" style="margin-left:auto;background:#6366f1" onclick="openBoard()">📊 Score Board</button></div>
-      <div class="row" style="gap:8px;margin-bottom:10px;flex-wrap:wrap">
-        <button class="btn ghost sm" onclick="hudShiftDay(-1)">${IC.back}</button>
+    ${hud.mine.length ? hud.mine.map(s=>hudCard(s,false,true)).join('') : '<div class="empty">No standups yet. Add your first plan.</div>'}`;
+  // Team board — progress tiles (bina plan wale dashed)
+  let board='';
+  if(admin){
+    const by={}; hud.items.forEach(s=>{ by[(s.nameKey||(s.name||'')).toLowerCase()]=s; });
+    const names=EXECS.concat(hud.items.map(s=>s.name).filter(n=>n&&!EXECS.some(e=>e.toLowerCase()===n.toLowerCase())));
+    const info=names.map(n=>{ const s=by[n.toLowerCase()], t=s?stdTasks(s).filter(x=>x.t):[];
+      return {n,s,t,done:t.filter(x=>x.st==='done').length,upd:t.filter(x=>x.st).length,rep:t.length>0&&t.every(x=>x.st),iss:s?stdIssues(s).length:0}; })
+      .sort((a,b)=>(b.rep-a.rep)||((b.t.length>0)-(a.t.length>0))||(b.s?1:0)-(a.s?1:0));
+    const N=names.length, plans=info.filter(x=>x.t.length).length, reps=info.filter(x=>x.rep).length;
+    const tile=x=>!x.s?`<div class="hud-tile none"><b>${esc(x.n)}</b><div class="tiny">No plan yet</div></div>`
+      :`<button class="hud-tile ${x.rep?'rep':''}" onclick="hudOpenCard('${esc(x.s.id)}')"><b class="ell">${esc(x.n)}</b>
+          <div class="tiny">${x.t.length?(x.rep?`${x.t.length} tasks · ${x.done} done`:x.upd?`${x.t.length} tasks · ${x.upd} updated`:`${x.t.length} tasks · planned`):'Blockers only'}${x.iss?` · ⚠ ${x.iss}`:''}${x.s.feedback?' · 💬':''}</div>
+          <div class="bar"><i style="width:${x.t.length?Math.round(x.done/x.t.length*100):0}%"></i></div></button>`;
+    board=`<div class="sec" style="display:flex;align-items:center;gap:8px">${IC.users} Team board — ${fmtDate(hud.date)}</div>
+      <div class="row" style="gap:6px;margin-bottom:10px;flex-wrap:wrap;align-items:center">
+        <button class="btn ghost sm" onclick="hudShiftDay(-1)" title="Previous">${IC.back}</button>
         <input type="date" value="${hud.date}" onchange="hudSetDate(this.value)" style="width:auto">
-        <button class="btn ghost sm" onclick="hudShiftDay(1)">${IC.chev}</button>
+        <button class="btn ghost sm" onclick="hudShiftDay(1)" title="Next">${IC.chev}</button>
         <button class="btn ghost sm" onclick="hudSetDate(today())">Today</button>
-        <button class="btn sm" style="background:#22c55e;margin-left:auto" onclick="hudShareReport()">${IC.wa} Report</button>
-      </div>
-      <div class="field" style="margin-bottom:12px"><label>Executive</label>
-        <select onchange="hud.execFilter=this.value;render()">
-          <option value="">All executives</option>
-          ${EXECS.map(n=>`<option value="${esc(n.toLowerCase())}" ${hud.execFilter===n.toLowerCase()?'selected':''}>${esc(n)}</option>`).join('')}
-        </select>
-      </div>
-      ${(!hud.execFilter && missing.length) ? `<div class="alert"><div class="a-ic">${IC.bell}</div><div class="grow"><b>Standup pending</b><div class="tiny" style="color:var(--ink)">${missing.map(esc).join(', ')}</div></div></div>` : ''}
-      ${fitems.length ? fitems.map(s=>hudCard(s,true)).join('') : `<div class="empty">${hud.execFilter?'This executive did not fill a standup on this day.':'Nobody filled a standup on this day.'}</div>`}` : '';
+        <span style="margin-left:auto;display:flex;gap:6px"><button class="btn sm" style="background:#6366f1" onclick="openBoard()">📊 Score board</button>
+        <button class="btn sm" style="background:#22c55e" onclick="hudShareReport()">${IC.wa} Report</button></span></div>
+      <div class="cal-sum" style="grid-template-columns:repeat(2,1fr);margin-bottom:10px">
+        <div><span>Plans in · due ${BOARD_PLAN_BY} am</span><b>${plans}/${N}</b></div><div><span>Reports in · due 6 pm</span><b>${reps}/${N}</b></div></div>
+      <div class="hud-tiles">${info.map(tile).join('')}</div>
+      <div class="tiny" style="margin-top:8px;color:var(--muted)">Tap a tile to see the standup and give feedback.</div>`;
+  }
   return `<div class="main-inner">
     <div class="page-title">Daily Huddle</div>
-    <div class="page-sub">Add your standup${admin?' · and see the whole team’s board':''}.</div>
+    <div class="page-sub">Plan in the morning, report in the evening${admin?' · plus the team board':''}.</div>
     <div class="hud-wrap">
       <div class="hud-left">${formCard}</div>
       <div>${admin ? board : mineList}</div>
@@ -2720,7 +2793,24 @@ const OFFICE_SETTERS = {};   // sirf admin (sir + Amit) office location set kar 
 function canSetOffice(oid){ if(isAdmin()) return true; const e=(user&&user.email||'').toLowerCase(); return (OFFICE_SETTERS[oid]||[]).includes(e); }
 const OFFICE_RADIUS = 150;   // meters — GPS drift tolerance. Office me hoke bhi door dikhe to badha dena.
 const LATE_AFTER = '10:20';  // is time (IST) ke baad punch-in = Late
-let att = { date: today(), offices:{}, mineToday:null, mine:[], items:[] };
+let att = { date: today(), offices:{}, mineToday:null, mine:[], items:[], week:[], mode:'day', off:'all', calM:'', calSel:'', showOff:false };
+// ── Holidays: config/holidays.dates = {'YYYY-MM-DD':'Diwali'} (admin mark karta hai). Sunday hamesha off. ──
+let HOLIDAYS = {};
+async function holLoad(){ try{ const d=await db.collection('config').doc('holidays').get(); HOLIDAYS=(d.exists&&d.data().dates)||{}; }catch(e){} }
+const isHoliday = d => !!HOLIDAYS[d];
+const isSunday = d => new Date(d+'T00:00:00Z').getUTCDay()===0;
+const _addDays = (d,n) => { const x=new Date(d+'T00:00:00Z'); x.setUTCDate(x.getUTCDate()+n); return x.toISOString().slice(0,10); };
+// Ek din ka status — calendar, team board aur WhatsApp report sab yahi use karte hain.
+// "Absent" sirf beete din ke liye; aaj punch nahi kiya = "Not in yet" (LATE_AFTER ke baad warn).
+function attStatus(rec,d){
+  if(rec&&rec.inTime) return rec.late?{k:'late',l:'Late',t:rec.inTime}:{k:'ok',l:'On time',t:rec.inTime};
+  if(isHoliday(d)) return {k:'hol',l:HOLIDAYS[d]||'Holiday'};
+  if(isSunday(d)) return {k:'off',l:'Sunday'};
+  if(rec&&rec.leave) return {k:'leave',l:'Leave'};
+  if(d<today()) return {k:'abs',l:'Absent'};
+  if(d===today()) return {k:'wait',l:'Not in yet',warn:istTime()>LATE_AFTER};
+  return {k:'fut',l:''};
+}
 const istTime = () => new Date(Date.now()+5.5*3600e3).toISOString().slice(11,16);   // HH:MM IST
 const attId = (date,name) => date+'__'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
 
@@ -2740,7 +2830,8 @@ function _dayScore(key,day){
   const report = (tasks.length>0 && tasks.every(t=>t.st)) ? 1 : 0;
   return { att, plan, report, total: att+plan+report };
 }
-function _isLeave(key,day){ return board.att.some(a=>(a.nameKey||'')===key && a.date===day && a.leave && !a.inTime); }
+// holiday = sabki chhutti (leave jaisa: score me nahi gina jaata)
+function _isLeave(key,day){ return isHoliday(day) || board.att.some(a=>(a.nameKey||'')===key && a.date===day && a.leave && !a.inTime); }
 // weekly: leave din ko baaki (non-leave) dino ka average milta hai → total = avg × 6
 function _weekScore(key){
   const days=_weekDates(board.date); let sum=0, worked=0;
@@ -2754,7 +2845,8 @@ async function boardLoad(){
     const [ss,as,aw]=await Promise.all([
       db.collection('standups').where('date','in',days).get(),
       db.collection('attendance').where('date','in',days).get(),
-      db.collection('awards').doc(days[0]).get()
+      db.collection('awards').doc(days[0]).get(),
+      holLoad()
     ]);
     board.std=ss.docs.map(d=>d.data());
     board.att=as.docs.map(d=>d.data());
@@ -2781,17 +2873,17 @@ function _memberReportHTML(name,days,std,att){
   const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   let aT=0,pT=0,rT=0,sum=0,worked=0;
   const data=days.slice().reverse().map(day=>{
-    const a=att.find(x=>x.date===day), onLeave=!!(a&&a.leave&&!a.inTime), attOk=(a&&a.inTime)?1:0;
+    const a=att.find(x=>x.date===day), onLeave=isHoliday(day)||!!(a&&a.leave&&!a.inTime), attOk=(a&&a.inTime)?1:0;
     const s=std.find(x=>x.date===day), tasks=(s&&Array.isArray(s.tasks))?s.tasks:[];
     const plan=tasks.length>0?1:0, doneN=tasks.filter(t=>t.st).length, report=(tasks.length>0&&tasks.every(t=>t.st))?1:0, tot=attOk+plan+report;
     if(!onLeave){ aT+=attOk; pT+=plan; rT+=report; sum+=tot; worked++; }
     const dt=new Date(day+'T00:00:00Z');
-    return {lbl:dt.getUTCDate()+' '+MON[dt.getUTCMonth()], dow:DOW[dt.getUTCDay()], onLeave, attOk, plan, tasks, doneN, report, tot};
+    return {lbl:dt.getUTCDate()+' '+MON[dt.getUTCMonth()], dow:DOW[dt.getUTCDay()], onLeave, hol:HOLIDAYS[day]||'', attOk, plan, tasks, doneN, report, tot};
   });
   const dot=ok=>`<span style="color:${ok?'#16a34a':'#dc2626'}">●</span>`;
   const body=data.map(r=>`<tr style="border-top:1px solid var(--line)">
       <td style="padding:8px 6px;white-space:nowrap">${r.lbl} <span class="tiny" style="color:var(--muted)">${r.dow}</span></td>
-      ${r.onLeave?`<td colspan="4" style="text-align:center;color:#0891b2;font-weight:700">🌴 Leave</td>`
+      ${r.onLeave?`<td colspan="4" style="text-align:center;color:#0891b2;font-weight:700">${r.hol?'🎉 '+esc(r.hol):'🌴 Chhutti'}</td>`
         :`<td style="text-align:center">${dot(r.attOk)}</td>
           <td style="text-align:center">${r.tasks.length?r.tasks.length+' task':'<span style="color:var(--muted)">—</span>'}</td>
           <td style="text-align:center">${r.tasks.length?r.doneN+'/'+r.tasks.length:'<span style="color:var(--muted)">—</span>'}</td>
@@ -2885,7 +2977,7 @@ function boardHTML(){
         <span style="cursor:pointer" onclick="boardToggleLeave('${esc(r.n)}')" title="Tap to mark or remove leave">${i+1}. ${esc(r.n)}${r.lv?' 🌴':''}</span>
         <button class="btn ghost" style="padding:1px 7px;margin-left:5px;font-size:.7rem" onclick="openMemberReport('${esc(r.n)}')" title="Last 7 days report">📋</button></td>
       ${r.lv
-        ? `<td colspan="4" style="text-align:center;color:#0891b2;font-weight:700">🌴 On Leave</td>`
+        ? `<td colspan="4" style="text-align:center;color:#0891b2;font-weight:700">${isHoliday(board.date)?'🎉 '+esc(HOLIDAYS[board.date]):'🌴 On Leave'}</td>`
         : `<td style="text-align:center">${dot(r.d.att,due.att)}</td>
       <td style="text-align:center">${dot(r.d.plan,due.plan)}</td>
       <td style="text-align:center">${dot(r.d.report,due.report)}</td>
@@ -2960,9 +3052,12 @@ function getPos(){
 
 function openAtt(){ route.view='att'; route.id=null; att.date=today(); att.mineToday=null; att.mine=[]; att.items=[]; render(); attLoad(); window.scrollTo(0,0); }
 function attSetDate(d){ att.date=d; attLoad(); }
-function attShiftDay(n){ const dt=new Date(att.date+'T00:00'); dt.setDate(dt.getDate()+n); att.date=dt.toISOString().slice(0,10); attLoad(); }
+// UTC me shift (pehle local→UTC se IST me ‹ 2 din peeche aur › wahin atak jaata tha)
+function attShiftDay(n){ att.date=_addDays(att.date,n); attLoad(); }
+function attMode(m){ att.mode=m; attLoad(); }
+function attCalShift(n){ const [y,m]=(att.calM||today().slice(0,7)).split('-').map(Number); att.calM=new Date(Date.UTC(y,m-1+n,1)).toISOString().slice(0,7); att.calSel=''; render(); }
 
-async function attLoadOffices(){ try{ const d=await db.collection('config').doc('offices').get(); att.offices=d.exists?(d.data()||{}):{}; }catch(e){ att.offices={}; } }
+async function attLoadOffices(){ holLoad(); try{ const d=await db.collection('config').doc('offices').get(); att.offices=d.exists?(d.data()||{}):{}; }catch(e){ att.offices={}; } }
 async function attLoad(){
   const mine=hudMyName().toLowerCase();
   try{
@@ -2974,7 +3069,9 @@ async function attLoad(){
       att.mine=s.docs.map(x=>({id:x.id,...x.data()})).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
     }
     if(canViewAllHA()){ const s=await db.collection('attendance').where('date','==',att.date).get();
-      att.items=s.docs.map(x=>({id:x.id,...x.data()})); }
+      att.items=s.docs.map(x=>({id:x.id,...x.data()}));
+      if(att.mode==='week'){ const w=await db.collection('attendance').where('date','in',_weekDates(att.date)).get(); att.week=w.docs.map(x=>x.data()); } }
+    await holLoad();
   }catch(e){ alert('Attendance load error: '+e.message); }
   if(route.view==='att') render();
 }
@@ -3017,73 +3114,159 @@ async function attPunchOut(){
 }
 
 function attView(){
-  const admin=isAdmin();               // office location set — sirf sir/Amit
-  const viewAll=canViewAllHA();        // sabki attendance dekhna — sir + Neha
+  const admin=isAdmin();               // office location + holidays — sirf admin
+  const viewAll=canViewAllHA();        // sabki attendance dekhna — admin + Neha
   const myName=hudMyName();
   const rec=att.mineToday, inDone=rec&&rec.inTime, outDone=rec&&rec.outTime;
+  const tdS=attStatus(rec,today());
   const status = inDone
     ? `<div class="att-status in"><div class="att-ic" style="background:#16a34a">${IC.check}</div>
         <div class="grow"><div class="att-big">Present ${rec.late?'<span class="badge late">Late</span>':'<span class="badge ontime">On time</span>'}</div>
         <div class="tiny">In: ${esc(rec.inTime)}${rec.officeName?' · '+esc(rec.officeName):''}${outDone?' · Out: '+esc(rec.outTime):''}</div></div></div>`
     : `<div class="att-status"><div class="att-ic" style="background:#9ca3af">${IC.cal}</div>
-        <div class="grow"><div class="att-big">Not punched in</div><div class="tiny">Punch in when you reach the office</div></div></div>`;
+        <div class="grow"><div class="att-big">${tdS.k==='hol'?'Holiday — '+esc(tdS.l):tdS.k==='off'?'Sunday — office off':'Not punched in'}</div><div class="tiny">${tdS.k==='hol'||tdS.k==='off'?'Enjoy the day off':'Reach the office, then punch in'}</div></div></div>`;
   const punch = `<div class="att-punch">
       <button class="btn green" onclick="attPunchIn()" ${inDone?'disabled style="opacity:.45"':''}>${IC.check} Punch In</button>
       <button class="btn" onclick="attPunchOut()" ${(!inDone||outDone)?'disabled style="opacity:.45"':''}>${IC.logout} Punch Out</button>
     </div>
-    <div class="tiny">Name: <b>${myName?esc(myName):'—'}</b> · <a href="#" onclick="hudPickName();return false" style="color:var(--brand);font-weight:700">badlo</a></div>`;
-  const mineList = `<div class="sec" style="margin-top:20px">${IC.cal} My attendance</div>
-    ${att.mine.length? att.mine.map(a=>`<div class="att-row">
-        <div class="grow"><b>${fmtDate(a.date)}</b> ${a.late?'<span class="badge late">Late</span>':''}<div class="tiny">${esc(a.officeName||'')}</div></div>
-        <div class="att-time">${esc(a.inTime||'—')}${a.outTime?' → '+esc(a.outTime):''}</div>
-      </div>`).join('') : '<div class="empty">No attendance yet.</div>'}`;
+    <div class="tiny">Name: <b>${myName?esc(myName):'—'}</b> · <a href="#" onclick="hudPickName();return false" style="color:var(--brand);font-weight:700">change</a></div>`;
 
   const offRowHTML=(o)=>{ const c=att.offices[o.id]; const set=c&&c.lat!=null;
     return `<div class="off-set"><div class="grow"><b>${esc(o.name)}</b>
       <div class="tiny">${set?('✓ Location set'+(c.acc?' · ~'+c.acc+'m':'')):'Location not set'}</div></div>
       <button class="btn ${set?'ghost ':''}sm" onclick="attCapture('${o.id}','${esc(o.name)}')">${set?'Re-set':'Set location'}</button></div>`; };
-  const myOffices = OFFICES.filter(o=>canSetOffice(o.id));
-  const mySetSection = (!admin && myOffices.length) ? `<div class="sec" style="margin-top:20px">📍 Office Location</div>
-    <div class="tiny" style="margin:-4px 2px 10px">${esc(myOffices.map(o=>o.name).join(', '))}: tap "Set location" at the office, once.</div>
-    ${myOffices.map(offRowHTML).join('')}` : '';
-  let adminPart='';
-  if(viewAll){
-    const offRows = admin? OFFICES.map(offRowHTML).join('') : '';
-    const byKey={}; att.items.forEach(a=>{ byKey[(a.nameKey||'').toLowerCase()]=a; });
-    const attRow=(nm,a)=>`<div class="att-row">
-        <div class="avatar" style="width:36px;height:36px;font-size:.85rem;background:${avatarColor(nm)}">${esc(nm[0].toUpperCase())}</div>
-        <div class="grow"><b>${esc(nm)}</b> ${a?(a.late?'<span class="badge late">Late</span>':'<span class="badge ontime">On&nbsp;time</span>'):'<span class="badge absent">Absent</span>'}</div>
-        <div class="att-time">${a?esc(a.inTime)+(a.outTime?' → '+esc(a.outTime):''):'—'}</div></div>`;
-    const groups = OFFICES.map(o=>{ const staff=OFFICE_STAFF[o.id]||[]; if(!staff.length) return '';
-      const present=staff.filter(nm=>byKey[nm.toLowerCase()]).length;
-      return `<div class="sec" style="margin-top:16px">${esc(o.name)} — ${present}/${staff.length} present</div>
-        ${staff.map(nm=>attRow(nm, byKey[nm.toLowerCase()])).join('')}`;
-    }).join('');
-    const rosterKeys=new Set(Object.values(OFFICE_STAFF).flat().map(n=>n.toLowerCase()));
-    const others=att.items.filter(a=>!rosterKeys.has((a.nameKey||'').toLowerCase()));
-    const othersHTML = others.length?`<div class="sec" style="margin-top:16px">Other</div>${others.map(a=>attRow(a.name||'?',a)).join('')}`:'';
-    adminPart = `
-      ${admin?`<div class="sec">📍 Office Locations <span style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0">(set once · admin only)</span></div>
-      <div class="tiny" style="margin:-4px 2px 10px">Tap "Set location" once at each office. After that, punch-in works only within ~${OFFICE_RADIUS} m of it.</div>
-      ${offRows}`:''}
-      <div class="sec" style="margin-top:24px;display:flex;align-items:center;gap:8px">${IC.users} Attendance Board
-        <button class="btn sm" style="margin-left:auto;background:#6366f1" onclick="openBoard()">📊 Score Board</button></div>
-      <div class="row" style="gap:8px;margin-bottom:6px;flex-wrap:wrap">
-        <button class="btn ghost sm" onclick="attShiftDay(-1)">${IC.back}</button>
-        <input type="date" value="${att.date}" onchange="attSetDate(this.value)" style="width:auto">
-        <button class="btn ghost sm" onclick="attShiftDay(1)">${IC.chev}</button>
-        <button class="btn ghost sm" onclick="attSetDate(today())">Today</button>
-        <button class="btn sm" style="background:#22c55e;margin-left:auto" onclick="attShareReport()">${IC.wa} Report</button>
-      </div>
-      ${groups}${othersHTML}`;
-  }
+  // ⚙️ Office locations — ek baar ka setup, isliye chhupa rehta hai (koi office set na ho to khud khula)
+  const offList = admin ? OFFICES : OFFICES.filter(o=>canSetOffice(o.id));
+  const anyUnset = offList.some(o=>!(att.offices[o.id]&&att.offices[o.id].lat!=null));
+  const offOpen = att.showOff||anyUnset;
+  const offSection = offList.length ? `<button class="btn ghost sm" style="margin-top:16px" onclick="att.showOff=!att.showOff;render()">⚙️ Office locations ${offOpen?'▲':'▼'}</button>
+    ${offOpen?`<div class="tiny" style="margin:8px 2px 10px">Go to each office once and tap "Set location". Punch-in then works only within ~${OFFICE_RADIUS}m of an office.</div>${offList.map(offRowHTML).join('')}`:''}` : '';
+
   return `<div class="main-inner">
     <div class="page-title">Attendance</div>
-    <div class="page-sub">Punch in when you reach the office${viewAll?' · and see the team’s attendance':''}.</div>
+    <div class="page-sub">Punch in at the office${viewAll?' · see the whole team below':''}.</div>
     ${viewAll
-      ? `<div class="hud-wrap"><div class="hud-left"><div class="card" style="padding:16px">${status}${punch}</div>${mineList}</div><div>${adminPart}</div></div>`
-      : `<div style="max-width:600px"><div class="card" style="padding:16px">${status}${punch}</div>${mineList}${mySetSection}</div>`}
+      ? `<div class="hud-wrap"><div class="hud-left"><div class="card" style="padding:16px">${status}${punch}</div>${attCalHTML()}</div><div>${attTeamHTML()}${offSection}</div></div>`
+      : `<div style="max-width:600px"><div class="card" style="padding:16px">${status}${punch}</div>${attCalHTML()}${offSection}</div>`}
   </div>`;
+}
+// 📅 My attendance — phone jaisa month calendar
+function attCalHTML(){
+  const ym=att.calM||today().slice(0,7), [y,m]=ym.split('-').map(Number);
+  const first=ym+'-01', nDays=new Date(Date.UTC(y,m,0)).getUTCDate(), lead=new Date(first+'T00:00:00Z').getUTCDay();
+  const by={}; att.mine.forEach(a=>by[a.date]=a);
+  const start=att.mine.length?att.mine[att.mine.length-1].date:today();   // pehli attendance se pehle "Absent" mat dikhao
+  let pres=0,late=0,abs=0,mins=0,cells='';
+  for(let i=0;i<lead;i++) cells+='<div></div>';
+  for(let n=1;n<=nDays;n++){
+    const d=ym+'-'+String(n).padStart(2,'0'), r=by[d];
+    let s=attStatus(r,d); if(s.k==='abs'&&d<start) s={k:'fut',l:''};
+    if(s.t){ pres++; const [hh,mm]=s.t.split(':').map(Number); mins+=hh*60+mm; if(s.k==='late') late++; }
+    if(s.k==='abs') abs++;
+    const sub=s.t||({hol:'Holiday',off:'Off',leave:'Leave',abs:'Absent'}[s.k]||'');
+    cells+=`<button class="cal-c ${s.k}${d===today()?' tod':''}${d===att.calSel?' sel':''}" onclick="att.calSel='${d}';render()" title="${esc(s.l||'')}"><b>${n}</b><span>${esc(sub)}</span></button>`;
+  }
+  const avg=pres?Math.round(mins/pres):0;
+  const avgT=pres?String(Math.floor(avg/60)).padStart(2,'0')+':'+String(avg%60).padStart(2,'0'):'—';
+  const sel=(att.calSel||'').startsWith(ym)?att.calSel:'';
+  let det='';
+  if(sel){ const r=by[sel], s=attStatus(r,sel);
+    det=`<div class="cal-det"><b>${fmtDate(sel)}</b> · ${esc(s.l||'—')}${r&&r.inTime?' · In '+esc(r.inTime)+(r.outTime?' · Out '+esc(r.outTime):' · no punch-out')+(r.officeName?' · '+esc(r.officeName):''):''}</div>`; }
+  const monName=new Date(first+'T00:00:00Z').toLocaleString('en-IN',{month:'long',year:'numeric',timeZone:'UTC'});
+  return `<div class="sec" style="margin-top:20px">${IC.cal} My attendance</div>
+    <div class="card" style="padding:14px">
+      <div class="cal-sum"><div><span>Present</span><b>${pres}</b></div><div><span>Late</span><b style="color:#b45309">${late}</b></div><div><span>Absent</span><b style="color:#dc2626">${abs}</b></div><div><span>Avg in</span><b>${avgT}</b></div></div>
+      <div class="row" style="justify-content:space-between;align-items:center;margin:10px 0 8px">
+        <button class="btn ghost sm" onclick="attCalShift(-1)" title="Previous month">${IC.back}</button><b>${monName}</b><button class="btn ghost sm" onclick="attCalShift(1)" title="Next month">${IC.chev}</button></div>
+      <div class="cal-g cal-h">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>`<div>${x}</div>`).join('')}</div>
+      <div class="cal-g">${cells}</div>
+      ${det||'<div class="tiny" style="margin-top:8px;color:var(--muted)">Tap a date to see in/out time.</div>'}
+      <div class="cal-leg"><span><i class="ok"></i>On time</span><span><i class="late"></i>Late</span><span><i class="abs"></i>Absent</span><span><i class="leave"></i>Leave</span><span><i class="hol"></i>Holiday / Sunday</span></div>
+    </div>`;
+}
+// 👥 Team attendance — status ke hisaab se group (Day) ya hafte ka register (Week)
+function attTeamHTML(){
+  const admin=isAdmin(), wk=att.mode==='week';
+  const roster=OFFICES.map(o=>({o,staff:OFFICE_STAFF[o.id]||[]})).filter(x=>x.staff.length);
+  const allN=roster.flatMap(x=>x.staff), rk=new Set(allN.map(n=>n.toLowerCase()));
+  const byKey={}; att.items.forEach(a=>byKey[(a.nameKey||'').toLowerCase()]=a);
+  const extra=att.items.filter(a=>a.name&&!rk.has((a.nameKey||'').toLowerCase())).map(a=>a.name);   // roster me nahi, phir bhi punch kiya
+  const names = att.off==='all' ? allN.concat(extra) : ((roster.find(x=>x.o.id===att.off)||{staff:[]}).staff);
+  const cnt=staff=>staff.filter(n=>{ const r=byKey[n.toLowerCase()]; return r&&r.inTime; }).length;
+  const pill=(id,label,staff)=>`<button class="att-pill ${att.off===id?'on':''}" onclick="att.off='${id}';render()">${esc(label)}${wk?'':' '+cnt(staff)+'/'+staff.length}</button>`;
+  const days=_weekDates(att.date);
+  return `<div class="sec" style="margin-top:4px;display:flex;align-items:center;gap:8px">${IC.users} Team attendance
+      <span class="att-seg" style="margin-left:auto"><button class="${wk?'':'on'}" onclick="attMode('day')">Day</button><button class="${wk?'on':''}" onclick="attMode('week')">Week</button></span></div>
+    <div class="row" style="gap:6px;margin-bottom:8px;flex-wrap:wrap;align-items:center">
+      <button class="btn ghost sm" onclick="attShiftDay(${wk?-7:-1})" title="Previous">${IC.back}</button>
+      ${wk?`<b>${fmtDate(days[0])} – ${fmtDate(days[5])}</b>`:`<input type="date" value="${att.date}" onchange="attSetDate(this.value)" style="width:auto">`}
+      <button class="btn ghost sm" onclick="attShiftDay(${wk?7:1})" title="Next">${IC.chev}</button>
+      <button class="btn ghost sm" onclick="attSetDate(today())">Today</button>
+      <span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+        ${admin?`<button class="btn ghost sm" onclick="openHolidays()">🎉 Holidays</button>`:''}
+        <button class="btn sm" style="background:#6366f1" onclick="openBoard()">📊 Score board</button>
+        <button class="btn sm" style="background:#22c55e" onclick="attShareReport()">${IC.wa} Report</button></span>
+    </div>
+    <div style="margin-bottom:6px">${pill('all','All',allN)}${roster.map(x=>pill(x.o.id,x.o.name,x.staff)).join('')}</div>
+    ${wk?attWeekHTML(names):attDayHTML(names,byKey)}`;
+}
+function attDayHTML(names,byKey){
+  const d=att.date, g={ok:[],wait:[],abs:[],leave:[]};
+  names.forEach(n=>{ const s=attStatus(byKey[n.toLowerCase()],d); if(s.t) g.ok.push({n,s}); else if(g[s.k]) g[s.k].push({n,s}); else if(s.k==='fut') g.wait.push({n,s}); });
+  const chip=x=>`<button class="att-chip ${x.s.k}" onclick="openMemberReport('${esc(x.n)}')" title="Last 7 days"><span class="avatar" style="background:${avatarColor(x.n)}">${esc(x.n[0].toUpperCase())}</span>${esc(x.n)}${x.s.t?` <b>${esc(x.s.t)}</b>`:''}</button>`;
+  const grp=(title,cls,arr)=>arr.length?`<div class="att-gt ${cls}">${title} · ${arr.length}</div><div>${arr.map(chip).join('')}</div>`:'';
+  if(isHoliday(d)||isSunday(d)) return `<div class="card att-banner">${isHoliday(d)?'🎉 Holiday — '+esc(HOLIDAYS[d]):'Sunday — office off'}</div>${g.ok.length?`<div class="card" style="padding:14px;margin-top:10px">${grp('Came in anyway','ok',g.ok)}</div>`:''}`;
+  const here=g.ok.length, total=names.length, lateN=g.ok.filter(x=>x.s.k==='late').length;
+  const warn=g.wait.length&&g.wait[0].s.warn;
+  const parts=[here+' in', lateN+' late', g.wait.length?g.wait.length+' not in yet':'', g.abs.length?g.abs.length+' absent':'', g.leave.length?g.leave.length+' on leave':''].filter(Boolean);
+  return `<div class="card" style="padding:14px">
+      <div class="att-bar"><i style="width:${total?Math.round(here/total*100):0}%"></i></div>
+      <div class="tiny" style="margin:6px 0 2px">${parts.join(' · ')}</div>
+      ${grp('In office','ok',g.ok.sort((a,b)=>a.s.t.localeCompare(b.s.t)))}
+      ${grp(warn?'Not in yet — late after '+LATE_AFTER:'Not in yet', warn?'warn':'wait', g.wait)}
+      ${grp('Absent','abs',g.abs)}
+      ${grp('On leave','leave',g.leave)}
+      <div class="tiny" style="margin-top:6px;color:var(--muted)">Tap a name for their last 7 days.</div>
+    </div>`;
+}
+function attWeekHTML(names){
+  const days=_weekDates(att.date), by={}, D=['Mon','Tue','Wed','Thu','Fri','Sat'];
+  att.week.forEach(a=>by[(a.nameKey||'').toLowerCase()+'|'+a.date]=a);
+  const head=`<div class="wk-r wk-h"><span></span>${days.map((d,i)=>`<span>${D[i]}<br>${+d.slice(8)}</span>`).join('')}</div>`;
+  const rows=names.map(n=>{ const k=n.toLowerCase();
+    return `<div class="wk-r"><span class="ell" style="cursor:pointer;font-weight:600" onclick="openMemberReport('${esc(n)}')">${esc(n)}</span>${days.map(d=>{ const s=attStatus(by[k+'|'+d],d);
+      return `<i class="wk-d ${s.k}" title="${esc(fmtDate(d)+' · '+(s.l||'—')+(s.t?' '+s.t:''))}">${esc(s.t||(s.k==='leave'?'L':s.k==='hol'?'H':''))}</i>`; }).join('')}</div>`; }).join('');
+  return `<div class="card" style="padding:12px;overflow-x:auto">${head}${rows}
+      <div class="cal-leg"><span><i class="ok"></i>On time</span><span><i class="late"></i>Late</span><span><i class="abs"></i>Absent</span><span><i class="leave"></i>Leave (L)</span><span><i class="hol"></i>Holiday (H)</span></div></div>`;
+}
+// 🎉 Holidays — admin mark/hata sakta hai (range me; Sunday apne aap chhod deta hai)
+function openHolidays(){
+  if(!isAdmin()) return;
+  const list=Object.keys(HOLIDAYS).sort().reverse().slice(0,40);
+  modal(`<h2>🎉 Holidays</h2><div class="msub">Marked days show grey for everyone and don't count against the weekly score. Sundays are always off.</div>
+    <div class="row" style="gap:8px"><div class="field grow"><label>From</label><input type="date" id="hol_from" value="${att.date}"></div>
+      <div class="field grow"><label>To</label><input type="date" id="hol_to" value="${att.date}"></div></div>
+    <div class="field"><label>Name</label><input id="hol_name" placeholder="Diwali"></div>
+    <button class="btn" style="width:100%" onclick="holSave()">Mark holiday</button>
+    <div class="sec" style="margin-top:16px">Marked</div>
+    <div style="max-height:36vh;overflow:auto">${list.length?list.map(d=>`<div class="att-row"><div class="grow"><b>${fmtDate(d)}</b><div class="tiny">${esc(HOLIDAYS[d])}</div></div><button class="btn ghost sm" onclick="holRemove('${d}')">Remove</button></div>`).join(''):'<div class="empty">No holidays marked yet.</div>'}</div>
+    <button class="btn ghost" style="width:100%;margin-top:8px" onclick="this.closest('.modal-bg').remove()">Close</button>`);
+}
+async function holSave(){
+  const f=val('hol_from'), t=val('hol_to')||f, name=(val('hol_name')||'').trim()||'Holiday';
+  if(!f||t<f){ alert('"To" date must be on or after "From" date.'); return; }
+  const dates={}; for(let d=f,i=0; d<=t&&i<62; d=_addDays(d,1),i++){ if(!isSunday(d)) dates[d]=name; }
+  if(!Object.keys(dates).length){ alert('Only Sundays in that range — nothing to mark.'); return; }
+  try{ await db.collection('config').doc('holidays').set({dates,by:(user&&user.email||''),ts:Date.now()},{merge:true});
+    await holLoad(); toast(Object.keys(dates).length+' day(s) marked as holiday');
+    const m=document.querySelector('.modal-bg'); if(m) m.remove(); openHolidays(); render(); }
+  catch(e){ alert('Not saved: '+e.message); }
+}
+async function holRemove(d){
+  if(!confirm('Remove the holiday on '+fmtDate(d)+'?')) return;
+  try{ await db.collection('config').doc('holidays').update(new firebase.firestore.FieldPath('dates',d), firebase.firestore.FieldValue.delete());
+    await holLoad(); const m=document.querySelector('.modal-bg'); if(m) m.remove(); openHolidays(); render(); }
+  catch(e){ alert('Not removed: '+e.message); }
 }
 
 // mobile bottom nav — top tabs neeche fixed bar me
@@ -3209,44 +3392,123 @@ function wallHTML(){
   </div>`;
 }
 // ════ HOME DASHBOARD ════
-function openHome(){ route.view='home'; route.id=null; render(); if(!wall.cfg) engageLoad(); window.scrollTo(0,0); }
+function openHome(){ route.view='home'; route.id=null; home.loaded=false; render(); if(!wall.cfg) engageLoad(); window.scrollTo(0,0); }
+// ── Home "My day": aaj kya bacha hai (attendance / plan / report) + aaj kisko call karna hai ──
+let home = { loaded:false, loading:false, att:null, std:null, wk:null, teamIn:null, teamN:0, plans:null };
+// Score Board wala formula (roz: attendance + plan + report; hafta = non-leave dino ka avg × 6)
+function _dayScoreOf(std,att,d){
+  const r=att.find(x=>x.date===d), s=std.find(x=>x.date===d), t=(s&&Array.isArray(s.tasks))?s.tasks:[];
+  const A=(r&&r.inTime)?1:0, P=t.length?1:0, R=(t.length&&t.every(x=>x.st))?1:0;
+  return {date:d,leave:isHoliday(d)||!!(r&&r.leave&&!r.inTime),holiday:HOLIDAYS[d]||'',att:A,plan:P,report:R,score:A+P+R,tasks:t.length,done:t.filter(x=>x.st).length};
+}
+function _weekScoreOf(std,att,ref){ const wk=_weekDates(ref).map(d=>_dayScoreOf(std,att,d)).filter(r=>!r.leave);
+  return wk.length?Math.round(wk.reduce((s,r)=>s+r.score,0)/wk.length*6):0; }
+async function homeLoad(){
+  home.loading=true;
+  const me=hudMyName(), k=(me||'').toLowerCase(), td=today();
+  try{
+    await holLoad();
+    if(me){
+      const [s,a]=await Promise.all([db.collection('standups').where('nameKey','==',k).get(), db.collection('attendance').where('nameKey','==',k).get()]);
+      const std=s.docs.map(x=>x.data()), att=a.docs.map(x=>x.data());
+      home.att=att.find(x=>x.date===td)||null; home.std=std.find(x=>x.date===td)||null; home.wk=_weekScoreOf(std,att,td);
+    }
+    if(canViewAllHA()){
+      const roster=Object.values(OFFICE_STAFF).flat(), rk=new Set(roster.map(n=>n.toLowerCase()));
+      const [a,s]=await Promise.all([db.collection('attendance').where('date','==',td).get(), db.collection('standups').where('date','==',td).get()]);
+      home.teamN=roster.length; home.teamIn=a.docs.map(x=>x.data()).filter(x=>x.inTime&&rk.has((x.nameKey||'').toLowerCase())).length;
+      home.plans=s.docs.map(x=>x.data()).filter(x=>Array.isArray(x.tasks)&&x.tasks.length).length;
+    }
+  }catch(e){ console.warn('home load',e); }
+  home.loading=false; home.loaded=true;
+  if(route.view==='home') render();
+}
+// Aaj kisko call karna hai: overdue (sabse purana upar) → aaj due → going cold
+function _homeCalls(){
+  const td=today(), seen=new Set(), out=[];
+  const days=d=>Math.round((Date.parse(td)-Date.parse(d))/864e5);
+  leads.filter(isOverdue).map(L=>({L,d:dueDate(L)})).sort((a,b)=>(a.d||'').localeCompare(b.d||''))
+    .forEach(({L,d})=>{ if(!seen.has(L.id)){ seen.add(L.id); out.push({L,pill:'dn',txt:d?days(d)+'d overdue':'overdue'}); } });
+  leads.filter(L=>dueDate(L)===td).forEach(L=>{ if(!seen.has(L.id)){ seen.add(L.id); out.push({L,pill:'ac',txt:'today'}); } });
+  leads.filter(isCold).sort((a,b)=>coldDays(b)-coldDays(a)).forEach(L=>{ if(!seen.has(L.id)){ seen.add(L.id); out.push({L,pill:'wn',txt:coldDays(L)+'d quiet'}); } });
+  return out;
+}
 function homeHTML(){
-  const ho=isHuddleOnly();
-  const nm=((hudMyName()||((user&&user.email||'').split('@')[0])||'').split(' ')[0]);
-  const h=new Date(Date.now()+5.5*3600e3).getUTCHours();
+  if(!home.loaded&&!home.loading) setTimeout(homeLoad,0);
+  const ho=isHuddleOnly(), me=hudMyName();
+  const nm=((me||((user&&user.email||'').split('@')[0])||'').split(' ')[0]);
+  const h=_istHour(), td=today();
   const greet=h<12?'Good morning':(h<17?'Good afternoon':'Good evening');
-  const dueToday=leads.filter(L=>dueDate(L)===today()).length;
+  const dayLbl=new Date(td+'T00:00:00Z').toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});
+  const bdays=todaysBirthdays(), q=quoteOfDay();
+  const off=isHoliday(td)||isSunday(td);
+  // 3 "My day" tiles
+  const tile=(lbl,val,cls,onclick)=>`<button class="md-t ${cls}" onclick="${onclick}"><span>${lbl}</span><b>${val}</b></button>`;
+  const ld=!home.loaded;
+  const a=home.att, s=home.std, tasks=(s&&Array.isArray(s.tasks))?s.tasks.filter(x=>x.t):[];
+  const attT = !me ? tile('Attendance','Set name','wn','hudPickName()')
+    : ld ? tile('Attendance','…','','openAtt()')
+    : a&&a.inTime ? tile('Attendance',esc(a.inTime)+(a.late?' · late':''),a.late?'wn':'ok','openAtt()')
+    : off ? tile('Attendance','Day off','','openAtt()')
+    : tile('Attendance','Punch in','wn','openAtt()');
+  const planT = ld ? tile("Today's plan",'…','',"openHuddle('plan')")
+    : tasks.length ? tile("Today's plan",tasks.length+' task'+(tasks.length>1?'s':''),'ok',"openHuddle('plan')")
+    : off ? tile("Today's plan",'—','',"openHuddle('plan')")
+    : tile("Today's plan",'Add plan','wn',"openHuddle('plan')");
+  const reported=tasks.length&&tasks.every(x=>x.st);
+  const repT = ld ? tile('Report','…','',"openHuddle('report')")
+    : reported ? tile('Report','Done','ok',"openHuddle('report')")
+    : off ? tile('Report','—','',"openHuddle('report')")
+    : h>=BOARD_REPORT_BY ? tile('Report','Due now','wn',"openHuddle('report')")
+    : tile('Report','by 6 pm','',"openHuddle('report')");
+  // Call today
+  const calls=ho?[]:_homeCalls(), top=calls.slice(0,5);
+  const callRow=({L,pill,txt})=>`<div class="call-row" onclick="go('detail','${esc(L.id)}')">
+      <div class="avatar" style="width:32px;height:32px;font-size:.8rem;background:${avatarColor(L.name||'?')}">${esc((L.name||'?')[0].toUpperCase())}</div>
+      <div class="grow" style="min-width:0"><b class="ell" style="display:block">${esc(L.name||'—')}</b><div class="tiny ell">${esc(L.colony||'')}${L.colony?' · ':''}${esc(stMap[L.status]?.l||L.status||'')}</div></div>
+      <span class="hm-pill ${pill}">${esc(txt)}</span>
+      ${L.mobile?`<a class="iconbtn" href="tel:${esc(digits(L.mobile))}" onclick="event.stopPropagation()" title="Call" style="background:#eef0ff;color:#4338ca;padding:8px">${IC.phone||'📞'}</a>`:''}
+    </div>`;
+  const callCard = ho ? '' : `<div class="card" style="padding:14px 14px 6px">
+      <div class="row" style="align-items:center;gap:8px;margin-bottom:4px"><b class="grow">Call today${calls.length?' · '+calls.length:''}</b>
+        ${calls.length>top.length?`<button class="btn ghost sm" onclick="tab('reminders')">See all</button>`:''}
+        <button class="btn ghost sm" onclick="openLeadForm()">${IC.add} Lead</button></div>
+      ${top.length?top.map(callRow).join(''):'<div class="tiny" style="padding:10px 0 12px">All caught up — no calls due today. 🎉</div>'}
+    </div>`;
+  // Numbers
+  const num=(lbl,val,onclick)=>`<button class="md-t" onclick="${onclick}"><span>${lbl}</span><b>${val}</b></button>`;
   const pending=leads.filter(isOverdue).length+leads.filter(isNew).length;
-  const bdays=todaysBirthdays(), q=quoteOfDay(), st=storyOfDay();
-  const metric=(n,t,onclick,danger)=>`<div onclick="${onclick}" style="flex:1;border:1px solid var(--line);border-radius:16px;padding:15px 16px;cursor:pointer;background:linear-gradient(180deg,#fff,#f8f9fe);box-shadow:var(--sh),var(--hl)"><div class="tiny" style="font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">${t}</div><div style="font-size:2rem;font-weight:800;line-height:1;margin-top:5px;letter-spacing:-.02em${danger?';color:var(--danger)':''}">${n}</div></div>`;
-  const qa=(icon,label,onclick,tint)=>`<button onclick="${onclick}" style="flex:1;min-width:84px;display:flex;flex-direction:column;align-items:center;gap:7px;padding:13px 6px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,#fff,#f9fafe);cursor:pointer;box-shadow:var(--sh),var(--hl)"><span style="width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;background:${tint||'#eef0ff'};box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 1px 3px rgba(15,23,42,.08)">${icon}</span><span style="font-size:.74rem;font-weight:700;color:var(--ink)">${label}</span></button>`;
-  const avH=(nm,sz)=>`<div style="width:${sz}px;height:${sz}px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:${Math.round(sz*0.42)}px;background:${avatarColor(nm||'?')}">${esc((nm||'?')[0].toUpperCase())}</div>`;
-  const peek=(wall.posts||[]).slice(0,2);
+  const nums=[
+    (!ho&&isAdmin()) ? num('Pipeline',inr(_funnelTotal('')),'openFunnel()') : (!ho ? num('Alerts',pending,"tab('reminders')") : ''),
+    me ? num('Week score',ld?'…':(home.wk||0)+'/18',`openMemberReport('${esc(me)}')`) : '',
+    canViewAllHA() ? num('Team in',home.teamIn==null?'…':home.teamIn+'/'+home.teamN,'openAtt()') : (!ho ? num('Due today',leads.filter(L=>dueDate(L)===td).length,"tab('today')") : '')
+  ].filter(Boolean).join('');
+  const peek=(wall.posts||[])[0];
+  const avH=(n,sz)=>`<div style="width:${sz}px;height:${sz}px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:${Math.round(sz*0.42)}px;background:${avatarColor(n||'?')}">${esc((n||'?')[0].toUpperCase())}</div>`;
+  const side=`
+    ${nums?`<div class="md-tiles">${nums}</div>`:''}
+    ${canViewAllHA()&&home.plans!=null?`<div class="tiny" style="margin:-2px 2px 0;color:var(--muted)">Standups today: ${home.plans}/${home.teamN} · <a href="#" onclick="openHuddle();return false" style="color:var(--brand);font-weight:700">open huddle</a></div>`:''}
+    ${q?`<div class="card" style="padding:12px;border-left:3px solid #6366f1;border-radius:0 14px 14px 0"><div class="tiny" style="font-weight:800;color:#6366f1">QUOTE OF THE DAY</div><div style="margin-top:4px">${esc(q)}</div></div>`:''}
+    <div class="card" style="padding:12px">
+      <div class="row" style="align-items:center;gap:8px"><b class="grow">Wall</b><button class="btn ghost sm" onclick="openWall()">See all</button></div>
+      ${peek?`<div class="row" style="gap:10px;align-items:flex-start;margin-top:8px;cursor:pointer" onclick="openWall()">${avH(peek.byName||peek.by,28)}
+          <div class="grow" style="min-width:0"><b>${esc(peek.byName||peek.by||'?')}</b> <span class="tiny" style="color:var(--muted)">· ${_ago(peek.ts)}</span>
+          ${peek.text?`<div class="tiny" style="color:var(--ink);margin-top:2px">${esc(peek.text.length>110?peek.text.slice(0,110)+'…':peek.text)}</div>`:''}</div></div>`
+        :`<div class="tiny" style="margin-top:6px">No posts yet — <a href="#" onclick="openWall();return false" style="color:var(--brand);font-weight:700">write the first one</a></div>`}
+    </div>`;
   return `<div class="main-inner">
-    <h2 class="page-title" style="margin-bottom:2px">${greet}${nm?', '+esc(nm):''} 👋</h2>
-    <div class="page-sub">${fmtDate(today())}</div>
-    <button onclick="openAgent()" style="width:100%;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:12px;padding:16px 14px;border:none;border-radius:18px;cursor:pointer;color:#fff;background:linear-gradient(135deg,#6d5efc 0%,#8b5cf6 55%,#a855f7 100%);box-shadow:0 12px 28px -12px rgba(109,94,252,.65),inset 0 1px 0 rgba(255,255,255,.28)">
-      <span style="font-size:1.9rem;line-height:1">🎙️</span>
-      <span style="text-align:left"><span style="display:block;font-weight:800;font-size:1.05rem;letter-spacing:-.01em">Talk to Saathi</span><span style="display:block;font-size:.78rem;opacity:.93">Speak or type: plan, report, leads, funnel</span></span>
-    </button>
-    ${bdays.length?`<div class="card" style="padding:12px;background:linear-gradient(135deg,#fde68a,#fca5a5);border:none;margin-top:12px"><b>🎉 Today: ${bdays.map(b=>esc(b.name)+(b.type==='anniv'?' 💍':' 🎂')).join(' · ')}</b><div class="tiny">Wish them well!</div></div>`:''}
-    ${!ho?`<div class="row" style="gap:10px;margin-top:14px">${metric(dueToday,'Due today',"tab('today')")}${metric(pending,'Alerts',"tab('reminders')",true)}</div>`:''}
-    ${(!ho&&isAdmin())?`<div class="card" style="padding:14px;margin-top:12px;cursor:pointer;background:linear-gradient(135deg,#e0e7ff,#bfdbfe);border:none" onclick="openFunnel()"><div class="tiny" style="font-weight:800;color:#4338ca">📈 FUNNEL VALUE</div><div style="font-size:1.5rem;font-weight:800;margin-top:2px">${inr(_funnelTotal(''))}</div><div class="tiny" style="color:#4338ca">tap → full dashboard</div></div>`:''}
-    <div class="sec" style="margin-top:18px">Quick actions</div>
-    <div class="row" style="gap:10px;flex-wrap:wrap">
-      ${qa('✅','Punch In','openAtt()','#e9f8ef')}
-      ${qa('📝','Standup','openHuddle()','#eef0ff')}
-      ${!ho?qa('➕','Add Lead','openLeadForm()','#fdf0e0'):''}
-      ${qa('📣','Wall','openWall()','#fdeef3')}
+    <div class="row" style="align-items:center;gap:12px;flex-wrap:wrap">
+      <div class="grow"><h2 class="page-title" style="margin-bottom:2px">${greet}${nm?', '+esc(nm):''} 👋</h2><div class="page-sub">${esc(dayLbl)}${isHoliday(td)?' · 🎉 '+esc(HOLIDAYS[td]):''}</div></div>
+      <button class="saathi-btn" onclick="openAgent()"><span style="font-size:1.25rem">🎙️</span><span><b>Ask Saathi</b><small>talk or type</small></span></button>
     </div>
-    ${q?`<div class="card" style="padding:12px;border-left:3px solid #6366f1;margin-top:18px"><div class="tiny" style="font-weight:800;color:#6366f1">💬 QUOTE OF THE DAY</div><div style="margin-top:4px">${esc(q)}</div></div>`:''}
-    ${st?`<div class="card" style="padding:12px;border-left:3px solid #10b981;margin-top:12px"><div class="tiny" style="font-weight:800;color:#10b981">📖 STORY OF THE DAY</div><div style="margin-top:4px;white-space:pre-wrap">${esc(st)}</div></div>`:''}
-    <div class="sec" style="margin-top:18px"><span class="grow">📣 Wall</span><button class="btn ghost sm" onclick="openWall()">See all</button></div>
-    ${peek.length? peek.map(p=>`<div class="card" style="padding:12px;margin-bottom:10px" onclick="openWall()">
-        <div class="row" style="gap:10px;align-items:center">${avH(p.byName||p.by,30)}<div class="grow" style="min-width:0"><b>${esc(p.byName||p.by||'?')}</b><div class="tiny" style="color:var(--muted)">${_ago(p.ts)}</div></div></div>
-        ${p.text?`<div style="margin-top:6px;white-space:pre-wrap">${esc(p.text.length>140?p.text.slice(0,140)+'…':p.text)}</div>`:''}
-        ${p.img?`<img src="${esc(p.img)}" loading="lazy" style="max-width:100%;border-radius:10px;margin-top:8px">`:''}
-      </div>`).join('') : `<div class="card" style="padding:14px;text-align:center"><div class="tiny" style="color:var(--muted)">No posts yet. <a href="#" onclick="openWall();return false" style="color:var(--brand);font-weight:700">Be the first to post</a> 🎉</div></div>`}
+    ${bdays.length?`<div class="card" style="padding:12px;background:linear-gradient(135deg,#fde68a,#fca5a5);border:none;margin-top:12px"><b>🎉 Today: ${bdays.map(b=>esc(b.name)+(b.type==='anniv'?' 💍':' 🎂')).join(' · ')}</b><div class="tiny">Wish the team!</div></div>`:''}
+    <div class="home-grid">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div><div class="sec" style="margin:0 2px 8px">My day</div><div class="md-tiles">${attT}${planT}${repT}</div></div>
+        ${callCard}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">${side}</div>
+    </div>
   </div>`;
 }
 // ════ TEAM HUB ════
